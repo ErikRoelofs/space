@@ -1,0 +1,88 @@
+v1:
+- game
+    - players
+        - account
+        - resources
+            - industrial
+            - social
+    - board
+        - tiles
+            - space
+                - pieces
+            - planets
+                - owner
+                - pieces
+                - production
+                    - industrial
+                    - social
+    - turns
+        - orders
+            X move ships / troops
+            X build things
+            - resolution
+
+- piece
+    - owner
+    - location
+    - type
+
+- piece-type
+    - name
+    - allowed-location-types
+    - attack
+    - defense
+    - speed
+    - traits
+
+full:
+
+- game
+    - players
+        - account
+        - hand
+            - cards
+        - resources
+            - command
+                - logistics
+                - strategic
+                - tactical
+                - social (?)
+            - victory points
+            - industrial
+            - social
+        - techs
+        - traits
+        - strategy (?)
+    - board
+        - tiles
+            - space
+                - pieces
+            - planets
+                - owner
+                - pieces
+                - production
+                    - industrial
+                    - social
+                    - technological
+            - hazards
+    - turns
+        - orders
+            - move ships / troops
+            - build things
+            - play cards
+            - buy techs
+            - score points
+            - trade (?)
+            - select strategy
+            - use strategic options
+        - resolutions
+    - VP conditions
+        - requirements
+        - value
+        - scoredBy
+            - players
+- piece
+    - owner
+    - stats
+    - history
+    - effects
