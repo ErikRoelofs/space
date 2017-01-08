@@ -2,7 +2,7 @@
 
 $app->post('/board', function () use ($app) {
     $entity = $app['converter-service']->fromJSON('board', file_get_contents('php://input'));
-    $app['board-repo']->add($entity);
+    $entity = $app['board-repo']->add($entity);
     return $app['converter-service']->toJSON($entity);
 });
 

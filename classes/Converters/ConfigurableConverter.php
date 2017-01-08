@@ -24,7 +24,7 @@ class ConfigurableConverter implements ConverterInterface
     {
 
         foreach($this->rules as $prop => $rule) {
-            $obj->{$prop} = $rule->fromJSON($obj, $data[$prop]);
+            $obj->{$prop} = $rule->fromJSON($obj, isset($data[$prop]) ? $data[$prop] : null);
         }
         return $obj;
     }
@@ -41,7 +41,7 @@ class ConfigurableConverter implements ConverterInterface
     public function fromDB($obj, $data)
     {
         foreach($this->rules as $prop => $rule) {
-            $obj->{$prop} = $rule->fromDB($obj, $data[$prop]);
+            $obj->{$prop} = $rule->fromDB($obj, isset($data[$prop]) ? $data[$prop] : null);
         }
         return $obj;
     }

@@ -5,9 +5,8 @@ namespace Plu\Entity;
 class Order
 {
 
-    public $player;
-    public $turn;
-    public $type;
+    public $ownerId;
+    public $turnId;
+    public $typeId;
     public $data;
-    public $resolution;
 }

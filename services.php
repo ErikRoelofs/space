@@ -18,9 +18,63 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 
 $app['converter-service'] = function($app) {
     $s = new \Plu\Service\ConverterService();
-    
+
+    $s->addConverter('\Plu\Entity\Game', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+    ]));
     $s->addConverter('\Plu\Entity\Board', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
         'gameId' => new Conv\NativeConverter()
+    ]));
+    $s->addConverter('\Plu\Entity\GivenOrder', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'ownerId' => new Conv\NativeConverter(),
+        'turnId' => new Conv\NativeConverter(),
+        'typeId' => new Conv\NativeConverter(),
+        'data' => new Conv\DataConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Piece', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'location' => new Conv\DataConverter(),
+        'typeId' => new Conv\NativeConverter(),
+        'ownerId' => new Conv\NativeConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'allowedLocationTypes' => new Conv\DataConverter(),
+        'attack' => new Conv\NativeConverter(),
+        'defense' => new Conv\NativeConverter(),
+        'speed' => new Conv\NativeConverter(),
+        'traits' => new Conv\DataConverter(),
+        'priority' => new Conv\NativeConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Planet', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'industry' => new Conv\NativeConverter(),
+        'social' => new Conv\NativeConverter(),
+        'ownerId' => new Conv\NativeConverter(),
+        'tileId' => new Conv\NativeConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Player', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'industry' => new Conv\NativeConverter(),
+        'social' => new Conv\NativeConverter(),
+        'gameId' => new Conv\NativeConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Resolution', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'givenOrderId' => new Conv\NativeConverter(),
+        'data' => new Conv\DataConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Tile', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'boardId' => new Conv\NativeConverter(),
+        'location' => new Conv\DataConverter(),
+    ]));
+    $s->addConverter('\Plu\Entity\Turn', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'gameId' => new Conv\NativeConverter(),
+        'number' => new Conv\NativeConverter(),
     ]));
 
 
