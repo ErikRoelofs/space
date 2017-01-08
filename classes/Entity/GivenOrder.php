@@ -2,11 +2,12 @@
 
 namespace Plu\Entity;
 
-class Order
+class GivenOrder
 {
 
     public $ownerId;
     public $turnId;
-    public $typeId;
+    public $orderTypeId;
     public $data;
+    public $resolution;
 }

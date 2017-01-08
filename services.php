@@ -19,25 +19,15 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app['converter-service'] = function($app) {
     $s = new \Plu\Service\ConverterService();
 
-    $s->addConverter('\Plu\Entity\Game', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-    ]));
-    $s->addConverter('\Plu\Entity\Board', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'gameId' => new Conv\NativeConverter()
-    ]));
-    $s->addConverter('\Plu\Entity\GivenOrder', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'ownerId' => new Conv\NativeConverter(),
-        'turnId' => new Conv\NativeConverter(),
-        'typeId' => new Conv\NativeConverter(),
-        'data' => new Conv\DataConverter(),
-    ]));
+    $s->addConverter('\Plu\Entity\Game', new Conv\GameConverter($app));
+    $s->addConverter('\Plu\Entity\Board', new Conv\BoardConverter($app));
+    $s->addConverter('\Plu\Entity\GivenOrder', new Conv\OrderConverter($app));
     $s->addConverter('\Plu\Entity\Piece', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
         'location' => new Conv\DataConverter(),
         'typeId' => new Conv\NativeConverter(),
         'ownerId' => new Conv\NativeConverter(),
+        'boardId' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
@@ -66,16 +56,11 @@ $app['converter-service'] = function($app) {
         'givenOrderId' => new Conv\NativeConverter(),
         'data' => new Conv\DataConverter(),
     ]));
-    $s->addConverter('\Plu\Entity\Tile', new Conv\ConfigurableConverter([
+    $s->addConverter('\Plu\Entity\OrderType', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
-        'boardId' => new Conv\NativeConverter(),
-        'location' => new Conv\DataConverter(),
     ]));
-    $s->addConverter('\Plu\Entity\Turn', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'gameId' => new Conv\NativeConverter(),
-        'number' => new Conv\NativeConverter(),
-    ]));
+    $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
+    $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));
 
 
     return $s;
@@ -92,6 +77,9 @@ $app['board-repo'] = function($app) {
 };
 $app['order-repo'] = function($app) {
     return new Repo\OrderRepository($app['db'], $app['converter-service']);
+};
+$app['order-type-repo'] = function($app) {
+    return new Repo\OrderTypeRepository($app['db'], $app['converter-service']);
 };
 $app['piece-repo'] = function($app) {
     return new Repo\PieceRepository($app['db'], $app['converter-service']);

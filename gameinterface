@@ -1,0 +1,37 @@
+to see the current state:
+
+- my player-info
+ - resources
+- all the playing pieces (on all locations)
+- the board
+    - the tiles
+        - the planets
+
+- the game history
+    - all previous turns
+        - all previous orders and their resolutions
+- my currently active orders
+- game settings
+    - the piece types
+    - the order types
+
+to assign orders:
+
+- the tactical order
+    - pick ships to move to that location
+    - pick new vessels to build here
+    - pick which planets to invade
+    - move contained pieces to other containers
+
+to actually move the turn:
+
+- resolve all tactical orders
+- resolve all battles
+- resolve all invasions
+- recalculate available resources
+
+to start a new game:
+
+- generate a board
+- assign players
+- set starting units

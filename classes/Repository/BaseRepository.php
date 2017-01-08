@@ -6,7 +6,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class BaseRepository {
 
-  private $db;
+  protected $db;
   protected $tableName;
   protected $converter;
 
@@ -25,7 +25,13 @@ class BaseRepository {
     return $this->converter->fromDB($this->tableName, $row);
   }
 
-  public function add($obj) {
+    public function findAll() {
+        $sql = "SELECT * FROM $this->tableName";
+        $rows = $this->db->fetchAll($sql);
+        return $this->converter->batchFromDB($this->tableName, $rows);
+    }
+
+    public function add($obj) {
       $this->db->insert($this->tableName, $this->converter->toDB($obj));
       $id = $this->db->lastInsertId();
       $obj->id = $id;

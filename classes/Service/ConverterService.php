@@ -33,6 +33,34 @@ class ConverterService
         return $this->getConverter($classname)->fromJSON($obj, $data);
     }
 
+    public function batchFromDB($entity, $batch) {
+        $objs = [];
+        foreach($batch as $row) {
+            $objs[] = $this->fromDB($entity, $row);
+        }
+        return $objs;
+    }
+
+    public function batchToJSON($objects) {
+        $out = [];
+        foreach($objects as $object) {
+            $out[] = $this->getConverter(get_class($object))->toJSON($object);
+        }
+        return json_encode($out);
+    }
+
+    public function toJSONObject($object) {
+        return $this->getConverter(get_class($object))->toJSON($object);
+    }
+
+    public function batchToJSONObject($objects) {
+        $out = [];
+        foreach($objects as $object) {
+            $out[] = $this->getConverter(get_class($object))->toJSON($object);
+        }
+        return $out;
+    }
+
     private function getConverter($classname) {
         $classname = $classname{0} == '\\' ? $classname : '\\' . $classname;
         if(!isset($this->converters[strtolower($classname)])) {
