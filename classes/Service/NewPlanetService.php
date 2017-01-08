@@ -3,6 +3,7 @@
 namespace Plu\Service;
 
 use Plu\Entity\Planet;
+use Plu\Entity\Player;
 
 class NewPlanetService
 {
@@ -11,7 +12,7 @@ class NewPlanetService
         $planet = new Planet();
         $planet->industrial = 5;
         $planet->social = 5;
-        $planet->owner = $player;
+        $planet->ownerId = $player->id;
         return $planet;
     }
 

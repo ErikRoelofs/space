@@ -4,8 +4,9 @@ namespace Plu\Entity;
 
 class Planet
 {
-    public $tile;
-    public $owner;
+    public $id;
+    public $tileId;
+    public $ownerId;
     public $pieces;
 
     public $industrial;

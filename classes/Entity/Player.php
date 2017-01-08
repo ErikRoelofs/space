@@ -4,7 +4,8 @@ namespace Plu\Entity;
 
 class Player
 {
-    public $game;
+    public $id;
+    public $gameId;
 
     public $industry;
     public $social;

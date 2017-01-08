@@ -5,9 +5,10 @@ namespace Plu\Entity;
 class Tile
 {
 
-    public $board;
-    public $planets;
-    public $pieces;
+    public $id;
+    public $boardId;
+    public $planets = [];
+    public $pieces = [];
 
     public $coordinates;
 

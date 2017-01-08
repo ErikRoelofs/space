@@ -9,4 +9,13 @@ class PieceTypeRepository extends BaseRepository
         return parent::__construct($db, $converter, 'pieceType');
     }
 
+    public function findByName($name) {
+        $sql = "SELECT * FROM $this->tableName WHERE name = ?";
+        $row = $this->db->fetchAssoc($sql, array($name));
+        if(!$row) {
+            throw new ResourceNotFoundException("Could not find $name in $this->tableName");
+        }
+        return $this->converter->fromDB($this->tableName, $row);
+    }
+
 }

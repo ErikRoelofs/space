@@ -31,16 +31,12 @@ $app['converter-service'] = function($app) {
     ]));
     $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
-        'allowedLocationTypes' => new Conv\DataConverter(),
-        'attack' => new Conv\NativeConverter(),
-        'defense' => new Conv\NativeConverter(),
-        'speed' => new Conv\NativeConverter(),
-        'traits' => new Conv\DataConverter(),
-        'priority' => new Conv\NativeConverter(),
+        'name' => new Conv\NativeConverter(),
+        'traits' => new Conv\TraitConverter(),
     ]));
     $s->addConverter('\Plu\Entity\Planet', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
-        'industry' => new Conv\NativeConverter(),
+        'industrial' => new Conv\NativeConverter(),
         'social' => new Conv\NativeConverter(),
         'ownerId' => new Conv\NativeConverter(),
         'tileId' => new Conv\NativeConverter(),
@@ -101,4 +97,20 @@ $app['tile-repo'] = function($app) {
 };
 $app['turn-repo'] = function($app) {
     return new Repo\TurnRepository($app['db'], $app['converter-service']);
+};
+
+$app['starting-units-service'] = function($app) {
+    return new \Plu\Service\StartingUnitService($app['piece-type-repo']);
+};
+
+$app['new-board-service'] = function($app) {
+    return new \Plu\Service\NewBoardService($app['new-planet-service']);
+};
+
+$app['new-planet-service'] = function($app) {
+    return new \Plu\Service\NewPlanetService();
+};
+
+$app['new-game-service'] = function($app) {
+    return new \Plu\Service\NewGameService($app);
 };

@@ -4,7 +4,8 @@ namespace Plu\Entity;
 
 class Turn
 {
+    public $id;
     public $number;
-    public $game;
+    public $gameId;
     public $orders;
 }
