@@ -25,13 +25,18 @@ class PieceService
 
     public function hasTrait(Piece $piece, $traitTag)
     {
+        return $this->getTraitContents($piece, $traitTag) !== null;
+    }
+
+    public function getTraitContents(Piece $piece, $traitTag)
+    {
         $pieceType = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
         foreach($pieceType->traits as $trait) {
             if($trait->getTraitName() == $traitTag) {
-                return true;
+                return $trait->getTraitContent();
             }
         }
-        return false;
+        return null;
     }
 
 }
