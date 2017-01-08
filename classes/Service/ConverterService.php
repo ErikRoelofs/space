@@ -7,47 +7,38 @@ class ConverterService
 
     private $converters;
 
-    public function addConverter($converter){
-        $this->converters[] = $converter;
+    public function addConverter($class, $converter){
+        $this->converters[strtolower($class)] = $converter;
     }
 
     public function toDB($object) {
-        $array = [];
-        foreach($object as $prop => $val) {
-            $array[$prop] = $val;
-        }
-        return $array;
+        return $this->getConverter(get_class($object))->toDB($object);
     }
 
     public function toJSON($object) {
-        return json_encode($object);
+        $obj = $this->getConverter(get_class($object))->toJSON($object);
+        return json_encode($obj);
     }
 
     public function fromDB($entityName, $data) {
-        $classname = 'Plu\Entity\\' . $entityName;
+        $classname = '\Plu\Entity\\' . $entityName;
         $obj = new $classname;
-        foreach($data as $prop => $val) {
-            $obj->$prop = $val;
-        }
-        return $obj;
+        return $this->getConverter($classname)->fromDB($obj, $data);
     }
 
     public function fromJSON($entityName, $data) {
-        var_dump($data);
-        var_dump(json_decode($data, true));
-        $classname = 'Plu\Entity\\' . $entityName;
-        $class = new $classname;
-        $data = json_decode($data, true);
-        foreach($data as $item => $value) {
-            $class->$item = $value;
-        }
-        return $class;
+        $classname = '\Plu\Entity\\' . $entityName;
+        $obj = new $classname;
+        $data = json_decode($data,true);
+        return $this->getConverter($classname)->fromJSON($obj, $data);
     }
 
-    public function fromVoid($entityName) {
-        $classname = 'Plu\Entity\\' . $entityName;
-        $class = new $classname;
-        return $class;
+    private function getConverter($classname) {
+        $classname = $classname{0} == '\\' ? $classname : '\\' . $classname;
+        if(!isset($this->converters[strtolower($classname)])) {
+            throw new \Exception("No converter available for " . $classname);
+        }
+        return $this->converters[strtolower($classname)];
     }
 
 }
