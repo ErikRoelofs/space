@@ -1,2 +1,4 @@
 /.idea/
 /vendor/
+/game/bower_components/
+/game/node_modules/
