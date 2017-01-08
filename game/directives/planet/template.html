@@ -1,1 +1,5 @@
-Planet: {{ planet }}
+<div>Planet {{ planet.id }}:  ( {{planet.industrial}} I / {{planet.social}} S ) <span ng-if="planet.ownerId">Owned by {{ planet.ownerId }}</span></div>
+<div>Contents:</div>
+<div ng-repeat="piece in pieces">
+    <piece piece="piece"></piece>
+</div>

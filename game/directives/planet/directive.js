@@ -1,4 +1,4 @@
-angular.module('game').directive('planet', ['$http', function($http) {
+angular.module('game').directive('planet', ['$http', 'piecesService', function($http, piecesService) {
     return {
         restrict: 'E',
         scope: {
@@ -6,7 +6,7 @@ angular.module('game').directive('planet', ['$http', function($http) {
         },
         templateUrl: "directives/planet/template.html",
         link: function(scope) {
-            console.log(scope.planet);
+            scope.pieces = piecesService.getPiecesForPlanet(scope.planet);
         }
     }
 }]);

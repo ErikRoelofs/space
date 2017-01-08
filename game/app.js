@@ -4,12 +4,16 @@ angular.module('game', []).service('piecesService', function() {
         setAllPieces: function(thePieces) {
             pieces = thePieces;
         },
-        getPiecesFor: function(tile) {
+        getPiecesForTile: function(tile) {
             return pieces.filter(function(item) {
                 return item.location.type == 'space' && item.location.coordinates[0] == tile.coordinates[0] && item.location.coordinates[1] == tile.coordinates[1];
             });
-            return [];
         },
+        getPiecesForPlanet: function(planet) {
+            return pieces.filter(function(item) {
+                return item.location.type == 'planet' && item.location.id == planet.id;
+            });
+        }
     };
 }).service('pieceTypesService', function() {
     var pieceTypes = [];

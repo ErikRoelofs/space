@@ -6,7 +6,7 @@ angular.module('game').directive('tileSpace', ['$http', 'piecesService', functio
         },
         templateUrl: "directives/tile-space/template.html",
         link: function(scope) {
-            scope.myPieces = piecesService.getPiecesFor(scope.tile);
+            scope.myPieces = piecesService.getPiecesForTile(scope.tile);
         }
     }
 }]);
