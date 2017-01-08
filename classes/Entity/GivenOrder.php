@@ -7,7 +7,7 @@ class GivenOrder
     public $id;
     public $ownerId;
     public $turnId;
-    public $orderTypeId;
+    public $orderType;
     public $data;
     public $resolution;
 }

@@ -4,6 +4,9 @@ namespace Plu\PieceTrait;
 
 class Mobile implements TraitInterface
 {
+
+    const TAG = 'mobile';
+
     private $value;
 
     /**
@@ -17,7 +20,7 @@ class Mobile implements TraitInterface
 
     public function getTraitName()
     {
-        return 'mobile';
+        return self::TAG;
     }
 
     public function getTraitContent()

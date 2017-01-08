@@ -52,9 +52,6 @@ $app['converter-service'] = function($app) {
         'givenOrderId' => new Conv\NativeConverter(),
         'data' => new Conv\DataConverter(),
     ]));
-    $s->addConverter('\Plu\Entity\OrderType', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-    ]));
     $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
     $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));
 
@@ -73,9 +70,6 @@ $app['board-repo'] = function($app) {
 };
 $app['order-repo'] = function($app) {
     return new Repo\OrderRepository($app['db'], $app['converter-service']);
-};
-$app['order-type-repo'] = function($app) {
-    return new Repo\OrderTypeRepository($app['db'], $app['converter-service']);
 };
 $app['piece-repo'] = function($app) {
     return new Repo\PieceRepository($app['db'], $app['converter-service']);
@@ -113,4 +107,19 @@ $app['new-planet-service'] = function($app) {
 
 $app['new-game-service'] = function($app) {
     return new \Plu\Service\NewGameService($app);
+};
+
+$app['orders-service'] = function($app) {
+    return new \Plu\Service\OrdersService($app['order-repo'], $app['turn-repo'], $app['game-repo']);
+};
+
+$app['piece-service'] = function($app) {
+    return new \Plu\Service\PieceService($app['piece-type-repo']);
+};
+
+$app['order-service'] = function($app) {
+    $s = new \Plu\Service\OrderService($app['order-repo']);
+    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service']));
+
+    return $s;
 };

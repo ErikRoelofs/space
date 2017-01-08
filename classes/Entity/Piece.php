@@ -9,4 +9,5 @@ class Piece
     public $typeId;
     public $ownerId;
     public $boardId;
+
 }

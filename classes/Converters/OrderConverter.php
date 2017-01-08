@@ -18,7 +18,7 @@ class OrderConverter implements ConverterInterface
             'id' => new Conv\NativeConverter(),
             'ownerId' => new Conv\NativeConverter(),
             'turnId' => new Conv\NativeConverter(),
-            'orderTypeId' => new Conv\NativeConverter(),
+            'orderType' => new Conv\NativeConverter(),
             'data' => new Conv\DataConverter(),
         ]);
         $this->app = $app;
