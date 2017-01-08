@@ -1,64 +1,24 @@
-angular.module('game', []).directive('test', function() {
+angular.module('game', []).service('piecesService', function() {
+    var pieces = [];
     return {
-        restrict: 'E',
-        scope: {
-            cookies: '='
+        setAllPieces: function(thePieces) {
+            pieces = thePieces;
         },
-        template: "<div>Jum jum {{ cookies }}</div>",
-        link: function(scope) {
-            console.log(scope.cookies);
+        getPiecesFor: function(tile) {
+            return pieces.filter(function(item) {
+                return item.location.type == 'space' && item.location.coordinates[0] == tile.coordinates[0] && item.location.coordinates[1] == tile.coordinates[1];
+            });
+            return [];
+        },
+    };
+}).service('pieceTypesService', function() {
+    var pieceTypes = [];
+    return {
+        setAllPieceTypes: function (thePieceTypes) {
+            pieceTypes = thePieceTypes;
+        },
+        getPieceTypeForPiece: function(piece) {
+            return pieceTypes.filter(function(item) { return item.id == piece.typeId})[0];
         }
     }
-}).directive('playerInfo', ['$http', function($http) {
-    return {
-        restrict: 'E',
-        scope: {
-            player: '@'
-        },
-        template: "<div>test {{ player }}. Industry: {{ data.industry }}, Social: {{ data.social }}</div>",
-        link: function(scope) {
-            $http.get('/player/' + scope.player + '/info').then(function(response) {
-                scope.data = response.data;
-            })
-        }
-    }
-}]).directive('currentOrders', ['$http', function($http) {
-    return {
-        restrict: 'E',
-        scope: {
-            player: '@'
-        },
-        template: "<div>Current orders.<div ng-repeat='order in data'>{{ order.id }}</div></div>",
-        link: function(scope) {
-            $http.get('/player/' + scope.player + '/currentOrders').then(function(response) {
-                scope.data = response.data;
-            })
-        }
-    }
-}]).directive('gameHistory', ['$http', function($http) {
-    return {
-        restrict: 'E',
-        scope: {
-            game: '@'
-        },
-        template: "<div>Game history.<div ng-repeat='turn in game.turns'>{{ turn.id }}</div></div>",
-        link: function(scope) {
-            $http.get('/game/' + scope.game + '/history').then(function(response) {
-                scope.game = response.data;
-            })
-        }
-    }
-}]).directive('gameSettings', ['$http', function($http) {
-    return {
-        restrict: 'E',
-        scope: {
-            game: '@'
-        },
-        template: "<div>Game settings.<div ng-repeat='pieceType in game.pieceTypes'>{{ pieceType.id }}</div></div>",
-        link: function(scope) {
-            $http.get('/game/' + scope.game + '/settings').then(function(response) {
-                scope.game = response.data;
-            })
-        }
-    }
-}]);
+});

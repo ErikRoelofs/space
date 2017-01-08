@@ -1,4 +1,4 @@
-angular.module('game').directive('board', ['$http', function($http) {
+angular.module('game').directive('board', ['$http', 'piecesService', function($http, piecesService) {
     return {
         restrict: 'E',
         scope: {
@@ -10,6 +10,10 @@ angular.module('game').directive('board', ['$http', function($http) {
                 scope.board = response.data;
                 console.log(scope.board);
             });
+            $http.get('/board/' + scope.board + '/pieces').then(function(response) {
+                scope.pieces = response.data;
+                piecesService.setAllPieces(scope.pieces);
+            })
         }
     }
 }]);

@@ -1,4 +1,7 @@
-Tile {{ tile.coordinates }}
-<div ng-repeat="planet in tile.planets">
-    <planet planet="planet"></planet>
+<div>
+    Tile @ {{ tile.coordinates }}
+    <div ng-repeat="planet in tile.planets">
+        <planet planet="planet"></planet>
+    </div>
+    <tile-space tile="tile"></tile-space>
 </div>

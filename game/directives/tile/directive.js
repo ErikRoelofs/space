@@ -6,7 +6,6 @@ angular.module('game').directive('tile', ['$http', function($http) {
         },
         templateUrl: "directives/tile/template.html",
         link: function(scope) {
-            console.log(scope.tile);
         }
     }
 }]);
