@@ -41,7 +41,7 @@ $app->get('/player/{player}/currentOrders', function($player) use ($app) {
 $app->get('/game/{game}/settings', function($game) use ($app) {
     $game = $app['game-repo']->findByIdentifier($game);
     $game->pieceTypes = $app['piece-type-repo']->findAll();
-    $game->orderTypes = $app['order-type-repo']->findAll();
+    //$game->orderTypes = $app['order-type-repo']->findAll();
 
     return $app['converter-service']->toJSON($game);
 });

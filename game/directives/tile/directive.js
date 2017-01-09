@@ -1,11 +1,12 @@
-angular.module('game').directive('tile', ['$http', function($http) {
+angular.module('game').directive('tile', ['$http', 'boardService', function($http, boardService) {
     return {
         restrict: 'E',
         scope: {
-            tile: '='
+            coords: '=',
         },
         templateUrl: "directives/tile/template.html",
         link: function(scope) {
+            scope.tile = boardService.getTileByCoordinates(scope.coords);
         }
     }
 }]);
