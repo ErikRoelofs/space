@@ -12,6 +12,7 @@ angular.module('game').directive('hexmap', ['$rootScope', function($rootScope) {
                 [[5,2],[5,3],[5,4],[5,5],[5,6]],
                 [[6,3],[6,4],[6,5],[6,6]]];
             scope.width = 200;
+            scope.height = 200;
             scope.margins = [
                 1.5 * scope.width,1 * scope.width,0.5 * scope.width,0 * scope.width,0.5 * scope.width,1 * scope.width,1.5 * scope.width,
             ]
@@ -20,6 +21,9 @@ angular.module('game').directive('hexmap', ['$rootScope', function($rootScope) {
             }
             scope.widthPx = function() {
                 return scope.width + 'px';
+            }
+            scope.heightPx = function() {
+                return scope.height + 'px';
             }
         }
     };

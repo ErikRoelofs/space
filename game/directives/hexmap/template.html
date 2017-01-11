@@ -1,6 +1,6 @@
 <div>
     <div ng-repeat="columns in rows" style="clear: both" ng-style="{'margin-left': margin($index)}">
-        <div style="background-color: lightgreen; height: 100px; margin: 5px; float: left" ng-style="{width: widthPx()}" ng-repeat="coordinates in columns">
+        <div style="background-color: lightgreen; margin: 5px; float: left" ng-style="{width: widthPx(), height: heightPx()}" ng-repeat="coordinates in columns">
             <tile coords="coordinates"></tile>
         </div>
     </div>

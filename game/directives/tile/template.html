@@ -1,7 +1,7 @@
-<div>
-    Tile @ {{ tile.coordinates }}
-    <div ng-repeat="planet in tile.planets">
-        <planet planet="planet"></planet>
-    </div>
+<div style="background-image: url('/assets/tiles/starfield1.png'); height: 100%; clear: both" >
+
+    <ng-repeat style="width: 200px; height: 50px;" ng-repeat="planet in tile.planets">
+        <planet planet="planet" show-right="$index == 1"></planet>
+    </ng-repeat>
     <tile-space tile="tile"></tile-space>
 </div>

@@ -1,5 +1,23 @@
-<div>Planet {{ planet.id }}:  ( {{planet.industrial}} I / {{planet.social}} S ) <span ng-if="planet.ownerId">Owned by {{ planet.ownerId }}</span></div>
-<div>Contents:</div>
-<div ng-repeat="piece in pieces">
-    <piece piece="piece"></piece>
+<div style="background-image: url('/assets/planets/planet1.png'); height: 100px; width: 100px;" ng-class="{'planet-right': showRight}">
+    <div style="position: relative; left: 10px; width: 80px; height: 40px; top: 50px; background: rgba(255,255,255,0.4); border: 2px solid white">
+        <table style="width: 100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="width: 33%"><img src="/assets/icons/tech-red.png" alt="Red"/></td>
+                <td style="width: 33%">{{ planet.industrial }} <img src="/assets/icons/industry.png" alt="I" /></td>
+                <td style="width: 33%">{{ planet.social }} <img src="/assets/icons/people.png" alt="S" /></td>
+            </tr>
+            <tr>
+                <td>{{ fighters() }} <img src="/assets/icons/fighter.png" alt="F"/></td>
+                <td>{{ troops() }} <img src="/assets/icons/troop.png" alt="T"/></td>
+                <td>{{ defenders() }} <img src="/assets/icons/defender.png" alt="D"/></td>
+            </tr>
+        </table>
+
+
+
+
+
+
+
+    </div>
 </div>
