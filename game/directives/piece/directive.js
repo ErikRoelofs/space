@@ -1,4 +1,4 @@
-angular.module('game').directive('piece', ['$http', 'pieceTypesService', function($http, pieceTypesService) {
+angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'playersService', function($http, pieceTypesService, playersService) {
     return {
         restrict: 'E',
         scope: {
@@ -11,14 +11,7 @@ angular.module('game').directive('piece', ['$http', 'pieceTypesService', functio
                 return scope.pieceType.name.toLowerCase();
             }
             scope.color = function() {
-                switch( parseInt(scope.piece.ownerId, 10) ) {
-                    case 1: return '#ff0000';
-                    case 2: return '#00ff00';
-                    case 3: return '#0000ff';
-                    case 4: return '#ff00ff';
-                    case 5: return '#ffff00';
-                    case 6: return '#00ffff';
-                }
+                return playersService.getPlayer(scope.piece.ownerId).color;
             }
         }
 

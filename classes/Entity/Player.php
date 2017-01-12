@@ -6,6 +6,8 @@ class Player
 {
     public $id;
     public $gameId;
+    public $color;
+    public $name;
 
     public $industry;
     public $social;

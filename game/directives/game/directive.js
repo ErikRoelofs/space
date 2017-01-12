@@ -1,4 +1,4 @@
-angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', function ($timeout, $http, boardService, piecesService, pieceTypesService) {
+angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService) {
     return {
         restrict: 'E',
         scope: {
@@ -15,6 +15,7 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
             });
             $http.get('/game/1/settings').then(function(response) {
                 pieceTypesService.setAllPieceTypes(response.data.pieceTypes);
+                playersService.setPlayers(response.data.players);
             });
 
             scope.ready = false;

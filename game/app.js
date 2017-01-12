@@ -43,4 +43,20 @@ angular.module('game', []).service('piecesService', function () {
             return tile;
         }
     }
+}).service('playersService', function () {
+    var players = {};
+    return {
+        setPlayers: function (thePlayers) {
+            players = thePlayers;
+        },
+        getPlayer: function (id) {
+            var player = null;
+            angular.forEach(players, function (item) {
+                if (item.id == id) {
+                    player = item;
+                }
+            })
+            return player;
+        }
+    }
 })

@@ -1,4 +1,4 @@
-angular.module('game').directive('planet', ['$http', 'piecesService', function($http, piecesService) {
+angular.module('game').directive('planet', ['$http', 'piecesService', 'playersService', function($http, piecesService, playersService) {
     return {
         restrict: 'E',
         scope: {
@@ -18,6 +18,12 @@ angular.module('game').directive('planet', ['$http', 'piecesService', function($
             scope.defenders = function() {
                 return 0;
             };
+            scope.getBorderColor = function () {
+                if(!scope.planet.ownerId) {
+                    return '#ffffff';
+                }
+                return playersService.getPlayer(scope.planet.ownerId).color;
+            }
         }
     }
 }]);

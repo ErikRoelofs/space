@@ -46,6 +46,8 @@ $app['converter-service'] = function($app) {
         'industry' => new Conv\NativeConverter(),
         'social' => new Conv\NativeConverter(),
         'gameId' => new Conv\NativeConverter(),
+        'name' => new Conv\NativeConverter(),
+        'color' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\Resolution', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
