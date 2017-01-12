@@ -1,4 +1,4 @@
-<div style="background-image: url('/assets/tiles/starfield1.png'); height: 100%; clear: both" >
+<div style="background-image: url('/assets/tiles/starfield1.png'); height: 100%; clear: both" ng-click="showDetails();  $event.stopPropagation();">
 
     <ng-repeat style="width: 200px; height: 50px;" ng-repeat="planet in tile.planets">
         <planet planet="planet" show-right="$index == 1"></planet>

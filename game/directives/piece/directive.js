@@ -1,4 +1,4 @@
-angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'playersService', function($http, pieceTypesService, playersService) {
+angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'playersService', '$rootScope', function($http, pieceTypesService, playersService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -9,9 +9,12 @@ angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'player
             scope.pieceType = pieceTypesService.getPieceTypeForPiece(scope.piece);
             scope.img = function() {
                 return scope.pieceType.name.toLowerCase();
-            }
+            };
             scope.color = function() {
                 return playersService.getPlayer(scope.piece.ownerId).color;
+            };
+            scope.showDetails = function() {
+                $rootScope.$broadcast('detailsPane.show', 'piece', { piece: scope.piece, pieceType: scope.pieceType });
             }
         }
 
