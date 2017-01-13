@@ -10,3 +10,12 @@ $app->post('/order/{player}/place/{type}', function($player, $type) use ($app) {
 $app->delete('/order/{player}/{order}', function($player, $order) use ($app) {
 
 });
+
+$app->get('/order/tactical/{player}/{tile}', function($player, $tile) use ($app) {
+    $player = $app['player-repo']->findByIdentifier($player);
+    $tile = $app['tile-repo']->findByIdentifier($tile);
+
+    $pieces = $app['order-service']->getOrder('tactical')->getPotentialPiecesForOrder($tile, $player);
+
+    return $app['converter-service']->batchToJson($pieces);
+});

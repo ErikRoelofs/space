@@ -121,7 +121,11 @@ $app['piece-service'] = function($app) {
 
 $app['order-service'] = function($app) {
     $s = new \Plu\Service\OrderService($app['order-repo']);
-    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service']));
+    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service'], $app['pathfinding-service']));
 
     return $s;
+};
+
+$app['pathfinding-service'] = function($app) {
+    return new \Plu\Service\PathfindingService($app['piece-service']);
 };

@@ -3,12 +3,15 @@
 namespace Plu\OrderTypes;
 
 use Plu\Entity\GivenOrder;
+use Plu\Entity\Piece;
 use Plu\Entity\Player;
+use Plu\Entity\Tile;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 use Plu\Service\OrdersService;
+use Plu\Service\PathfindingService;
 use Plu\Service\PieceService;
 
 class TacticalOrder implements OrderTypeInterface
@@ -37,17 +40,22 @@ class TacticalOrder implements OrderTypeInterface
     protected $pieceService;
 
     /**
+     * @var PathfindingService
+     */
+    protected $pathfindingService;
+
+    /**
      * TacticalOrder constructor.
      * @param $orderRepo
      */
-    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService)
+    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService)
     {
         $this->orderRepo = $orderRepo;
         $this->ordersService = $ordersService;
         $this->pieceRepo = $pieceRepo;
         $this->pieceService = $pieceService;
+        $this->pathfindingService = $pathfindingService;
     }
-
 
     public function validateOrderAllowed(Player $player, $data)
     {
@@ -119,6 +127,61 @@ class TacticalOrder implements OrderTypeInterface
     public function getTag()
     {
         return $this->type;
+    }
+
+    public function getPotentialPiecesForOrder(Tile $tile, Player $player) {
+        $pieces = $this->pieceRepo->findByPlayer($player);
+        $potentials = [];
+        foreach($pieces as $piece) {
+            if($this->validatePiece($piece, $tile, $player)) {
+                $potentials[] = $piece;
+            }
+        }
+        return $potentials;
+    }
+
+    private function validatePiece(Piece $piece, Tile $tile, Player $player) {
+        // belong to the player
+        if($player->id != $piece->ownerId) {
+            return false;
+        }
+
+        // spaceborne
+        if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG)) {
+            return false;
+        }
+        // mobile
+        if(!$this->pieceService->hasTrait($piece, Mobile::TAG)) {
+            return false;
+        }
+
+        // has no orders
+        if(!$this->validateNoOrdersSet($piece, $player)) {
+            return false;
+        }
+
+        // in range
+        if(!$this->pathfindingService->getInReach($piece, $tile)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validateNoOrdersSet(Piece $piece, Player $player) {
+
+        $otherOrders = $this->ordersService->getActiveOrdersForPlayer($player);
+        // not have any other tactical orders set
+        foreach($otherOrders as $order) {
+            if($order->orderType == $this->type) {
+                foreach($order->data['pieces'] as $otherPieceId) {
+                    if($piece->id == $otherPieceId) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 

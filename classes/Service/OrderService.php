@@ -39,4 +39,8 @@ class OrderService
         $this->orderRepo->remove($order);
         return;
     }
+
+    public function getOrder($type) {
+        return $this->types[$type];
+    }
 }
