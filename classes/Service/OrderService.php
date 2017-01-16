@@ -35,7 +35,7 @@ class OrderService
 
     }
 
-    public function revertOrder(Player $player, GivenOrder $order) {
+    public function revertOrder(GivenOrder $order) {
         $this->orderRepo->remove($order);
         return;
     }
@@ -43,4 +43,8 @@ class OrderService
     public function getOrder($type) {
         return $this->types[$type];
     }
+
+	public function resolveOrder(Player $player, GivenOrder $order) {
+		return $this->types[$order->orderType]->resolveOrder($player, $order);
+	}
 }

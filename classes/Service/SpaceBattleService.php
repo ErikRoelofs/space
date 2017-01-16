@@ -50,8 +50,26 @@ class SpaceBattleService
 		$this->round = $round;
 	}
 
+	public function resolveAllSpaceBattles(Game $game) {
+		$board = $this->boardRepository->findByGame($game);
+		$tiles = $this->tileRepository->findByBoard($board);
+		$logs = [];
+		foreach($tiles as $tile) {
+			if($this->hasSpacebattle($tile)) {
+				$logs[] = $this->resolveSpaceBattle($tile);
+			}
+		}
+		return $logs;
+	}
+
+	private function hasSpacebattle(Tile $tile) {
+		$piecesPerPlayer = $this->collectPieces($tile);
+		// more than one player on a tile == conflict
+		return count($piecesPerPlayer) > 1;
+	}
+
 	public function resolveSpaceBattle(Tile $tile) {
-        $this->piecesPerPlayer = $this->collectPieces($tile);
+		$this->piecesPerPlayer = $this->collectPieces($tile);
 
 		// flak first
 		$this->phase = 'flak';
