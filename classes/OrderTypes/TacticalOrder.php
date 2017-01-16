@@ -121,7 +121,15 @@ class TacticalOrder implements OrderTypeInterface
 
     public function resolveOrder(Player $player, GivenOrder $order)
     {
+		$tile = $this->tileRepository->findByIdentifier($order->data['tile']);
+		foreach($order->data['pieces'] as $pieceId) {
+			$piece = $this->pieceRepo->findByIdentifier($pieceId);
+			// move it
+			$piece->location = [ 'type' => 'space', 'coordinates' => $tile->coordinates ];
+			$this->pieceRepo->update($piece);
+		}
 
+		// handle construction
     }
 
     public function getTag()
