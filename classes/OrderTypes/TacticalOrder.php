@@ -132,8 +132,9 @@ class TacticalOrder implements OrderTypeInterface
 		// handle construction
 
 
-
-		// return a logger
+		// set the resolution on the order
+		// -- OR --
+		// return a logger ?
     }
 
     public function getTag()

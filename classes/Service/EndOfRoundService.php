@@ -2,6 +2,7 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Game;
 use Plu\Entity\Turn;
 use Plu\Repository\PlayerRepository;
 use Plu\Repository\TurnRepository;
@@ -33,10 +34,15 @@ class EndOfRoundService {
 	 */
 	private $turnRepo;
 
+	/**
+	 * @var ResourceService;
+	 */
+	private $resourcesService;
+
 	public function endRound(Game $game) {
 		$logs = [];
 
-		// collect orders
+		// collect & run orders
 		$orders = $this->ordersService->getActiveOrdersForGame($game);
 		foreach($orders as $order) {
 			$logs[] = $this->orderService->resolveOrder($this->playerRepo->findByIdentifier($order->ownerId), $order);
@@ -50,7 +56,7 @@ class EndOfRoundService {
 		// start the next turn
 		$this->nextTurn($game);
 
-
+		$this->recalculateResources($game);
 	}
 
 	private function nextTurn(Game $game) {
@@ -63,6 +69,12 @@ class EndOfRoundService {
 		$turn->number = $currentTurn->number + 1;
 		$this->turnRepo->add($turn);
 
+	}
+
+	private function recalculateResources(Game $game) {
+		foreach($this->playerRepo->findByGame($game) as $player) {
+			$this->resourcesService->calculateStartingResourcesFor($player);
+		}
 	}
 
 }
