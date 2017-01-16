@@ -2,10 +2,13 @@
 
 namespace Plu\Service;
 
+use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
+use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Torpedoes;
 use Plu\Repository\PieceRepository;
+use Plu\Service\Loggers\SpaceBattleLog;
 
 class SpaceBattleService
 {
@@ -20,21 +23,65 @@ class SpaceBattleService
      */
     private $pieceService;
 
+	/**
+	 * @var SpaceBattleLog
+	 */
     private $historyLog;
 
     private $piecesPerPlayer = [];
 
-    public function resolveSpaceBattle(Tile $tile) {
+	private $round = 0;
+	private $phase;
+
+	/**
+	 * SpaceBattleService constructor.
+	 *
+	 * @param \Plu\Repository\PieceRepository $pieceRepo
+	 * @param \Plu\Service\PieceService $pieceService
+	 * @param \Plu\Service\Loggers\SpaceBattleLog $historyLog
+	 * @param array $piecesPerPlayer
+	 * @param int $round
+	 */
+	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, array $piecesPerPlayer, $round) {
+		$this->pieceRepo = $pieceRepo;
+		$this->pieceService = $pieceService;
+		$this->historyLog = new SpaceBattleLog();
+		$this->piecesPerPlayer = $piecesPerPlayer;
+		$this->round = $round;
+	}
+
+	public function resolveSpaceBattle(Tile $tile) {
         $this->piecesPerPlayer = $this->collectPieces($tile);
+
+		// flak first
+		$this->phase = 'flak';
+		$this->handleFlak();
+		// torpedoes second
+		$this->phase = 'torpedoes';
+		$this->handleTorpedoes();
+		// then main battle
+		$this->phase = 'main';
+		$this->handleMainCombat();
+
+		return $this->historyLog;
 
     }
 
     private function collectPieces(Tile $tile) {
-        // collect anything spaceborne in this sector that participates in space battles
-
-        // collect anything contained in an involved ship that participated in space battles
-
-        // sort them out per player
+        $pieces = $this->pieceService->findByTile($tile);
+		$out = [];
+		foreach($pieces as $piece) {
+			// only the ones that fight in space
+			if(!$this->pieceService->hasTrait($piece, FightsSpaceBattles::TAG)) {
+				continue;
+			}
+			// sort them out per player
+			if(!$out[$piece->ownerId]) {
+				$out[$piece->ownerId] = [];
+			}
+			$out[$piece->ownerId][] = $piece;
+		}
+		return $out;
     }
 
     private function handleWeapon($weaponTag, $hitType) {
@@ -68,7 +115,10 @@ class SpaceBattleService
     }
 
     private function handleMainCombat() {
-
+		while($this->fightContinues()) {
+			$this->handleMainRound();
+			$this->round++;
+		}
     }
 
     private function handleMainRound() {
@@ -77,7 +127,70 @@ class SpaceBattleService
 
     private function resolveHit(Player $scoredBy, $type) {
         // pick a random target from any other player based on priority
+		$possibleTargets = [];
+		foreach($this->piecesPerPlayer as $player => $pieces) {
+			if($player == $scoredBy->id) {
+				continue;
+			}
+			$possibleTargets = array_merge($possibleTargets, $this->getLowestPriorityFrom($pieces));
+		}
+		$possibleTargets = $this->filterTargetsByWeaponType($possibleTargets, $type);
+
+		shuffle($possibleTargets);
+		$hit = array_pop($possibleTargets);
+		$this->historyLog->logHit($this->phase, $this->round, $scoredBy, $hit);
+		$this->takeHit($hit);
     }
+
+	private function getLowestPriorityFrom(array $pieces) {
+		$lowest = 100;
+		$found = [];
+		foreach($pieces as $piece) {
+			$stats = $this->pieceService->getTraitContents($piece, FightsSpaceBattles::TAG);
+			if($stats[FightsSpaceBattles::PRIORITY] == $lowest) {
+				$found[] = $piece;
+			}
+			elseif($stats[FightsSpaceBattles::PRIORITY] < $lowest) {
+				$found = [$piece];
+				$lowest = $stats[FightsSpaceBattles::PRIORITY];
+			}
+		}
+		return $found;
+	}
+
+	private function takeHit(Piece $hit) {
+		foreach($this->piecesPerPlayer as $player => $pieces) {
+			foreach($pieces as $key => $piece) {
+				if($piece == $hit) {
+					unset($this->piecesPerPlayer[$player][$key]);
+				}
+			}
+		}
+	}
+
+	private function filterTargetsByWeaponType($pieces, $type) {
+		if($type == 'flak') {
+			$out = [];
+			foreach($pieces as $piece) {
+				if($this->pieceService->hasTrait(Tiny::TAG)) {
+					$out[] = $piece;
+				}
+			}
+			return $out;
+		}
+		return $pieces;
+	}
+
+	private function fightContinues() {
+		$num = 0;
+		foreach($this->piecesPerPlayer as $pieces) {
+			if(count($pieces) > 0) {
+				$num++;
+			}
+		}
+		return $num > 1 && $this->round < 100;
+	}
+
 
     private function getPiecesWithTag($tag) {
         $out = [];

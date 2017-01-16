@@ -7,6 +7,9 @@ class FightsSpaceBattles implements TraitInterface
 
     const TAG = 'combat.space';
 
+	const PRIORITY = 'priority';
+	const DEFENSE = 'defense';
+
     private $priority;
     private $defense;
 
@@ -23,10 +26,9 @@ class FightsSpaceBattles implements TraitInterface
     public function getTraitContent()
     {
         return [
-            'priority' => $this->priority,
-            'defense' => $this->defense
+            self::PRIORITY => $this->priority,
+            self::DEFENSE => $this->defense
         ];
     }
-
 
 }
