@@ -71,6 +71,9 @@ class EndOfRoundService {
 
 	}
 
+	/**
+	 * Should we do this? Or just do it on the fly?
+	 */
 	private function recalculateResources(Game $game) {
 		foreach($this->playerRepo->findByGame($game) as $player) {
 			$this->resourcesService->calculateStartingResourcesFor($player);

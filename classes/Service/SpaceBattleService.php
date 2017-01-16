@@ -38,16 +38,13 @@ class SpaceBattleService
 	 *
 	 * @param \Plu\Repository\PieceRepository $pieceRepo
 	 * @param \Plu\Service\PieceService $pieceService
-	 * @param \Plu\Service\Loggers\SpaceBattleLog $historyLog
 	 * @param array $piecesPerPlayer
 	 * @param int $round
 	 */
-	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, array $piecesPerPlayer, $round) {
+	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService) {
 		$this->pieceRepo = $pieceRepo;
 		$this->pieceService = $pieceService;
 		$this->historyLog = new SpaceBattleLog();
-		$this->piecesPerPlayer = $piecesPerPlayer;
-		$this->round = $round;
 	}
 
 	public function resolveAllSpaceBattles(Game $game) {
