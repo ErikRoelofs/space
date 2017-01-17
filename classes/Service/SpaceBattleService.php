@@ -8,6 +8,7 @@ use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Torpedoes;
 use Plu\Repository\PieceRepository;
+use Plu\Repository\PlanetRepository;
 use Plu\Service\Loggers\SpaceBattleLog;
 
 class SpaceBattleService
@@ -28,6 +29,11 @@ class SpaceBattleService
 	 */
     private $historyLog;
 
+	/**
+	 * @var \Plu\Repository\PlanetRepository
+	 */
+	protected $planetRepo;
+
     private $piecesPerPlayer = [];
 
 	private $round = 0;
@@ -41,10 +47,11 @@ class SpaceBattleService
 	 * @param array $piecesPerPlayer
 	 * @param int $round
 	 */
-	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService) {
+	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, PlanetRepository $planetRepo) {
 		$this->pieceRepo = $pieceRepo;
 		$this->pieceService = $pieceService;
 		$this->historyLog = new SpaceBattleLog();
+		$this->planetRepo = $planetRepo;
 	}
 
 	public function resolveAllSpaceBattles(Game $game) {
@@ -77,6 +84,15 @@ class SpaceBattleService
 		// then main battle
 		$this->phase = 'main';
 		$this->handleMainCombat();
+
+		// reomve all cargo that no longer has transport capacity
+		$this->cleanupCargo($tile);
+
+		// drop any surviving troops on the planet
+		$planet = $this->planetRepo->findByTile($tile);
+		if($planet) {
+			$this->dropTroops($tile);
+		}
 
 		return $this->historyLog;
 
@@ -219,5 +235,13 @@ class SpaceBattleService
         return $out;
     }
 
+	private function dropTroops(Planet $planet, Tile $tile) {
+		$pieces = $this->pieceService->findByTile($tile);
+		foreach($pieces as $piece) {
+			if($this->pieceService->hasTrait($piece)) {
+				$piece->location = [ 'type' => 'planet', 'id' => $planet->id];
+			}
+		}
+	}
 
 }

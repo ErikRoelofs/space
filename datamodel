@@ -9,7 +9,7 @@ v1:
         - tiles
             - space
                 - pieces
-            - planets
+            - planet
                 - owner
                 - pieces
                 - production
@@ -28,10 +28,6 @@ v1:
 
 - piece-type
     - name
-    - allowed-location-types
-    - attack
-    - defense
-    - speed
     - traits
 
 full:

@@ -14,7 +14,7 @@ $app->get('/board/{board}/tiles', function($board) use ($app) {
     $board = $app['board-repo']->findByIdentifier($board);
     $board->tiles = $app['tile-repo']->findByBoard($board);
     foreach($board->tiles as $tile) {
-        $tile->planets = $app['planet-repo']->findByTile($tile);
+        $tile->planet = $app['planet-repo']->findByTile($tile);
     }
     return $app['converter-service']->toJSON($board);
 });

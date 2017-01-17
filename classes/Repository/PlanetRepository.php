@@ -14,8 +14,8 @@ class PlanetRepository extends BaseRepository
 
     public function findByTile(Tile $tile) {
         $sql = "SELECT * FROM $this->tableName WHERE tileId = ?";
-        $rows = $this->db->fetchAll($sql, array((int) $tile->id));
-        return $this->converter->batchFromDB($this->tableName, $rows);
+        $rows = $this->db->fetchAssoc($sql, array((int) $tile->id));
+        return $this->converter->fromDB($this->tableName, $rows);
     }
 
 }

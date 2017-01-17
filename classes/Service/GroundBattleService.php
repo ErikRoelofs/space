@@ -5,6 +5,7 @@ namespace Plu\Service;
 use Plu\PieceTrait\Bombs;
 use Plu\PieceTrait\FightsGroundBattles;
 use Plu\Repository\PlanetRepository;
+use Plu\Service\Loggers\GroundBattleLog;
 
 class GroundBattleService {
 
@@ -44,7 +45,7 @@ class GroundBattleService {
 	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, PlanetRepository $planetRepo) {
 		$this->pieceRepo = $pieceRepo;
 		$this->pieceService = $pieceService;
-		$this->historyLog = new SpaceBattleLog();
+		$this->historyLog = new GroundBattleLog();
 		$this->planetRepo = $planetRepo;
 	}
 
@@ -79,6 +80,7 @@ class GroundBattleService {
 		$this->phase = 'main';
 		$this->handleMainCombat();
 
+		// check for planet ownership
 		$this->resolvePlanetOwner();
 
 		return $this->historyLog;
@@ -124,11 +126,26 @@ class GroundBattleService {
 				$this->resolveHit($player, $hitType);
 			}
 		}
-
 	}
 
-	private function handleBombs() {
-		$this->handleWeapon(Bombs::TAG, 'bomb');
+	private function handleBombs(Tile $tile) {
+		$pieces = $this->pieceService->findByTile($tile);
+		$bombers = [];
+		foreach($pieces as $piece) {
+			// only get pieces that can drop bombs
+			if(!$this->pieceService->hasTrait($piece, Bombs::TAG)) {
+				continue;
+			}
+			$bombers [] = $piece;
+		}
+		foreach($bombers as $bomber) {
+			$stats = $this->pieceService->getTraitContents($bomber, Bombs::TAG);
+			for($i = 0; $i<$stats['shots']; $i++) {
+				if(mt_rand(0, 100) <= $stats['firepower']) {
+					$this->resolveHit($bomber->ownerId, 'bomb');
+				}
+			}
+		}
 	}
 
 	private function handleMainCombat() {
@@ -215,10 +232,11 @@ class GroundBattleService {
 	/**
 	 * If no pieces remain, owner does not change.
 	 */
-	private function resolvePlanetOwner($planet) {
+	private function resolvePlanetOwner(Planet $planet) {
 		foreach($this->piecesPerPlayer as $player => $pieces) {
 			if(count($pieces) > 0) {
 				$planet->ownerId = $player;
+				$this->historyLog->logPlanetCaptured($planet, $player);
 			}
 		}
 	}

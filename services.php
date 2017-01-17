@@ -49,11 +49,6 @@ $app['converter-service'] = function($app) {
         'name' => new Conv\NativeConverter(),
         'color' => new Conv\NativeConverter(),
     ]));
-    $s->addConverter('\Plu\Entity\Resolution', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'givenOrderId' => new Conv\NativeConverter(),
-        'data' => new Conv\DataConverter(),
-    ]));
     $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
     $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));
 
@@ -84,9 +79,6 @@ $app['planet-repo'] = function($app) {
 };
 $app['player-repo'] = function($app) {
     return new Repo\PlayerRepository($app['db'], $app['converter-service']);
-};
-$app['resolution-repo'] = function($app) {
-    return new Repo\ResolutionRepository($app['db'], $app['converter-service']);
 };
 $app['tile-repo'] = function($app) {
     return new Repo\TileRepository($app['db'], $app['converter-service']);

@@ -40,10 +40,10 @@ class StartingUnitService
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $carrier = $this->addPieceToSpace($player, 'Carrier', $homeTile);
         $pieces[] = $carrier;
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planets[0]);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planets[0]);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planets[0]);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planets[0]);
+        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
+        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
+        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
+        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
 
         return $pieces;
     }
@@ -70,7 +70,7 @@ class StartingUnitService
 
     private function getHomeTileForPlayer(Board $board, Player $player) {
         foreach($board->tiles as $tile) {
-            if(count($tile->planets) && $tile->planets[0]->ownerId == $player->id) {
+            if($tile->planet && $tile->planet->ownerId == $player->id) {
                 return $tile;
             }
         }

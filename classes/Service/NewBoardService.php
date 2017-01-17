@@ -45,21 +45,19 @@ class NewBoardService
     }
 
     private function newTile($x, $y, $special) {
-        $planets = [];
         if($special == 'home') {
-            $planets[] = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
+            $planet = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
         }
         if($special == 'center') {
-            $planets[] = $this->planetService->newCenterPlanet();
+            $planet = $this->planetService->newCenterPlanet();
         }
         if(!$special) {
-            $c = mt_rand(0,2);
-            for($i = 0; $i < $c; $i++) {
-                $planets[] = $this->planetService->newRegularPlanet();
-            }
+			if(mt_rand(0,1) == 1) {
+				$planet = $this->planetService->newRegularPlanet();
+			}
         }
         $tile = new Tile();
-        $tile->planets = $planets;
+        $tile->planet = $planet;
         $tile->coordinates = [$x,$y];
         return $tile;
     }

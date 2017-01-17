@@ -6,10 +6,12 @@ use Plu\Entity\GivenOrder;
 use Plu\Entity\Piece;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
+use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
+use Plu\Service\Loggers\TacticalOrderLog;
 use Plu\Service\OrdersService;
 use Plu\Service\PathfindingService;
 use Plu\Service\PieceService;
@@ -102,6 +104,9 @@ class TacticalOrder implements OrderTypeInterface
             // @TODO
         }
 
+		// the fleet must have room for all its cargo
+		// @TODO
+
         // all items queued for construction must
             // be buildable by the player in this location
             // be affordable
@@ -121,9 +126,14 @@ class TacticalOrder implements OrderTypeInterface
 
     public function resolveOrder(Player $player, GivenOrder $order)
     {
+		$log = new TacticalOrderLog();
+		$log->addPlayer($player);
+
 		$tile = $this->tileRepository->findByIdentifier($order->data['tile']);
 		foreach($order->data['pieces'] as $pieceId) {
 			$piece = $this->pieceRepo->findByIdentifier($pieceId);
+			// log the move
+			$log->addPieceMoved($piece->location, $piece);
 			// move it
 			$piece->location = [ 'type' => 'space', 'coordinates' => $tile->coordinates ];
 			$this->pieceRepo->update($piece);
@@ -131,10 +141,7 @@ class TacticalOrder implements OrderTypeInterface
 
 		// handle construction
 
-
-		// set the resolution on the order
-		// -- OR --
-		// return a logger ?
+		return $log;
     }
 
     public function getTag()
@@ -163,8 +170,8 @@ class TacticalOrder implements OrderTypeInterface
         if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG)) {
             return false;
         }
-        // mobile
-        if(!$this->pieceService->hasTrait($piece, Mobile::TAG)) {
+        // mobile or is cargo
+        if(!$this->pieceService->hasTrait($piece, Mobile::TAG) || $this->pieceService->hasTrait($piece, Cargo::TAG)) {
             return false;
         }
 
@@ -173,8 +180,8 @@ class TacticalOrder implements OrderTypeInterface
             return false;
         }
 
-        // in range
-        if(!$this->pathfindingService->getInReach($piece, $tile)) {
+        // in range (if not carried)
+        if(!$this->pathfindingService->getInReach($piece, $tile) && !$this->pieceService->hasTrait($piece, Cargo::TAG) ) {
             return false;
         }
 

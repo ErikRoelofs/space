@@ -25,8 +25,8 @@ class TileConverter implements ConverterInterface
     public function toJSON($data)
     {
         $base = $this->c->toJSON($data);
-        if($data->planets) {
-            $base['planets'] = $this->app['converter-service']->batchToJSONObject($data->planets);
+        if($data->planet) {
+            $base['planet'] = $this->app['converter-service']->toJSONObject($data->planet);
         }
         return $base;
     }

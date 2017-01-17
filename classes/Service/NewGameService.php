@@ -31,9 +31,9 @@ class NewGameService
         foreach($board->tiles as $tile) {
             $tile->boardId = $board->id;
             $this->app['tile-repo']->add($tile);
-            foreach($tile->planets as $planet) {
-                $planet->tileId = $tile->id;
-                $this->app['planet-repo']->add($planet);
+            if($tile->planet) {
+                $tile->planet->tileId = $tile->id;
+                $this->app['planet-repo']->add($tile->planet);
             }
         }
         $game->board = $board;

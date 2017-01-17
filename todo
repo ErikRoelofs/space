@@ -1,0 +1,11 @@
+backend:
+v1:
+V reduce planets to one per tile max
+- update pieces to always be on a specific tile? (since there is only one planet and we don't care about which ship carries them)
+- save everything after battles
+V go from space -> ground (start invasions)
+- think about resolutions vs loggers (should order just have a logger-id attached? or even no link at all?)
+- make turn history available (logs attached to turn?)
+- fix up construction of units
+? handle transportation of cargo
+- handle orbital bombardment
