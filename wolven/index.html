@@ -1,0 +1,61 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.3/angular-sanitize.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">  
+  <script type="text/javascript" src="rdb.js"></script>  
+  <link rel="stylesheet" type="text/css" href="http://www.wakkerdam.net/wp-content/themes/vantage/style.css?ver=2.1.12"></link>
+  <link rel="stylesheet" type="text/css" href="style.css"></link>
+  <title>Rollen database</title>
+	
+  <body>
+	<div ng-app="myApp">
+	  <div ng-controller="MyCtrl">
+		<h1>Rollen database</h1>
+		<div>
+			<h3>Vrij zoeken:</h3> <input type="text" ng-model="filterbox" />
+		</div>
+		<div>
+			<h3>Alleen met de volgende kernwoorden:</h3>
+			<div ng-repeat="keyword in keywords">
+			  <input type="checkbox" ng-model="keywordFilter[keyword]" id="keyword_filter_{{ keyword }}" />
+			  <label for="keyword_filter_{{ keyword }}">{{ keyword }}</label>
+			</div>
+		</div>
+
+		<div ng-repeat="role in roles | orderBy: '-name' :true | filter: filterbox | filter: filterOnKeywords " id="{{ role.name | lowercase}}">
+		  <h2>
+			{{ role.name }}
+		  </h2>
+			<p>
+				<div>
+					<strong>Naam:</strong>
+					<span>{{ role.name }}</span>
+				<div>
+					<strong>Alliantie:</strong>
+					<span class="role {{ role.alliance }}">{{ role.alliance }}</span>
+				</div>
+				<div>
+					<div><strong>Beschrijving:</strong></div>
+					<span ng-bind-html="role.description"></span>
+				</div>
+				<div>
+					<strong>Kernwoorden:</strong>
+					<ul>
+					  <li ng-repeat="keyword in role.keywords">{{ keyword }}</li>
+					</ul>
+				</div>
+				<div ng-show="role.similar.length > 0">					
+					<div><strong>Vergelijkbare rollen:</strong></div>
+					<div ng-repeat="similar in role.similar"><a ng-click="clean()" href="#{{ similar | lowercase}}">{{ similar }}</a></div>
+				</div>
+			</p>
+		</div>
+	  </div>
+
+	</div>
+  </body>
+ </html>

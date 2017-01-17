@@ -1,0 +1,45 @@
+@import url(http://fonts.googleapis.com/css?family=Henny+Penny:400); 
+
+body {
+	margin: 20px;
+}
+
+h1,h2,h3,h4,h5,h6 { font-family: "Henny Penny"; font-weight: 400 } 
+
+h1 {
+	font-size: 2em;
+	margin-top: 20px;
+}
+h2 {
+	font-size: 1.5em;
+	margin-top: 20px;
+}
+
+h3 {
+	font-size: 1em;
+	margin-top: 10px;
+}
+
+.Goed  {
+	color: green;
+}
+
+.goed {
+	color: green;
+}
+
+.Slecht {
+	color: red;
+}
+
+.slecht {
+	color: red
+}
+
+.Neutraal {
+	color: orange;
+}
+
+.neutraal {
+	color: orange;
+}
