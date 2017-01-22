@@ -8,6 +8,7 @@ class SpaceBattleLog implements LoggerInterface{
 
     private $tile;
 	private $hits = [];
+    private $lostCargo = [];
 
     public function __construct(Tile $tile) {
         $this->tile = $tile;
@@ -17,10 +18,15 @@ class SpaceBattleLog implements LoggerInterface{
 		$this->hits[] = [ 'phase' => $phase, 'round' => $round, 'scoredBy' => $by, 'target' => $to ];
 	}
 
+	public function logLostCargo($player, $piece) {
+        $this->lostCargo[] = [ 'player' => $player, 'cargo' => $piece ];
+    }
+
 	public function compileLog() {
 		return [
 		    'tile' => $this->tile,
-            'hits' => $this->hits
+            'hits' => $this->hits,
+            'lost-cargo' => $this->lostCargo,
         ];
 	}
 

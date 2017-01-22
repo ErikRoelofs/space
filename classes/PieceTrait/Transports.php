@@ -6,6 +6,9 @@ class Transports implements TraitInterface
 {
     private $value;
 
+    const TAG = 'transports';
+
+
     /**
      * Mobile constructor.
      * @param $value
@@ -17,7 +20,7 @@ class Transports implements TraitInterface
 
     public function getTraitName()
     {
-        return 'transports';
+        return self::TAG;
     }
 
     public function getTraitContent()

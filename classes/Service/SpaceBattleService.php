@@ -5,12 +5,14 @@ namespace Plu\Service;
 use Plu\Entity\Piece;
 use Plu\Entity\Planet;
 use Plu\Entity\Tile;
+use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Torpedoes;
+use Plu\PieceTrait\Transports;
 use Plu\Service\Loggers\SpaceBattleLog;
 
 class SpaceBattleService
@@ -60,10 +62,6 @@ class SpaceBattleService
 
 		// remove all cargo that no longer has transport capacity
 		$this->cleanupCargo($tile);
-
-		if($tile->planet) {
-			$this->dropTroops($tile->planet, $tile);
-		}
 
 		return $this->historyLog;
 
@@ -206,16 +204,41 @@ class SpaceBattleService
         return $out;
     }
 
-	private function dropTroops(Planet $planet, Tile $tile) {
-		foreach($tile->pieces as $piece) {
-			if($this->pieceService->hasTrait($piece, FightsGroundBattles::TAG)) {
-				$piece->location = [ 'type' => 'planet', 'id' => $planet->id];
-			}
-		}
-	}
-
 	private function cleanupCargo(Tile $tile) {
-	    // @TODO
+
+	    foreach($this->piecesPerPlayer as $player => $pieces) {
+	        // planets have unlimited cargo storage
+	        if($player == $tile->planet->ownerId) {
+	            continue;
+            }
+            $cargoAllowed = 0;
+	        $cargoUsed = 0;
+	        foreach($pieces as $piece) {
+	            if($this->pieceService->hasTrait($piece, Cargo::TAG)) {
+                    $cargoUsed++;
+                }
+                if($this->pieceService->hasTrait(Transports::TAG)) {
+	                $cargoAllowed += $this->pieceService->getTraitContents($piece, Transports::TAG);
+                }
+            }
+            if($cargoUsed > $cargoAllowed) {
+	            $this->destroyCargoForPlayer($cargoUsed - $cargoAllowed, $player);
+            }
+        }
+    }
+
+    private function destroyCargoForPlayer($amount, $player) {
+	    $pieces = $this->piecesPerPlayer[$player];
+	    shuffle($pieces);
+	    foreach($pieces as $piece) {
+	        if($this->pieceService->hasTrait($piece, Cargo::TAG)) {
+	            $this->historyLog->logLostCargo($player, $piece);
+	            $amount--;
+            }
+            if($amount == 0) {
+	            return;
+            }
+        }
     }
 
 }
