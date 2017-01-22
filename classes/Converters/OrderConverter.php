@@ -20,7 +20,6 @@ class OrderConverter implements ConverterInterface
             'turnId' => new Conv\NativeConverter(),
             'orderType' => new Conv\NativeConverter(),
             'data' => new Conv\DataConverter(),
-            'log' => new Conv\DataConverter(),
         ]);
         $this->app = $app;
     }

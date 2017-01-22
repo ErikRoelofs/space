@@ -9,5 +9,4 @@ class GivenOrder
     public $turnId;
     public $orderType;
     public $data;
-    public $log;
 }

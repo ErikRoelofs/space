@@ -2,7 +2,9 @@
 
 namespace Plu\OrderTypes;
 
+use Plu\Entity\Game;
 use Plu\Entity\GivenOrder;
+use Plu\Entity\Log;
 use Plu\Entity\Piece;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
@@ -12,16 +14,17 @@ use Plu\PieceTrait\Spaceborne;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 
+use Plu\Service\GamestateUpdate;
 use Plu\Service\Loggers\TacticalOrderLog;
 use Plu\Repository\TileRepository;
 use Plu\Service\OrdersService;
 use Plu\Service\PathfindingService;
 use Plu\Service\PieceService;
 
-class TacticalOrder implements OrderTypeInterface
+class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 {
 
-    private $type = 'tactical';
+    const TAG = 'tactical';
 
     /**
      * @var OrdersService
@@ -117,17 +120,13 @@ class TacticalOrder implements OrderTypeInterface
 
     public function resolveOrder(Player $player, GivenOrder $order)
     {
-		$log = new TacticalOrderLog();
+		$log = new TacticalOrderLog($order);
 		$log->addPlayer($player);
 
-		$tile = $this->tileRepository->findByIdentifier($order->data['tile']);
 		foreach($order->data['pieces'] as $pieceId) {
 			$piece = $this->pieceRepo->findByIdentifier($pieceId);
 			// log the move
 			$log->addPieceMoved($piece->location, $piece);
-			// move it
-			$piece->location = [ 'type' => 'space', 'coordinates' => $tile->coordinates ];
-			$this->pieceRepo->update($piece);
 		}
 
 		// handle construction
@@ -137,7 +136,7 @@ class TacticalOrder implements OrderTypeInterface
 
     public function getTag()
     {
-        return $this->type;
+        return self::TAG;
     }
 
     public function getPotentialPiecesForOrder(Tile $tile, Player $player) {
@@ -200,5 +199,11 @@ class TacticalOrder implements OrderTypeInterface
         // be affordable
 
     }
+
+    public function updateGamestate(Game $game, Log $log)
+    {
+
+    }
+
 
 }

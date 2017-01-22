@@ -2,6 +2,8 @@
 
 namespace Plu\Service\Loggers;
 
+use Plu\Service\SpaceBattleService;
+
 class GroundBattleLog extends AbstractBattleLog {
 
     protected $planetCap;
@@ -17,5 +19,11 @@ class GroundBattleLog extends AbstractBattleLog {
             'planet' => $this->planetCap
         ];
 	}
+
+    public function getClass()
+    {
+        return SpaceBattleService::class;
+    }
+
 
 }

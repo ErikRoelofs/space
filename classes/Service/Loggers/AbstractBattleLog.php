@@ -18,5 +18,17 @@ abstract class AbstractBattleLog implements LoggerInterface
     }
 
     abstract public function compileLog();
+    abstract public function getClass();
+
+    public function getOrigin()
+    {
+        return self::ORIGIN_SYSTEM;
+    }
+
+    public function getOriginId()
+    {
+        return null;
+    }
+
 
 }

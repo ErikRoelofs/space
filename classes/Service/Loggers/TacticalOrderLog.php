@@ -10,7 +10,18 @@ class TacticalOrderLog implements LoggerInterface {
 		'built' => []
 	];
 
-	public function addPlayer(Player $player) {
+	private $givenOrder;
+
+    /**
+     * TacticalOrderLog constructor.
+     * @param $givenOrder
+     */
+    public function __construct($givenOrder)
+    {
+        $this->givenOrder = $givenOrder;
+    }
+
+    public function addPlayer(Player $player) {
 		$this->data['player'] = $player;
 	}
 
@@ -22,9 +33,24 @@ class TacticalOrderLog implements LoggerInterface {
 		$this->data['built'] = [$piece];
 	}
 
-
 	public function compileLog() {
 		return $this->data;
 	}
+
+    public function getService()
+    {
+        return 'tactical-order-service';
+    }
+
+    public function getOrigin()
+    {
+        return self::ORIGIN_ORDER;
+    }
+
+    public function getOriginId()
+    {
+        return $this->givenOrder->id;
+    }
+
 
 }

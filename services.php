@@ -52,6 +52,14 @@ $app['converter-service'] = function($app) {
     $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
     $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));
 
+    $s->addConverter('\Plu\Entity\Log', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'turnId' => new Conv\NativeConverter(),
+        'class' => new Conv\NativeConverter(),
+        'results' => new Conv\DataConverter(),
+        'origin' => new Conv\NativeConverter(),
+        'originId' => new Conv\NativeConverter(),
+    ]));
 
     return $s;
 };
@@ -116,6 +124,10 @@ $app['order-service'] = function($app) {
     $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service'], $app['pathfinding-service']));
 
     return $s;
+};
+
+$app['tactical-order-service'] = function($app) {
+    return $app['order-service']->getOrder(\Plu\OrderTypes\TacticalOrder::TAG);
 };
 
 $app['pathfinding-service'] = function($app) {
