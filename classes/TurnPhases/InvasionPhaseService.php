@@ -1,6 +1,6 @@
 <?php
 
-namespace Plu\Service;
+namespace Plu\TurnPhase;
 
 use Plu\Service\Loggers\SpaceBattleLog;
 

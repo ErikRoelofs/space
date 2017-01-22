@@ -20,17 +20,14 @@ class OrderConverter implements ConverterInterface
             'turnId' => new Conv\NativeConverter(),
             'orderType' => new Conv\NativeConverter(),
             'data' => new Conv\DataConverter(),
+            'log' => new Conv\DataConverter(),
         ]);
         $this->app = $app;
     }
 
     public function toJSON($data)
     {
-        $base = $this->c->toJSON($data);
-        if($data->resolution) {
-            $base['resolution'] = $this->app['converter-service']->toJSONObject($data->resolution);
-        }
-        return $base;
+        return $this->c->toJSON($data);
     }
 
     public function fromJSON($obj, $data)

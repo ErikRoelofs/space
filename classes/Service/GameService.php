@@ -3,6 +3,7 @@
 namespace Plu\Service;
 
 use Plu\Entity\Game;
+use Plu\Entity\Player;
 use Plu\Repository\BoardRepository;
 use Plu\Repository\GameRepository;
 use Plu\Repository\OrderRepository;
@@ -105,5 +106,11 @@ class GameService
 
         return $game;
     }
+
+    public function buildGameFromPlayer(Player $player) {
+        $id = $player->gameId;
+        return $this->buildGame($id);
+    }
+
 
 }
