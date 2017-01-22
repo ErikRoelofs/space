@@ -1,4 +1,4 @@
 <div style="background-image: url('/assets/tiles/starfield1.png'); height: 100%; clear: both" ng-click="showDetails();  $event.stopPropagation();">
-    <planet planet="tile.planet"></planet>
+    <planet planet="tile.planet" ng-if="tile.planet"></planet>
     <tile-space tile="tile"></tile-space>
 </div>

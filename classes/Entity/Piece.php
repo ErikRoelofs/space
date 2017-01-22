@@ -5,7 +5,7 @@ namespace Plu\Entity;
 class Piece
 {
     public $id;
-    public $location;
+    public $tileId;
     public $typeId;
     public $ownerId;
     public $boardId;

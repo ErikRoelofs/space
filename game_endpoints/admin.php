@@ -7,3 +7,9 @@ $app->get('/admin/piecetypes', function() use ($app) {
     }
     return 'done';
 });
+
+$app->get('/admin/game/{id}', function($id) use ($app) {
+    $game = $app['game-service']->buildGame($id);
+
+    return json_encode($game);
+});

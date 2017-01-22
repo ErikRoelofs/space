@@ -40,10 +40,10 @@ class StartingUnitService
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $carrier = $this->addPieceToSpace($player, 'Carrier', $homeTile);
         $pieces[] = $carrier;
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
-        $pieces[] = $this->addPieceToPlanet($player, 'Fighter', $homeTile->planet);
+        $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
 
         return $pieces;
     }
@@ -53,18 +53,8 @@ class StartingUnitService
         $piece = new Piece();
         $piece->ownerId = $player->id;
         $piece->boardId = $this->board->id;
+        $piece->tileId = $tile->id;
         $piece->typeId = $pieceType->id;
-        $piece->location = ['type' => 'space', 'coordinates' => $tile->coordinates];
-        return $piece;
-    }
-
-    private function addPieceToPlanet($player, $pieceName, $planet) {
-        $pieceType = $this->pieceTypeRepo->findByName($pieceName);
-        $piece = new Piece();
-        $piece->ownerId = $player->id;
-        $piece->boardId = $this->board->id;
-        $piece->typeId = $pieceType->id;
-        $piece->location = ['type' => 'planet', 'id' => $planet->id];
         return $piece;
     }
 

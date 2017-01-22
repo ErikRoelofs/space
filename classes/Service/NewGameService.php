@@ -56,9 +56,35 @@ class NewGameService
             $player->gameId = $game->id;
             $player->industry = 0;
             $player->social = 0;
+            $player->name = $this->makeName($i);
+            $player->color = $this->getColor($i);
             $players[] = $player;
         }
         return $players;
+    }
+
+    private function makeName($i) {
+        $colors = [
+            'John',
+            'Paul',
+            'Anna',
+            'Sarah',
+            'Mike',
+            'Amber',
+        ];
+        return $colors[$i];
+    }
+
+    private function getColor($i) {
+        $colors = [
+            '#ff0000',
+            '#ffff00',
+            '#ff00ff',
+            '#00ff00',
+            '#00ffff',
+            '#0000ff',
+        ];
+        return $colors[$i];
     }
 
 }

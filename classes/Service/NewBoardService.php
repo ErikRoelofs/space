@@ -45,6 +45,7 @@ class NewBoardService
     }
 
     private function newTile($x, $y, $special) {
+        $planet = false;
         if($special == 'home') {
             $planet = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
         }
@@ -57,7 +58,9 @@ class NewBoardService
 			}
         }
         $tile = new Tile();
-        $tile->planet = $planet;
+        if($planet) {
+            $tile->planet = $planet;
+        }
         $tile->coordinates = [$x,$y];
         return $tile;
     }

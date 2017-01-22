@@ -24,10 +24,10 @@ $app['converter-service'] = function($app) {
     $s->addConverter('\Plu\Entity\GivenOrder', new Conv\OrderConverter($app));
     $s->addConverter('\Plu\Entity\Piece', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
-        'location' => new Conv\DataConverter(),
         'typeId' => new Conv\NativeConverter(),
         'ownerId' => new Conv\NativeConverter(),
         'boardId' => new Conv\NativeConverter(),
+        'tileId' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
@@ -128,4 +128,8 @@ $app['space-battle-service'] = function($app) {
 
 $app['piece-types-service'] = function($app) {
     return new \Plu\Service\PieceTypesService();
+};
+
+$app['game-service'] = function($app) {
+    return new \Plu\Service\GameService($app['game-repo'], $app['board-repo'], $app['tile-repo'], $app['planet-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
 };

@@ -19,7 +19,7 @@ class NewPlanetService
     public function newCenterPlanet() {
         $planet = new Planet();
         $planet->industrial = 0;
-        $planet->social = 10;
+        $planet->social = 6;
         return $planet;
     }
 
