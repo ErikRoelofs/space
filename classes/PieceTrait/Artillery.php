@@ -2,10 +2,10 @@
 
 namespace Plu\PieceTrait;
 
-class GroundCannon implements TraitInterface
+class Artillery implements TraitInterface
 {
 
-    const TAG = 'combat.weapon.ground';
+    const TAG = 'combat.weapon.artillery';
 
     private $shots;
     private $firepower;
@@ -17,7 +17,7 @@ class GroundCannon implements TraitInterface
 
     public function getTraitName()
     {
-        return self::TAG;
+        return false;
     }
 
     public function getTraitContent()

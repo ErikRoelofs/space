@@ -2,6 +2,9 @@
 
 function makePiece(\Plu\Repository\PieceTypeRepository $repo, $type, $owner) {
     $type = $repo->findByName($type);
+    if(!$type) {
+        throw new \Exception("No such type: " . $type);
+    }
     $piece = new \Plu\Entity\Piece();
     $piece->typeId = $type->id;
     $piece->ownerId = $owner;
@@ -38,6 +41,35 @@ $app->get('/test/spacebattle', function() use ($app) {
     $log = new \Plu\Service\Loggers\SpaceBattleLog($tile);
 
     $report = $battleService->resolveSpaceBattle($tile, $log);
+
+    print_r($report);
+    exit;
+});
+
+$app->get('/test/groundbattle', function() use ($app) {
+    $battleService = $app['ground-battle-service'];
+
+    $tile = new \Plu\Entity\Tile();
+    $tile->planet = new \Plu\Entity\Planet();
+    $tile->planet->ownerId = 2;
+
+    $tile->pieces = [
+        makePiece($app['piece-type-repo'], "dreadnought", 1),
+        makePiece($app['piece-type-repo'], "destroyer", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 1),
+        makePiece($app['piece-type-repo'], "groundforce", 2),
+        makePiece($app['piece-type-repo'], "groundforce", 2),
+        makePiece($app['piece-type-repo'], "groundforce", 2),
+    ];
+
+    $log = new \Plu\Service\Loggers\GroundBattleLog($tile);
+
+    $report = $battleService->resolveGroundBattle($tile, $log);
 
     print_r($report);
     exit;

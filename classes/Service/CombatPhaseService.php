@@ -25,7 +25,7 @@ class CombatPhaseService
         $logs = [];
         foreach($game->board->tiles as $tile) {
             if($this->hasSpacebattle($tile)) {
-                $logs[] = $this->spaceBattleService->resolveSpaceBattle($tile, new SpaceBattleLog());
+                $logs[] = $this->spaceBattleService->resolveSpaceBattle($tile, new SpaceBattleLog($tile));
             }
         }
         return $logs;
@@ -35,10 +35,6 @@ class CombatPhaseService
         $piecesPerPlayer = $this->collectPieces($tile);
         // more than one player on a tile == conflict
         return count($piecesPerPlayer) > 1;
-    }
-
-    public function handleCombatStep(Game $game) {
-        $this->resolveAllSpaceBattles($game);
     }
 
 }

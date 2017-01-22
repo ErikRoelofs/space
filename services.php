@@ -126,6 +126,10 @@ $app['space-battle-service'] = function($app) {
     return new \Plu\Service\SpaceBattleService($app['piece-service']);
 };
 
+$app['ground-battle-service'] = function($app) {
+    return new \Plu\Service\GroundBattleService($app['piece-service']);
+};
+
 $app['combat-phase-service'] = function($app) {
     return new \Plu\Service\CombatPhaseService($app['space-battle-service']);
 };

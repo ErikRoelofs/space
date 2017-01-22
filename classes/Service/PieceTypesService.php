@@ -4,17 +4,21 @@ namespace Plu\Service;
 
 
 use Plu\Entity\PieceType;
+use Plu\PieceTrait\Artillery;
 use Plu\PieceTrait\Buildable;
 use Plu\PieceTrait\BuildRequirements\PieceWithTag;
 use Plu\PieceTrait\BuildRequirements\Resources;
 use Plu\PieceTrait\BuildsPieces;
 use Plu\PieceTrait\Cargo;
+use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
+use Plu\PieceTrait\GroundCannon;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
 use Plu\PieceTrait\Tiny;
+use Plu\PieceTrait\Torpedoes;
 use Plu\PieceTrait\Transports;
 
 class PieceTypesService
@@ -28,6 +32,9 @@ class PieceTypesService
         $types[] = $this->makeSpacedock();
         $types[] = $this->makeDreadnought();
         $types[] = $this->makeCruiser();
+        $types[] = $this->makeGroundForce();
+        $types[] = $this->makeDefenseSystem();
+
 
         return $types;
     }
@@ -118,5 +125,30 @@ class PieceTypesService
         return $type;
     }
 
+    private function makeGroundForce() {
+        $type = new PieceType();
+        $type->name = 'GroundForce';
+        $type->traits = [];
+
+        $type->traits[] = new Cargo();
+        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(0.5)]);
+        $type->traits[] = new FightsGroundBattles(1,1);
+        $type->traits[] = new GroundCannon(1,2);
+
+        return $type;
+    }
+
+    private function makeDefenseSystem() {
+        $type = new PieceType();
+        $type->name = 'DefenseSystem';
+        $type->traits = [];
+
+        $type->traits[] = new Cargo();
+        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(2)]);
+        $type->traits[] = new Torpedoes(1,5);
+        $type->traits[] = new Artillery(1,5);
+
+        return $type;
+    }
 
 }
