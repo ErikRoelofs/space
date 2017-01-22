@@ -28,6 +28,9 @@ class TileConverter implements ConverterInterface
         if($data->planet) {
             $base['planet'] = $this->app['converter-service']->toJSONObject($data->planet);
         }
+        if($data->pieces) {
+            $base['pieces'] = $this->app['converter-service']->batchToJSONObject($data->pieces);
+        }
         return $base;
     }
 
