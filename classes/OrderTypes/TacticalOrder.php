@@ -11,7 +11,9 @@ use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
+
 use Plu\Service\Loggers\TacticalOrderLog;
+use Plu\Repository\TileRepository;
 use Plu\Service\OrdersService;
 use Plu\Service\PathfindingService;
 use Plu\Service\PieceService;
@@ -47,27 +49,35 @@ class TacticalOrder implements OrderTypeInterface
     protected $pathfindingService;
 
     /**
+     * @var TileRepository
+     */
+    protected $tileRepo;
+
+    /**
      * TacticalOrder constructor.
      * @param $orderRepo
      */
-    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService)
+    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService, TileRepository $tileRepo)
     {
         $this->orderRepo = $orderRepo;
         $this->ordersService = $ordersService;
         $this->pieceRepo = $pieceRepo;
         $this->pieceService = $pieceService;
         $this->pathfindingService = $pathfindingService;
+        $this->tileRepo = $tileRepo;
     }
 
     public function validateOrderAllowed(Player $player, $data)
     {
+
+        $tile = $this->tileRepo->findByIdentifier($data['tile']);
 
         // the targeted tile must
         // not have any other orders by this player
         $otherOrders = $this->ordersService->getActiveOrdersForPlayer($player);
         foreach($otherOrders as $order) {
             if($order->orderType == $this->type) {
-                if($order->data['tile'] == $data['tile']) {
+                if($order->data['tile'] == $tile->id) {
                     throw new \Exception("A tactical order already exists for this sector.");
                 }
             }
@@ -76,40 +86,21 @@ class TacticalOrder implements OrderTypeInterface
         // all ships sent must
         foreach($data['pieces'] as $pieceId) {
             $piece = $this->pieceRepo->findByIdentifier($pieceId);
-
-            // belong to the player
-            if($player->id != $piece->ownerId) {
-                throw new \Exception("Piece " . $piece->id . " does not belong to this player.");
+            if(!$this->validatePiece($piece, $tile, $player)) {
+                throw new \Exception("A piece was sent that is not valid for this move");
             }
-            // not have any other tactical orders set
-            foreach($otherOrders as $order) {
-                if($order->orderType == $this->type) {
-                    foreach($order->data['pieces'] as $otherPieceId) {
-                        if($piece->id == $otherPieceId) {
-                            throw new \Exception("Piece " . $piece->id . " already has tactical orders.");
-                        }
-                    }
-                }
-            }
-            // spaceborne
-            if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG)) {
-                throw new \Exception("Piece " . $piece->id . " is not spaceborne.");
-            }
-            // mobile
-            if(!$this->pieceService->hasTrait($piece, Mobile::TAG)) {
-                throw new \Exception("Piece " . $piece->id . " is not mobile.");
-            }
-
-            // be in reach of the target
-            // @TODO
         }
 
 		// the fleet must have room for all its cargo
 		// @TODO
 
         // all items queued for construction must
-            // be buildable by the player in this location
-            // be affordable
+        foreach($data['newPieces'] as $pieceTypeId) {
+            $pieceType = $this->pieceTypeRepo->findByIdentifier($pieceTypeId);
+            if(!$this->validateConstructionOrder($pieceType, $tile, $player )) {
+                throw new \Exception("A constuction order that was sent is not valid");
+            }
+        }
 
     }
 
@@ -204,5 +195,10 @@ class TacticalOrder implements OrderTypeInterface
         return true;
     }
 
+    private function validateConstructionOrder(PieceType $type, Tile $tile, Player $player) {
+        // be buildable by the player in this location
+        // be affordable
+
+    }
 
 }
