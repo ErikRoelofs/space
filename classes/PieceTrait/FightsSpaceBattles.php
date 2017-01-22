@@ -20,7 +20,7 @@ class FightsSpaceBattles implements TraitInterface
 
     public function getTraitName()
     {
-        return false;
+        return self::TAG;
     }
 
     public function getTraitContent()

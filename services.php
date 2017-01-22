@@ -108,7 +108,7 @@ $app['orders-service'] = function($app) {
 };
 
 $app['piece-service'] = function($app) {
-    return new \Plu\Service\PieceService($app['piece-type-repo']);
+    return new \Plu\Service\PieceService($app['piece-type-repo'], $app['piece-repo'], $app['planet-repo'], $app['board-repo']);
 };
 
 $app['order-service'] = function($app) {
@@ -120,4 +120,12 @@ $app['order-service'] = function($app) {
 
 $app['pathfinding-service'] = function($app) {
     return new \Plu\Service\PathfindingService($app['piece-service']);
+};
+
+$app['space-battle-service'] = function($app) {
+    return new \Plu\Service\SpaceBattleService($app['piece-repo'], $app['piece-service'], $app['planet-repo'], $app['board-repo'], $app['tile-repo']);
+};
+
+$app['piece-types-service'] = function($app) {
+    return new \Plu\Service\PieceTypesService();
 };

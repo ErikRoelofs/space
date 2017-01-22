@@ -2,7 +2,10 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Board;
 use Plu\Entity\Piece;
+use Plu\Entity\Tile;
+use Plu\Repository\BoardRepository;
 use Plu\Repository\PieceRepository;
 use Plu\Repository\PieceTypeRepository;
 use Plu\Repository\PlanetRepository;
@@ -26,14 +29,20 @@ class PieceService
 	protected $planetRepo;
 
     /**
+     * @var BoardRepository
+     */
+	protected $boardRepository;
+
+    /**
      * PieceService constructor.
      * @param $pieceTypeRepo
      */
-    public function __construct(PieceTypeRepository $pieceTypeRepo, PieceRepository $pieceRepo, PlanetRepository $planetRepo )
+    public function __construct(PieceTypeRepository $pieceTypeRepo, PieceRepository $pieceRepo, PlanetRepository $planetRepo, BoardRepository $boardRepository )
     {
         $this->pieceTypeRepo = $pieceTypeRepo;
 		$this->planetRepo = $planetRepo;
 		$this->pieceRepo = $pieceRepo;
+		$this->boardRepository = $boardRepository;
     }
 
 
@@ -54,7 +63,7 @@ class PieceService
     }
 
 	public function findByTile(Tile $tile) {
-		$all = $this->pieceRepo->findByBoard($tile->boardId);
+		$all = $this->pieceRepo->findByBoard($this->boardRepository->findByIdentifier($tile->boardId));
 		$good = [];
 		foreach ($all as $piece) {
 			if ($this->pieceSpaceborneOnTile($piece, $tile)) {
@@ -85,7 +94,7 @@ class PieceService
 	}
 
 	private function pieceCarriedOnTile(Piece $piece, Tile $tile) {
-		if($piece->location['piece']) {
+		if($piece->location['type'] == 'piece') {
 			$otherPiece = $this->pieceRepo->findByIdentifier($piece->location['id']);
 			return $this->pieceSpaceborneOnTile($otherPiece, $tile);
 		}

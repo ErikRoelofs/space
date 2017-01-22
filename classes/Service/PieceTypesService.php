@@ -25,6 +25,8 @@ class PieceTypesService
         $types[] = $this->makeCarrier();
         $types[] = $this->makeFighter();
         $types[] = $this->makeSpacedock();
+        $types[] = $this->makeDreadnought();
+        $types[] = $this->makeCruiser();
 
         return $types;
     }

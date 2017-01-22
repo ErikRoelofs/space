@@ -10,6 +10,8 @@ require_once('services.php');
 require_once('endpoints/rest.php');
 require_once('game_endpoints/view.php');
 require_once('game_endpoints/order.php');
+require_once('game_endpoints/admin.php');
+require_once('test_endpoints/test.php');
 
 $app->get('/load/pieces', function() use ($app) {
     $s = new \Plu\Service\PieceTypesService();

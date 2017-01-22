@@ -2,13 +2,20 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Game;
+use Plu\Entity\Piece;
+use Plu\Entity\Planet;
+use Plu\Entity\Tile;
+use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Torpedoes;
+use Plu\Repository\BoardRepository;
 use Plu\Repository\PieceRepository;
 use Plu\Repository\PlanetRepository;
+use Plu\Repository\TileRepository;
 use Plu\Service\Loggers\SpaceBattleLog;
 
 class SpaceBattleService
@@ -29,6 +36,16 @@ class SpaceBattleService
 	 */
     private $historyLog;
 
+    /**
+     * @var BoardRepository
+     */
+    private $boardRepository;
+
+    /**
+     * @var TileRepository
+     */
+    private $tileRepository;
+
 	/**
 	 * @var \Plu\Repository\PlanetRepository
 	 */
@@ -47,11 +64,12 @@ class SpaceBattleService
 	 * @param array $piecesPerPlayer
 	 * @param int $round
 	 */
-	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, PlanetRepository $planetRepo) {
+	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, PlanetRepository $planetRepo, BoardRepository $boardRepository, TileRepository $tileRepository) {
 		$this->pieceRepo = $pieceRepo;
 		$this->pieceService = $pieceService;
-		$this->historyLog = new SpaceBattleLog();
 		$this->planetRepo = $planetRepo;
+		$this->boardRepository = $boardRepository;
+		$this->tileRepository = $tileRepository;
 	}
 
 	public function resolveAllSpaceBattles(Game $game) {
@@ -73,7 +91,9 @@ class SpaceBattleService
 	}
 
 	public function resolveSpaceBattle(Tile $tile) {
-		$this->piecesPerPlayer = $this->collectPieces($tile);
+
+	    $this->historyLog = new SpaceBattleLog($tile);
+        $this->piecesPerPlayer = $this->collectPieces($tile);
 
 		// flak first
 		$this->phase = 'flak';
@@ -91,7 +111,7 @@ class SpaceBattleService
 		// drop any surviving troops on the planet
 		$planet = $this->planetRepo->findByTile($tile);
 		if($planet) {
-			$this->dropTroops($tile);
+			$this->dropTroops($planet, $tile);
 		}
 
 		return $this->historyLog;
@@ -107,7 +127,7 @@ class SpaceBattleService
 				continue;
 			}
 			// sort them out per player
-			if(!$out[$piece->ownerId]) {
+			if(!isset($out[$piece->ownerId])) {
 				$out[$piece->ownerId] = [];
 			}
 			$out[$piece->ownerId][] = $piece;
@@ -124,7 +144,7 @@ class SpaceBattleService
         foreach($withWeapon as $piece) {
             $stats = $this->pieceService->getTraitContents($piece, $weaponTag);
             for($i = 0; $i<$stats['shots']; $i++) {
-                if(mt_rand(0, 100) <= $stats['firepower']) {
+                if(mt_rand(0, 10) <= $stats['firepower']) {
                     $hitsPerPlayer[$piece->ownerId]++;
                 }
             }
@@ -134,7 +154,6 @@ class SpaceBattleService
                 $this->resolveHit($player, $hitType);
             }
         }
-
     }
 
     private function handleFlak() {
@@ -156,21 +175,22 @@ class SpaceBattleService
         $this->handleWeapon(MainCannon::TAG, 'normal');
     }
 
-    private function resolveHit(Player $scoredBy, $type) {
+    private function resolveHit($scoredBy, $type) {
         // pick a random target from any other player based on priority
 		$possibleTargets = [];
 		foreach($this->piecesPerPlayer as $player => $pieces) {
-			if($player == $scoredBy->id) {
+			if($player == $scoredBy) {
 				continue;
 			}
 			$possibleTargets = array_merge($possibleTargets, $this->getLowestPriorityFrom($pieces));
 		}
 		$possibleTargets = $this->filterTargetsByWeaponType($possibleTargets, $type);
-
-		shuffle($possibleTargets);
-		$hit = array_pop($possibleTargets);
-		$this->historyLog->logHit($this->phase, $this->round, $scoredBy, $hit);
-		$this->takeHit($hit);
+		if(count($possibleTargets) > 0) {
+            shuffle($possibleTargets);
+            $hit = array_pop($possibleTargets);
+            $this->historyLog->logHit($this->phase, $this->round, $scoredBy, $hit);
+		    $this->takeHit($hit);
+        }
     }
 
 	private function getLowestPriorityFrom(array $pieces) {
@@ -203,7 +223,7 @@ class SpaceBattleService
 		if($type == 'flak') {
 			$out = [];
 			foreach($pieces as $piece) {
-				if($this->pieceService->hasTrait(Tiny::TAG)) {
+				if($this->pieceService->hasTrait($piece, Tiny::TAG)) {
 					$out[] = $piece;
 				}
 			}
@@ -238,10 +258,14 @@ class SpaceBattleService
 	private function dropTroops(Planet $planet, Tile $tile) {
 		$pieces = $this->pieceService->findByTile($tile);
 		foreach($pieces as $piece) {
-			if($this->pieceService->hasTrait($piece)) {
+			if($this->pieceService->hasTrait($piece, FightsGroundBattles::TAG)) {
 				$piece->location = [ 'type' => 'planet', 'id' => $planet->id];
 			}
 		}
 	}
+
+	private function cleanupCargo(Tile $tile) {
+	    // @TODO
+    }
 
 }

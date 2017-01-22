@@ -12,8 +12,8 @@ class BoardRepository extends BaseRepository
 
 	public function findByGame(Game $game) {
 		$sql = "SELECT * FROM $this->tableName WHERE gameId = ?";
-		$rows = $this->db->fetchAll($sql, array((int) $game->id));
-		return $this->converter->batchFromDB($this->tableName, $rows);
+		$rows = $this->db->fetchAssoc($sql, array((int) $game->id));
+		return $this->converter->fromDB($this->tableName, $rows);
 	}
 
 }
