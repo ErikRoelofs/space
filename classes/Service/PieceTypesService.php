@@ -14,6 +14,7 @@ use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
+use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Transports;
 
 class PieceTypesService
@@ -72,6 +73,7 @@ class PieceTypesService
         $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(0.5)]);
         $type->traits[] = new FightsSpaceBattles(1,1);
         $type->traits[] = new MainCannon(1,2);
+        $type->traits[] = new Tiny();
 
         return $type;
     }

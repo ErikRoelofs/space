@@ -123,7 +123,11 @@ $app['pathfinding-service'] = function($app) {
 };
 
 $app['space-battle-service'] = function($app) {
-    return new \Plu\Service\SpaceBattleService($app['piece-repo'], $app['piece-service'], $app['planet-repo'], $app['board-repo'], $app['tile-repo']);
+    return new \Plu\Service\SpaceBattleService($app['piece-service']);
+};
+
+$app['combat-phase-service'] = function($app) {
+    return new \Plu\Service\CombatPhaseService($app['space-battle-service']);
 };
 
 $app['piece-types-service'] = function($app) {

@@ -2,7 +2,6 @@
 
 namespace Plu\Service;
 
-use Plu\Entity\Game;
 use Plu\Entity\Piece;
 use Plu\Entity\Planet;
 use Plu\Entity\Tile;
@@ -12,19 +11,10 @@ use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Tiny;
 use Plu\PieceTrait\Torpedoes;
-use Plu\Repository\BoardRepository;
-use Plu\Repository\PieceRepository;
-use Plu\Repository\PlanetRepository;
-use Plu\Repository\TileRepository;
 use Plu\Service\Loggers\SpaceBattleLog;
 
 class SpaceBattleService
 {
-
-    /**
-     * @var PieceRepository
-     */
-    private $pieceRepo;
 
     /**
      * @var PieceService
@@ -35,21 +25,6 @@ class SpaceBattleService
 	 * @var SpaceBattleLog
 	 */
     private $historyLog;
-
-    /**
-     * @var BoardRepository
-     */
-    private $boardRepository;
-
-    /**
-     * @var TileRepository
-     */
-    private $tileRepository;
-
-	/**
-	 * @var \Plu\Repository\PlanetRepository
-	 */
-	protected $planetRepo;
 
     private $piecesPerPlayer = [];
 
@@ -64,35 +39,13 @@ class SpaceBattleService
 	 * @param array $piecesPerPlayer
 	 * @param int $round
 	 */
-	public function __construct(\Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService, PlanetRepository $planetRepo, BoardRepository $boardRepository, TileRepository $tileRepository) {
-		$this->pieceRepo = $pieceRepo;
+	public function __construct(\Plu\Service\PieceService $pieceService) {
 		$this->pieceService = $pieceService;
-		$this->planetRepo = $planetRepo;
-		$this->boardRepository = $boardRepository;
-		$this->tileRepository = $tileRepository;
 	}
 
-	public function resolveAllSpaceBattles(Game $game) {
-		$board = $this->boardRepository->findByGame($game);
-		$tiles = $this->tileRepository->findByBoard($board);
-		$logs = [];
-		foreach($tiles as $tile) {
-			if($this->hasSpacebattle($tile)) {
-				$logs[] = $this->resolveSpaceBattle($tile);
-			}
-		}
-		return $logs;
-	}
+	public function resolveSpaceBattle(Tile $tile, SpaceBattleLog $log) {
 
-	private function hasSpacebattle(Tile $tile) {
-		$piecesPerPlayer = $this->collectPieces($tile);
-		// more than one player on a tile == conflict
-		return count($piecesPerPlayer) > 1;
-	}
-
-	public function resolveSpaceBattle(Tile $tile) {
-
-	    $this->historyLog = new SpaceBattleLog($tile);
+	    $this->historyLog = $log;
         $this->piecesPerPlayer = $this->collectPieces($tile);
 
 		// flak first
@@ -105,13 +58,11 @@ class SpaceBattleService
 		$this->phase = 'main';
 		$this->handleMainCombat();
 
-		// reomve all cargo that no longer has transport capacity
+		// remove all cargo that no longer has transport capacity
 		$this->cleanupCargo($tile);
 
-		// drop any surviving troops on the planet
-		$planet = $this->planetRepo->findByTile($tile);
-		if($planet) {
-			$this->dropTroops($planet, $tile);
+		if($tile->planet) {
+			$this->dropTroops($tile->planet, $tile);
 		}
 
 		return $this->historyLog;
@@ -119,9 +70,8 @@ class SpaceBattleService
     }
 
     private function collectPieces(Tile $tile) {
-        $pieces = $this->pieceService->findByTile($tile);
-		$out = [];
-		foreach($pieces as $piece) {
+        $out = [];
+		foreach($tile->pieces as $piece) {
 			// only the ones that fight in space
 			if(!$this->pieceService->hasTrait($piece, FightsSpaceBattles::TAG)) {
 				continue;
@@ -214,6 +164,7 @@ class SpaceBattleService
 			foreach($pieces as $key => $piece) {
 				if($piece == $hit) {
 					unset($this->piecesPerPlayer[$player][$key]);
+					return;
 				}
 			}
 		}
@@ -256,8 +207,7 @@ class SpaceBattleService
     }
 
 	private function dropTroops(Planet $planet, Tile $tile) {
-		$pieces = $this->pieceService->findByTile($tile);
-		foreach($pieces as $piece) {
+		foreach($tile->pieces as $piece) {
 			if($this->pieceService->hasTrait($piece, FightsGroundBattles::TAG)) {
 				$piece->location = [ 'type' => 'planet', 'id' => $planet->id];
 			}
