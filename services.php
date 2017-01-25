@@ -36,8 +36,6 @@ $app['converter-service'] = function($app) {
     ]));
     $s->addConverter('\Plu\Entity\Player', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
-        'industry' => new Conv\NativeConverter(),
-        'social' => new Conv\NativeConverter(),
         'gameId' => new Conv\NativeConverter(),
         'name' => new Conv\NativeConverter(),
         'color' => new Conv\NativeConverter(),

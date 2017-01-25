@@ -11,6 +11,7 @@ use Plu\Repository\PieceTypeRepository;
 class StartingUnitService
 {
 
+	private $turn;
     private $board;
 
     /**
@@ -24,7 +25,8 @@ class StartingUnitService
     }
 
 
-    public function createStartingUnitsForGame(Game $game) {
+    public function createStartingUnitsForGame(Game $game, Turn $turn) {
+		$this->turn = $turn;
         $this->board = $game->board;
         $allPieces = [];
         foreach($game->players as $player) {
@@ -52,7 +54,7 @@ class StartingUnitService
         $pieceType = $this->pieceTypeRepo->findByName($pieceName);
         $piece = new Piece();
         $piece->ownerId = $player->id;
-        $piece->boardId = $this->board->id;
+        $piece->turnId = $this->turn->id;
         $piece->tileId = $tile->id;
         $piece->typeId = $pieceType->id;
         return $piece;
@@ -60,7 +62,7 @@ class StartingUnitService
 
     private function getHomeTileForPlayer(Board $board, Player $player) {
         foreach($board->tiles as $tile) {
-            if($tile->planet && $tile->planet->ownerId == $player->id) {
+            if(count($tile->pieces[$this->turn->number]) && $tile->pieces[$this->turn->number]->ownerId == $player->id) {
                 return $tile;
             }
         }

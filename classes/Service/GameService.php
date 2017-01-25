@@ -90,10 +90,13 @@ class GameService
 
         $game->board->tiles = $this->tileRepo->findByBoard($game->board);
         foreach($game->board->tiles as $tile) {
-            $tile->pieces = $this->pieceRepo->findByTile($tile);
-            foreach($tile->pieces as $piece) {
-                $piece->type = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
-            }
+			$tile->pieces = [];
+			foreach($game->turns as $turn) {
+				$tile->pieces[$turn->number] = $this->pieceRepo->findByTileAndTurn($tile, $turn);
+				foreach ($tile->pieces as $piece) {
+					$piece->type = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
+				}
+			}
         }
 
         return $game;

@@ -46,7 +46,7 @@ abstract class AbstractBattlePhaseService
 		$logs = [];
 		$turn = $game->currentTurn();
 		foreach($game->board->tiles as $tile) {
-			$pieces = $this->collectPieces($tile, $turn);
+			$pieces = $tile->pieces[$turn->number];
 			if($this->hasBattle($pieces)) {
 				$logs[] = $this->battleService->resolveBattle($pieces, $this->newLog($tile));
 			}

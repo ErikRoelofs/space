@@ -20,33 +20,38 @@ class NewGameService
         $game = new Game();
         $this->app['game-repo']->add($game);
 
-        $players = $this->newPlayers($game, $numPlayers);
+		$turn = new Turn();
+		$turn->gameId = $game->id;
+		$turn->number = 1;
+		$this->app['turn-repo']->add($turn);
+
+		$players = $this->newPlayers($game, $numPlayers);
         foreach($players as $key => $player) {
             $this->app['player-repo']->add($player);
         }
         $game->players = $players;
 
-        $board = $this->app['new-board-service']->newBoard($game, $players);
+        $board = $this->app['new-board-service']->newBoard($game, $turn, $players);
         $this->app['board-repo']->add($board);
         foreach($board->tiles as $tile) {
             $tile->boardId = $board->id;
             $this->app['tile-repo']->add($tile);
-            if($tile->planet) {
-                $tile->planet->tileId = $tile->id;
-                $this->app['planet-repo']->add($tile->planet);
+            if(count($tile->pieces)) {
+				// there is only 1, which is the planet
+				$planet = $tile->pieces[$turn->number][0];
+                $planet->tileId = $tile->id;
+				$planet->turnId = $turn->id;
+                $this->app['piece-repo']->add($planet);
             }
         }
         $game->board = $board;
 
         $units = $this->app['starting-units-service']->createStartingUnitsForGame($game);
         foreach($units as $unit) {
+			$unit->turnId = $turn->id;
             $this->app['piece-repo']->add($unit);
         }
 
-        $turn = new Turn();
-        $turn->gameId = $game->id;
-        $turn->number = 1;
-        $this->app['turn-repo']->add($turn);
 
     }
 
@@ -54,8 +59,6 @@ class NewGameService
         for($i = 0; $i < $amount ;$i++) {
             $player = new Player();
             $player->gameId = $game->id;
-            $player->industry = 0;
-            $player->social = 0;
             $player->name = $this->makeName($i);
             $player->color = $this->getColor($i);
             $players[] = $player;

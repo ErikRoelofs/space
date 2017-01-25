@@ -3,7 +3,9 @@
 namespace Plu\Service;
 
 use Plu\Entity\Board;
+use Plu\Entity\Game;
 use Plu\Entity\Tile;
+use Plu\Entity\Turn;
 
 class NewBoardService
 {
@@ -30,7 +32,7 @@ class NewBoardService
         $this->planetService = $planetService;
     }
 
-    public function newBoard($game, $players) {
+    public function newBoard(Game $game, Turn $turn, $players) {
         $board = new Board();
         $board->gameId = $game->id;
 
@@ -38,13 +40,13 @@ class NewBoardService
         shuffle($this->remainingPlayers);
         $tiles = [];
         foreach($this->tileCoords as $data) {
-            $tiles[] = $this->newTile($data[0], $data[1], isset($data[2]) ? $data[2] : null);
+            $tiles[] = $this->newTile($data[0], $data[1], isset($data[2]) ? $data[2] : null, $turn);
         }
         $board->tiles = $tiles;
         return $board;
     }
 
-    private function newTile($x, $y, $special) {
+    private function newTile($x, $y, $special, Turn $turn) {
         $planet = false;
         if($special == 'home') {
             $planet = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
@@ -59,7 +61,7 @@ class NewBoardService
         }
         $tile = new Tile();
         if($planet) {
-            $tile->planet = $planet;
+            $tile->pieces[$turn->number] = [$planet];
         }
         $tile->coordinates = [$x,$y];
         return $tile;
