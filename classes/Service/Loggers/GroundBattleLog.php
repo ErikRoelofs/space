@@ -2,28 +2,35 @@
 
 namespace Plu\Service\Loggers;
 
-use Plu\Service\SpaceBattleService;
+use Plu\Service\GroundBattleService;
 
 class GroundBattleLog extends AbstractBattleLog {
 
-    protected $planetCap;
+    protected $captures;
 
-	public function logPlanetCaptured($planet, $newOwner) {
-		$this->planetCap = [ $planet, $newOwner ];
+	public function logPieceCaptured($piece, $newOwner) {
+		$this->captures = [ $piece->id, $newOwner ];
 	}
 
 	public function compileLog() {
         return [
             'tile' => $this->tile,
             'hits' => $this->hits,
-            'planet' => $this->planetCap
+            'captures' => $this->captures
         ];
 	}
 
     public function getClass()
     {
-        return SpaceBattleService::class;
+        return GroundBattleService::class;
     }
 
+	public function getService() {
+		// TODO: Implement getService() method.
+	}
+
+	public function storeLog() {
+		// TODO: Implement storeLog() method.
+	}
 
 }

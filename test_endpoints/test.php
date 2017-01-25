@@ -15,9 +15,9 @@ $app->get('/test/spacebattle', function() use ($app) {
     $battleService = $app['space-battle-service'];
 
     $tile = new \Plu\Entity\Tile();
-    $tile->planet = new \Plu\Entity\Planet();
 
     $tile->pieces = [
+		makePiece($app['piece-type-repo'], "Planet", 1),
         makePiece($app['piece-type-repo'], "dreadnought", 1),
         makePiece($app['piece-type-repo'], "destroyer", 1),
         makePiece($app['piece-type-repo'], "destroyer", 1),
@@ -50,8 +50,6 @@ $app->get('/test/groundbattle', function() use ($app) {
     $battleService = $app['ground-battle-service'];
 
     $tile = new \Plu\Entity\Tile();
-    $tile->planet = new \Plu\Entity\Planet();
-    $tile->planet->ownerId = 2;
 
     $tile->pieces = [
         makePiece($app['piece-type-repo'], "dreadnought", 1),
@@ -65,6 +63,7 @@ $app->get('/test/groundbattle', function() use ($app) {
         makePiece($app['piece-type-repo'], "groundforce", 2),
         makePiece($app['piece-type-repo'], "groundforce", 2),
         makePiece($app['piece-type-repo'], "groundforce", 2),
+		makePiece($app['piece-type-repo'], "Planet", 2),
     ];
 
     $log = new \Plu\Service\Loggers\GroundBattleLog($tile);

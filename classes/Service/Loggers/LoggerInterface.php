@@ -9,7 +9,7 @@ interface LoggerInterface {
 
     public function getService();
 
-	public function compileLog();
+	public function storeLog();
 
 	public function getOrigin();
 

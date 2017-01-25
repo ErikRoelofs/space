@@ -33,11 +33,6 @@ class GameService
     private $tileRepo;
 
     /**
-     * @var PlanetRepository
-     */
-    private $planetRepo;
-
-    /**
      * @var PieceRepository
      */
     private $pieceRepo;
@@ -67,19 +62,17 @@ class GameService
      * @param GameRepository $gameRepo
      * @param BoardRepository $boardRepo
      * @param TileRepository $tileRepo
-     * @param PlanetRepository $planetRepo
      * @param PieceRepository $pieceRepo
      * @param PlayerRepository $playerRepo
      * @param PieceTypeRepository $pieceTypeRepo
      * @param OrderRepository $orderRepository
      * @param TurnRepository $turnRepository
      */
-    public function __construct(GameRepository $gameRepo, BoardRepository $boardRepo, TileRepository $tileRepo, PlanetRepository $planetRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository)
+    public function __construct(GameRepository $gameRepo, BoardRepository $boardRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository)
     {
         $this->gameRepo = $gameRepo;
         $this->boardRepo = $boardRepo;
         $this->tileRepo = $tileRepo;
-        $this->planetRepo = $planetRepo;
         $this->pieceRepo = $pieceRepo;
         $this->playerRepo = $playerRepo;
         $this->pieceTypeRepo = $pieceTypeRepo;
@@ -97,7 +90,6 @@ class GameService
 
         $game->board->tiles = $this->tileRepo->findByBoard($game->board);
         foreach($game->board->tiles as $tile) {
-            $tile->planet = $this->planetRepo->findByTile($tile);
             $tile->pieces = $this->pieceRepo->findByTile($tile);
             foreach($tile->pieces as $piece) {
                 $piece->type = $this->pieceTypeRepo->findByIdentifier($piece->typeId);

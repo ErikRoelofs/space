@@ -22,22 +22,22 @@ class TacticalOrderLog implements LoggerInterface {
     }
 
     public function addPlayer(Player $player) {
-		$this->data['player'] = $player;
+		$this->data['player'] = $player->id;
 	}
 
 	public function addPieceMoved($from, $piece) {
-		$this->data['moved'] = [$from, $piece];
+		$this->data['moved'] = [$from, $piece->id];
 	}
 
 	public function addPieceBuilt($piece) {
-		$this->data['built'] = [$piece];
+		$this->data['built'] = [$piece->id];
 	}
 
-	public function compileLog() {
+	public function storeLog() {
 		return $this->data;
 	}
 
-    public function getService()
+	public function getService()
     {
         return 'tactical-order-service';
     }

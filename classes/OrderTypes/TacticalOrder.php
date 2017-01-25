@@ -15,6 +15,7 @@ use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 
 use Plu\Service\GamestateUpdate;
+use Plu\Service\Loggers\LoggerInterface;
 use Plu\Service\Loggers\TacticalOrderLog;
 use Plu\Repository\TileRepository;
 use Plu\Service\OrdersService;
@@ -200,7 +201,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     }
 
-    public function updateGamestate(Game $game, Log $log)
+    public function updateGamestate(Game $game, LoggerInterface $log)
     {
 
     }

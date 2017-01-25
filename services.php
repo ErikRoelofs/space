@@ -34,13 +34,6 @@ $app['converter-service'] = function($app) {
         'name' => new Conv\NativeConverter(),
         'traits' => new Conv\TraitConverter(),
     ]));
-    $s->addConverter('\Plu\Entity\Planet', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'industrial' => new Conv\NativeConverter(),
-        'social' => new Conv\NativeConverter(),
-        'ownerId' => new Conv\NativeConverter(),
-        'tileId' => new Conv\NativeConverter(),
-    ]));
     $s->addConverter('\Plu\Entity\Player', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
         'industry' => new Conv\NativeConverter(),
@@ -82,9 +75,6 @@ $app['piece-repo'] = function($app) {
 $app['piece-type-repo'] = function($app) {
     return new Repo\PieceTypeRepository($app['db'], $app['converter-service']);
 };
-$app['planet-repo'] = function($app) {
-    return new Repo\PlanetRepository($app['db'], $app['converter-service']);
-};
 $app['player-repo'] = function($app) {
     return new Repo\PlayerRepository($app['db'], $app['converter-service']);
 };
@@ -104,7 +94,7 @@ $app['new-board-service'] = function($app) {
 };
 
 $app['new-planet-service'] = function($app) {
-    return new \Plu\Service\NewPlanetService();
+    return new \Plu\Service\NewPlanetService($app['piece-type-repo']);
 };
 
 $app['new-game-service'] = function($app) {
@@ -116,7 +106,7 @@ $app['orders-service'] = function($app) {
 };
 
 $app['piece-service'] = function($app) {
-    return new \Plu\Service\PieceService($app['piece-type-repo'], $app['piece-repo'], $app['planet-repo'], $app['board-repo']);
+    return new \Plu\Service\PieceService($app['piece-type-repo'], $app['piece-repo'], $app['board-repo']);
 };
 
 $app['order-service'] = function($app) {
@@ -151,7 +141,7 @@ $app['piece-types-service'] = function($app) {
 };
 
 $app['game-service'] = function($app) {
-    return new \Plu\Service\GameService($app['game-repo'], $app['board-repo'], $app['tile-repo'], $app['planet-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
+    return new \Plu\Service\GameService($app['game-repo'], $app['board-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
 };
 
 $app['end-of-turn-service'] = function($app) {

@@ -2,32 +2,47 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Piece;
 use Plu\Entity\Planet;
 use Plu\Entity\Player;
+use Plu\Repository\PieceTypeRepository;
 
 class NewPlanetService
 {
 
-    public function newHomePlanet(Player $player) {
-        $planet = new Planet();
-        $planet->industrial = 5;
-        $planet->social = 5;
-        $planet->ownerId = $player->id;
-        return $planet;
+	/**
+	 * @var PieceTypeRepository
+	 */
+	protected $pieceTypeRepo;
+
+	/**
+	 * NewPlanetService constructor.
+	 *
+	 * @param \Plu\Repository\PieceTypeRepository $pieceTypeRepo
+	 */
+	public function __construct(\Plu\Repository\PieceTypeRepository $pieceTypeRepo) {
+		$this->pieceTypeRepo = $pieceTypeRepo;
+	}
+
+	public function newHomePlanet(Player $player) {
+		$planet = new Piece();
+		$planet->typeId = $this->getPieceType();
+		$planet->ownerId = $player->id;
+		return $planet;
     }
 
     public function newCenterPlanet() {
-        $planet = new Planet();
-        $planet->industrial = 0;
-        $planet->social = 6;
-        return $planet;
+		$planet = new Piece();
+		return $planet;
     }
 
     public function newRegularPlanet() {
-        $planet = new Planet();
-        $planet->industrial = mt_rand(0,4);
-        $planet->social = mt_rand(0,4);
-        return $planet;
+		$planet = new Piece();
+		return $planet;
     }
+
+	public function getPieceType() {
+		return $this->pieceTypeRepo->findByName('Planet');
+	}
 
 }
