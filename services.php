@@ -26,7 +26,7 @@ $app['converter-service'] = function($app) {
         'id' => new Conv\NativeConverter(),
         'typeId' => new Conv\NativeConverter(),
         'ownerId' => new Conv\NativeConverter(),
-        'boardId' => new Conv\NativeConverter(),
+        'turnId' => new Conv\NativeConverter(),
         'tileId' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([

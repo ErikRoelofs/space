@@ -8,7 +8,6 @@ class Tile
     public $id;
     public $boardId;
     public $pieces = [];
-
     public $coordinates;
 
 }

@@ -6,12 +6,6 @@ use Plu\Service\GroundBattleService;
 
 class GroundBattleLog extends AbstractBattleLog {
 
-    protected $captures;
-
-	public function logPieceCaptured($piece, $newOwner) {
-		$this->captures = [ $piece->id, $newOwner ];
-	}
-
 	public function compileLog() {
         return [
             'tile' => $this->tile,

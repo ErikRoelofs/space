@@ -77,6 +77,9 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $tile = $this->tileRepo->findByIdentifier($data['tile']);
 
         // the targeted tile must
+		// exist in the same game as this player
+
+
         // not have any other orders by this player
         $otherOrders = $this->ordersService->getActiveOrdersForPlayer($player);
         foreach($otherOrders as $order) {
@@ -87,7 +90,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
             }
         }
 
-        // all ships sent must
+        // all ships sent must be valid
         foreach($data['pieces'] as $pieceId) {
             $piece = $this->pieceRepo->findByIdentifier($pieceId);
             if(!$this->validatePiece($piece, $tile, $player)) {
@@ -141,7 +144,8 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     }
 
     public function getPotentialPiecesForOrder(Tile $tile, Player $player) {
-        $pieces = $this->pieceRepo->findByPlayer($player);
+		$turn = $this->getTurn();
+        $pieces = $this->pieceRepo->findByPlayerAndTurn($player, $turn);
         $potentials = [];
         foreach($pieces as $piece) {
             if($this->validatePiece($piece, $tile, $player)) {
@@ -152,6 +156,9 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     }
 
     private function validatePiece(Piece $piece, Tile $tile, Player $player) {
+		// exist in the current turn
+		// @TODO
+
         // belong to the player
         if($player->id != $piece->ownerId) {
             return false;
@@ -206,5 +213,8 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     }
 
+	public function getTurn() {
+		// @TODO
+	}
 
 }

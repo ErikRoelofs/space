@@ -18,7 +18,7 @@ abstract class AbstractBattleService
     protected $tag;
     protected $priority;
 
-    protected $tile;
+	protected $pieces;
 
     protected $piecesPerPlayer = [];
 
@@ -41,13 +41,24 @@ abstract class AbstractBattleService
         $this->pieceService = $pieceService;
         $this->tag = $tag;
         $this->priority = $priority;
-    }
 
+	}
 
-    protected function collectPieces(Tile $tile) {
+	public function resolveBattle(array $pieces, AbstractBattleLog $log) {
+
+		$this->historyLog = $log;
+		$this->pieces = $pieces;
+		$this->piecesPerPlayer = $this->collectPieces();
+
+		$this->resolve();
+	}
+
+	abstract protected function resolve();
+
+    protected function collectPieces() {
         $out = [];
-        foreach($tile->pieces as $piece) {
-            // only the ones that fight in space
+        foreach($this->pieces as $piece) {
+            // only the ones that fight in this battle
             if(!$this->pieceService->hasTrait($piece, $this->tag)) {
                 continue;
             }
@@ -151,12 +162,37 @@ abstract class AbstractBattleService
 
     protected function getPiecesWithTag($tag) {
         $out = [];
-        foreach($this->tile->pieces as $piece){
+        foreach($this->pieces as $piece){
             if($this->pieceService->hasTrait($piece, $tag)) {
                 $out[] = $piece;
             }
         }
         return $out;
     }
+
+
+	/**
+	 * Whichever player has pieces left, earns all the capturable items.
+	 * If all players are destroyed, they do not change owner.
+	 */
+	protected function resolveCaptures() {
+		$capturables = $this->getPiecesWithTag(Capturable::TAG);
+		if(!count($capturables)){
+			return;
+		}
+		foreach($this->piecesPerPlayer as $player => $pieces) {
+			if(count($pieces) > 0) {
+				foreach($capturables as $capture) {
+					$capture->ownerId = $player;
+					$this->historyLog->logPieceCaptured($capture, $player);
+				}
+			}
+		}
+	}
+
+	protected function allPieces() {
+
+	}
+
 
 }

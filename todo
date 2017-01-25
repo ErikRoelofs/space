@@ -1,7 +1,7 @@
 backend:
 v1:
-- turn planets into pieces
-- update pieces to always be on a specific tile? (since there is only one planet and we don't care about which ship carries them)
-- refactor: game has turns, turns have pieces. allows recapturing old gamestate (needed for order logging)
+V turn planets into pieces
+- refactor: game has turns, turns have pieces. allows recapturing old gamestate (needed for order logging). Tile + Turn has pieces???
 - fix up construction of units
 ? handle transportation of cargo
+- change the view to just have 1 method for all the gamedata (with player restrictions later on)

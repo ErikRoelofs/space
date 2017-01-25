@@ -6,16 +6,11 @@ use Plu\Service\SpaceBattleService;
 
 class SpaceBattleLog extends AbstractBattleLog {
 
-	protected $captures;
 	private $lostCargo = [];
 
 	public function logLostCargo($player, $piece) {
         $this->lostCargo[] = [ 'player' => $player, 'cargo' => $piece ];
     }
-
-	public function logPieceCaptured($piece, $newOwner) {
-		$this->captures = [ $piece->id, $newOwner ];
-	}
 
 	public function compileLog() {
 		return [

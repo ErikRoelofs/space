@@ -15,6 +15,7 @@ use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\GroundCannon;
+use Plu\PieceTrait\Grounded;
 use Plu\PieceTrait\MainCannon;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
@@ -99,6 +100,7 @@ class PieceTypesService
         $type->traits = [];
 
         $type->traits[] = new Cargo();
+		$type->traits[] = new Spaceborne();
         $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(0.5)]);
         $type->traits[] = new FightsSpaceBattles(1,1);
         $type->traits[] = new MainCannon(1,2);
@@ -161,6 +163,7 @@ class PieceTypesService
         $type->traits[] = new FightsGroundBattles(1,1);
         $type->traits[] = new GroundCannon(1,2);
 		$type->traits[] = new CostsResources(0.5);
+		$type->traits[] = new Grounded();
 
         return $type;
     }
@@ -176,6 +179,8 @@ class PieceTypesService
         $type->traits[] = new Artillery(1,5);
 		$type->traits[] = new TileLimit(3);
 		$type->traits[] = new CostsResources(2);
+		$type->traits[] = new Spaceborne();
+		$type->traits[] = new Grounded();
 
         return $type;
     }

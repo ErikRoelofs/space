@@ -9,11 +9,17 @@ abstract class AbstractBattleLog implements LoggerInterface
     protected $tile;
     protected $hits = [];
 
+	protected $captures = [];
+
     public function __construct(Tile $tile) {
         $this->tile = $tile;
     }
 
-    public function logHit($phase, $round, $by, $to) {
+	public function logPieceCaptured($piece, $newOwner) {
+		$this->captures = [ $piece->id, $newOwner ];
+	}
+
+	public function logHit($phase, $round, $by, $to) {
         $this->hits[] = [ 'phase' => $phase, 'round' => $round, 'scoredBy' => $by, 'target' => $to ];
     }
 

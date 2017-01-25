@@ -8,6 +8,6 @@ class Piece
     public $tileId;
     public $typeId;
     public $ownerId;
-    public $boardId;
+	public $turnId;
 
 }

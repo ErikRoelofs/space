@@ -18,25 +18,13 @@ class PieceService
      */
     protected $pieceTypeRepo;
 
-	/**
-	 * @var \Plu\Repository\PieceRepository
-	 */
-	protected $pieceRepo;
-
-    /**
-     * @var BoardRepository
-     */
-	protected $boardRepository;
-
     /**
      * PieceService constructor.
      * @param $pieceTypeRepo
      */
-    public function __construct(PieceTypeRepository $pieceTypeRepo, PieceRepository $pieceRepo, BoardRepository $boardRepository )
+    public function __construct(PieceTypeRepository $pieceTypeRepo)
     {
         $this->pieceTypeRepo = $pieceTypeRepo;
-		$this->pieceRepo = $pieceRepo;
-		$this->boardRepository = $boardRepository;
     }
 
 
@@ -55,9 +43,5 @@ class PieceService
         }
         return null;
     }
-
-	public function findByTile(Tile $tile) {
-		return $this->pieceRepo->findByTile($tile);
-	}
 
 }

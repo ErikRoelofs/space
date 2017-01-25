@@ -6,6 +6,7 @@ use Plu\Entity\Planet;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\Artillery;
 use Plu\PieceTrait\Bombs;
+use Plu\PieceTrait\Capturable;
 use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\GroundCannon;
 use Plu\Service\Loggers\GroundBattleLog;
@@ -21,11 +22,8 @@ class GroundBattleService  extends AbstractBattleService {
         parent::__construct($pieceService, FightsGroundBattles::TAG, FightsGroundBattles::PRIORITY);
 	}
 
-	public function resolveGroundBattle(Tile $tile, GroundBattleLog $groundBattleLog) {
+	protected function resolve() {
 
-	    $this->tile = $tile;
-	    $this->historyLog = $groundBattleLog;
-		$this->piecesPerPlayer = $this->collectPieces($tile);
 
 		// drop bombs
 		$this->phase = 'bombs';
@@ -39,8 +37,8 @@ class GroundBattleService  extends AbstractBattleService {
 		$this->phase = 'main';
 		$this->handleMainCombat();
 
-		// check for planet ownership
-		$this->resolvePlanetOwner($this->tile->planet);
+		// check for captures
+		$this->resolveCaptures();
 
 		return $this->historyLog;
 
@@ -63,18 +61,6 @@ class GroundBattleService  extends AbstractBattleService {
 
 	private function handleMainRound() {
 		$this->handleWeapon(GroundCannon::TAG, 'normal');
-	}
-
-	/**
-	 * If no pieces remain, owner does not change (even if the old owner has no more troops)
-	 */
-	private function resolvePlanetOwner(Planet $planet) {
-		foreach($this->piecesPerPlayer as $player => $pieces) {
-			if(count($pieces) > 0) {
-				$planet->ownerId = $player;
-				$this->historyLog->logPlanetCaptured($planet, $player);
-			}
-		}
 	}
 
 }

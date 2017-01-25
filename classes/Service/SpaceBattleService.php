@@ -26,11 +26,7 @@ class SpaceBattleService extends AbstractBattleService
 	    parent::__construct($pieceService, FightsSpaceBattles::TAG, FightsSpaceBattles::PRIORITY);
 	}
 
-	public function resolveSpaceBattle(Tile $tile, SpaceBattleLog $log) {
-
-	    $this->tile = $tile;
-	    $this->historyLog = $log;
-        $this->piecesPerPlayer = $this->collectPieces($tile);
+	protected function resolve() {
 
 		// flak first
 		$this->phase = 'flak';
@@ -44,6 +40,9 @@ class SpaceBattleService extends AbstractBattleService
 
 		// remove all cargo that no longer has transport capacity
 		$this->cleanupCargo($tile);
+
+		// check for captures
+		$this->resolveCaptures();
 
 		return $this->historyLog;
     }
@@ -67,13 +66,9 @@ class SpaceBattleService extends AbstractBattleService
         $this->handleWeapon(MainCannon::TAG, 'normal');
     }
 
-	private function cleanupCargo(Tile $tile) {
+	private function cleanupCargo() {
 
 	    foreach($this->piecesPerPlayer as $player => $pieces) {
-	        // planets have unlimited cargo storage
-	        if($player == $tile->planet->ownerId) {
-	            continue;
-            }
             $cargoAllowed = 0;
 	        $cargoUsed = 0;
 	        foreach($pieces as $piece) {
