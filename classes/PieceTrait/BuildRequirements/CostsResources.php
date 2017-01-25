@@ -4,27 +4,27 @@ namespace Plu\PieceTrait\BuildRequirements;
 
 use Plu\PieceTrait\TraitInterface;
 
-class PieceWithTag implements TraitInterface
+class CostsResources implements TraitInterface
 {
-    private $content;
+    private $amount;
 
     /**
      * PieceWithTag constructor.
-     * @param $content
+     * @param $amount
      */
-    public function __construct($content)
+    public function __construct($amount)
     {
-        $this->content = $content;
+        $this->amount = $amount;
     }
 
     public function getTraitName()
     {
-        return 'build.requirement.piecewithtag';
+        return 'build.requirement.resources';
     }
 
     public function getTraitContent()
     {
-        return $this->content;
+        return $this->amount;
     }
 
 

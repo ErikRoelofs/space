@@ -6,14 +6,25 @@ class BuildsPieces implements TraitInterface
 {
     const TAG = 'builds';
 
-    public function getTraitName()
+	protected $typeNames = [];
+
+	/**
+	 * BuildsPieces constructor.
+	 *
+	 * @param array $typeNames
+	 */
+	public function __construct(array $typeNames) {
+		$this->typeNames = $typeNames;
+	}
+
+	public function getTraitName()
     {
         return self::TAG;
     }
 
     public function getTraitContent()
     {
-        return true;
+        return $this->typeNames;
     }
 
 }
