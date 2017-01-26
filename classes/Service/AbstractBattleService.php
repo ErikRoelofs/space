@@ -128,12 +128,23 @@ abstract class AbstractBattleService
     }
 
     protected function takeHit(Piece $hit) {
-        foreach($this->piecesPerPlayer as $player => $pieces) {
-            foreach($pieces as $key => $piece) {
-                if($piece == $hit) {
-                    unset($this->piecesPerPlayer[$player][$key]);
-                    return;
-                }
+        $this->cleanFromPiecesList($hit);
+        $this->cleanFromPiecesPerPlayer($hit);
+    }
+
+    private function cleanFromPiecesPerPlayer(Piece $hit) {
+        foreach($this->piecesPerPlayer[$hit->ownerId] as $key => $piece) {
+            if($piece == $hit) {
+                unset($this->piecesPerPlayer[$hit->ownerId][$key]);
+                return;
+            }
+        }
+    }
+    private function cleanFromPiecesList(Piece $hit) {
+        foreach($this->pieces as $key => $piece) {
+            if($piece == $hit) {
+                unset($this->pieces[$key]);
+                return;
             }
         }
     }
