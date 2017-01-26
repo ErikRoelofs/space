@@ -34,6 +34,9 @@ angular.module('game', []).service('piecesService', function () {
             return pieceTypes.filter(function (item) {
                 return item.id == piece.typeId
             })[0];
+        },
+        getAll: function() {
+            return pieceTypes;
         }
     }
 }).service('boardService', function () {
