@@ -1,4 +1,4 @@
-angular.module('game').directive('planet', ['$http', 'piecesService', 'playersService', function($http, piecesService, playersService) {
+angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceTypesService', 'playersService', function($http, piecesService, pieceTypesService, playersService) {
     return {
         restrict: 'E',
         scope: {
@@ -7,10 +7,13 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'playersSe
         },
         templateUrl: "directives/planet/template.html",
         link: function(scope) {
+
+            scope.type = pieceTypesService.getPieceTypeForPiece(scope.planet);
+
             scope.pieces = piecesService.getPiecesForPlanet(scope.planet);
 
             scope.fighters = function() {
-                return scope.pieces.filter(function(item) { return item.typeId == 13}).length;
+                return scope.pieces.filter(function(item) { return item.typeId == 4}).length;
             };
             scope.troops = function() {
                 return 0;

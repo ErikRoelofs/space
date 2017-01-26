@@ -6,13 +6,22 @@ angular.module('game', []).service('piecesService', function () {
         },
         getPiecesForTile: function (tile) {
             return pieces.filter(function (item) {
-                return item.tileId == tile.id && item.typeId != 13;
+                return item.tileId == tile.id && item.typeId != 4 && item.typeId != 1;
             });
         },
         getPiecesForPlanet: function (planet) {
             return pieces.filter(function (item) {
-                return item.tileId == planet.tileId && item.typeId == 13;
+                return item.tileId == planet.tileId && item.typeId == 4;
             });
+        },
+        getPlanetForTile: function (tile) {
+            var planets = pieces.filter(function (item) {
+                return item.tileId == tile.id && item.typeId == 1;
+            });
+            if(planets.length) {
+                return planets[0];
+            }
+            return null;
         }
     };
 }).service('pieceTypesService', function () {

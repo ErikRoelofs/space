@@ -6,6 +6,7 @@ angular.module('game').directive('playerInfo', ['$http', function($http) {
         },
         templateUrl: "directives/player-info/template.html",
         link: function(scope) {
+            /*
             $http.get('/player/' + scope.player + '/info').then(function(response) {
                 scope.player = response.data;
             });
@@ -13,6 +14,7 @@ angular.module('game').directive('playerInfo', ['$http', function($http) {
             $http.get('/player/' + scope.player + '/currentOrders').then(function(response) {
                 scope.orders = response.data;
             });
+            */
         }
     }
-}])
+}]);

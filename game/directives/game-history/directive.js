@@ -6,9 +6,11 @@ angular.module('game').directive('gameHistory', ['$http', 'pieceTypesService', f
         },
         templateUrl: "directives/game-history/template.html",
         link: function(scope) {
+            /*
             $http.get('/game/' + scope.game + '/history').then(function(response) {
                 scope.game = response.data;
             })
+            */
         }
 
     }
