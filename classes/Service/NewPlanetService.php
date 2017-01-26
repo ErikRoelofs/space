@@ -26,18 +26,20 @@ class NewPlanetService
 
 	public function newHomePlanet(Player $player) {
 		$planet = new Piece();
-		$planet->typeId = $this->getPieceType();
+		$planet->typeId = $this->getPieceType()->id;
 		$planet->ownerId = $player->id;
 		return $planet;
     }
 
     public function newCenterPlanet() {
 		$planet = new Piece();
+        $planet->typeId = $this->getPieceType()->id;
 		return $planet;
     }
 
     public function newRegularPlanet() {
 		$planet = new Piece();
+        $planet->typeId = $this->getPieceType()->id;
 		return $planet;
     }
 

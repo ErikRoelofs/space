@@ -46,7 +46,7 @@ class NewGameService
         }
         $game->board = $board;
 
-        $units = $this->app['starting-units-service']->createStartingUnitsForGame($game);
+        $units = $this->app['starting-units-service']->createStartingUnitsForGame($game, $turn);
         foreach($units as $unit) {
 			$unit->turnId = $turn->id;
             $this->app['piece-repo']->add($unit);

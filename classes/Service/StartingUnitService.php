@@ -6,6 +6,7 @@ use Plu\Entity\Board;
 use Plu\Entity\Game;
 use Plu\Entity\Piece;
 use Plu\Entity\Player;
+use Plu\Entity\Turn;
 use Plu\Repository\PieceTypeRepository;
 
 class StartingUnitService
@@ -62,7 +63,7 @@ class StartingUnitService
 
     private function getHomeTileForPlayer(Board $board, Player $player) {
         foreach($board->tiles as $tile) {
-            if(count($tile->pieces[$this->turn->number]) && $tile->pieces[$this->turn->number]->ownerId == $player->id) {
+            if(isset($tile->pieces[$this->turn->number]) && count($tile->pieces[$this->turn->number]) && $tile->pieces[$this->turn->number][0]->ownerId == $player->id) {
                 return $tile;
             }
         }
