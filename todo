@@ -2,6 +2,8 @@ backend:
 v1:
 V turn planets into pieces
 - refactor: game has turns, turns have pieces. allows recapturing old gamestate (needed for order logging). Tile + Turn has pieces???
+- turn -> tile -> piece (fix this in the generator which has it the other way around)
+- eliminate board? maybe also make tiles value-objects? they don't really do anything now
 - fix up construction of units
 ? handle transportation of cargo
 - change the view to just have 1 method for all the gamedata (with player restrictions later on)

@@ -25,9 +25,8 @@ class TurnConverter implements ConverterInterface
     public function toJSON($data)
     {
         $base = $this->c->toJSON($data);
-        if($data->orders) {
-            $base['orders'] = $this->app['converter-service']->batchToJSONObject($data->orders);
-        }
+        $base['orders'] = $this->app['converter-service']->batchToJSONObject($data->orders);
+        $base['tiles'] = $this->app['converter-service']->batchToJSONObject($data->tiles);
         return $base;
     }
 

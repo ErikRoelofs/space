@@ -84,19 +84,17 @@ class GameService
         $game = $this->gameRepo->findByIdentifier($gameId);
         $game->board = $this->boardRepo->findByGame($game);
         $game->players = $this->playerRepo->findByGame($game);
-        $game->turns = $this->turnRepository->findCompletedByGame($game);
-        $game->currentTurn = $this->turnRepository->getCurrentForGame($game);
+        $game->turns = $this->turnRepository->findByGame($game);
         $game->pieceTypes = $this->pieceTypeRepo->findAll();
 
-        $game->board->tiles = $this->tileRepo->findByBoard($game->board);
-        foreach($game->board->tiles as $tile) {
-			$tile->pieces = [];
-			foreach($game->turns as $turn) {
-				$tile->pieces[$turn->number] = $this->pieceRepo->findByTileAndTurn($tile, $turn);
-				foreach ($tile->pieces as $piece) {
-					$piece->type = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
-				}
-			}
+        $tiles = $this->tileRepo->findByBoard($game->board);
+        foreach($game->turns as $turn) {
+            foreach($tiles as $originalTile) {
+                $tile = clone $originalTile;
+                $tile->pieces = $this->pieceRepo->findByTileAndTurn($tile, $turn);
+                $turn->tiles[] = $tile;
+            }
+            $turn->orders = $this->orderRepository->findByTurn($turn);
         }
 
         return $game;

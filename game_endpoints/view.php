@@ -1,5 +1,11 @@
 <?php
 
+$app->get('/game/{id}', function($id) use ($app) {
+    $game = $app['game-service']->buildGame($id);
+    return $app['converter-service']->toJson($game);
+});
+
+/*
 $app->get('/player/{player}/info', function($player) use ($app) {
     $player = $app['player-repo']->findByIdentifier($player);
     return $app['converter-service']->toJSON($player);
@@ -45,4 +51,4 @@ $app->get('/game/{game}/settings', function($game) use ($app) {
     //$game->orderTypes = $app['order-type-repo']->findAll();
 
     return $app['converter-service']->toJSON($game);
-});
+});*/

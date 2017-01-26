@@ -24,5 +24,10 @@ class TurnRepository extends BaseRepository
         return $this->converter->fromDB($this->tableName, $row);
     }
 
+    public function findByGame(Game $game) {
+        $sql = "SELECT * FROM $this->tableName WHERE gameId = ? ORDER BY number";
+        $row = $this->db->fetchAll($sql, array((int) $game->id));
+        return $this->converter->batchFromDB($this->tableName, $row);
+    }
 
 }

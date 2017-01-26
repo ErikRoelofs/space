@@ -8,4 +8,5 @@ class Turn
     public $number;
     public $gameId;
     public $orders = [];
+    public $tiles = [];
 }
