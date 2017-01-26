@@ -5,15 +5,14 @@ namespace Plu\Service;
 
 use Plu\Entity\PieceType;
 use Plu\PieceTrait\Artillery;
-use Plu\PieceTrait\Buildable;
-use Plu\PieceTrait\BuildRequirements\PieceWithTag;
-use Plu\PieceTrait\BuildRequirements\Resources;
+use Plu\PieceTrait\BuildRequirements\CostsResources;
 use Plu\PieceTrait\BuildsPieces;
 use Plu\PieceTrait\Capturable;
 use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
+use Plu\PieceTrait\GivesResources;
 use Plu\PieceTrait\GroundCannon;
 use Plu\PieceTrait\Grounded;
 use Plu\PieceTrait\MainCannon;
@@ -52,7 +51,7 @@ class PieceTypesService
 		$type->traits[] = new Grounded();
 		$type->traits[] = new Transports(100);
 		$type->traits[] = new Capturable();
-		$type->traits[] = new Resources(2,2);
+		$type->traits[] = new GivesResources(2,2);
 		$type->traits[] = new TileLimit(1);
 		$type->traits[] = new BuildsPieces(['SpaceDock']);
 
@@ -67,7 +66,6 @@ class PieceTypesService
 
         $type->traits[] = new Spaceborne();
         $type->traits[] = new Mobile(2);
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(1)]);
         $type->traits[] = new FightsSpaceBattles(1,1);
         $type->traits[] = new FlakCannons(2,2);
         $type->traits[] = new MainCannon(1,2);
@@ -85,7 +83,6 @@ class PieceTypesService
         $type->traits[] = new Spaceborne();
         $type->traits[] = new Mobile(1);
         $type->traits[] = new Transports(6);
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(3)]);
         $type->traits[] = new FightsSpaceBattles(3,1);
         $type->traits[] = new MainCannon(1,2);
 		$type->traits[] = new CostsResources(3);
@@ -101,7 +98,6 @@ class PieceTypesService
 
         $type->traits[] = new Cargo();
 		$type->traits[] = new Spaceborne();
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(0.5)]);
         $type->traits[] = new FightsSpaceBattles(1,1);
         $type->traits[] = new MainCannon(1,2);
         $type->traits[] = new Tiny();
@@ -129,7 +125,6 @@ class PieceTypesService
 
         $type->traits[] = new Spaceborne();
         $type->traits[] = new Mobile(2);
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(2)]);
         $type->traits[] = new FightsSpaceBattles(2,1);
         $type->traits[] = new MainCannon(1,4);
 		$type->traits[] = new CostsResources(2);
@@ -145,7 +140,6 @@ class PieceTypesService
 
         $type->traits[] = new Spaceborne();
         $type->traits[] = new Mobile(1);
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(5)]);
         $type->traits[] = new FightsSpaceBattles(2,2);
         $type->traits[] = new MainCannon(1,6);
 		$type->traits[] = new CostsResources(5);
@@ -159,7 +153,6 @@ class PieceTypesService
         $type->traits = [];
 
         $type->traits[] = new Cargo();
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(0.5)]);
         $type->traits[] = new FightsGroundBattles(1,1);
         $type->traits[] = new GroundCannon(1,2);
 		$type->traits[] = new CostsResources(0.5);
@@ -174,7 +167,6 @@ class PieceTypesService
         $type->traits = [];
 
         $type->traits[] = new Cargo();
-        $type->traits[] = new Buildable([new PieceWithTag(BuildsPieces::TAG), new Resources(2)]);
         $type->traits[] = new Torpedoes(1,5);
         $type->traits[] = new Artillery(1,5);
 		$type->traits[] = new TileLimit(3);

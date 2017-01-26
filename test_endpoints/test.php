@@ -40,7 +40,7 @@ $app->get('/test/spacebattle', function() use ($app) {
 
     $log = new \Plu\Service\Loggers\SpaceBattleLog($tile);
 
-    $report = $battleService->resolve($pieces, $log);
+    $report = $battleService->resolveBattle($pieces, $log);
 
     print_r($report);
     exit;
@@ -68,7 +68,7 @@ $app->get('/test/groundbattle', function() use ($app) {
 
     $log = new \Plu\Service\Loggers\GroundBattleLog($tile);
 
-    $report = $battleService->resolve($pieces, $log);
+    $report = $battleService->resolveBattle($pieces, $log);
 
     print_r($report);
     exit;

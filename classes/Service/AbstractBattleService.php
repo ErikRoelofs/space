@@ -4,6 +4,7 @@ namespace Plu\Service;
 
 use Plu\Entity\Piece;
 use Plu\Entity\Tile;
+use Plu\PieceTrait\Capturable;
 use Plu\PieceTrait\Tiny;
 use Plu\Service\Loggers\AbstractBattleLog;
 
@@ -50,7 +51,7 @@ abstract class AbstractBattleService
 		$this->pieces = $pieces;
 		$this->piecesPerPlayer = $this->collectPieces();
 
-		$this->resolve();
+		return $this->resolve();
 	}
 
 	abstract protected function resolve();
@@ -183,8 +184,11 @@ abstract class AbstractBattleService
 		foreach($this->piecesPerPlayer as $player => $pieces) {
 			if(count($pieces) > 0) {
 				foreach($capturables as $capture) {
-					$capture->ownerId = $player;
-					$this->historyLog->logPieceCaptured($capture, $player);
+				    // only capture things that carry the tag for this battle type
+				    if($this->pieceService->hasTrait($capture, $this->tag)) {
+                        $capture->ownerId = $player;
+                        $this->historyLog->logPieceCaptured($capture, $player);
+                    }
 				}
 			}
 		}

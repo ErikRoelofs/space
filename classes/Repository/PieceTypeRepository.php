@@ -2,6 +2,8 @@
 
 namespace Plu\Repository;
 
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+
 class PieceTypeRepository extends BaseRepository
 {
     public function __construct($db, $converter)

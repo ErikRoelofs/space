@@ -39,7 +39,7 @@ class SpaceBattleService extends AbstractBattleService
 		$this->handleMainCombat();
 
 		// remove all cargo that no longer has transport capacity
-		$this->cleanupCargo($tile);
+		$this->cleanupCargo();
 
 		// check for captures
 		$this->resolveCaptures();
