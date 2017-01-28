@@ -83,6 +83,9 @@ class GameService
             foreach($tiles as $originalTile) {
                 $tile = clone $originalTile;
                 $tile->pieces = $this->pieceRepo->findByTileAndTurn($tile, $turn);
+                foreach($tile->pieces as $piece) {
+                    $piece->tile = $tile;
+                }
                 $turn->tiles[] = $tile;
             }
             $turn->orders = $this->orderRepository->findByTurn($turn);

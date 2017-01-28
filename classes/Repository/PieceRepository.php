@@ -19,7 +19,7 @@ class PieceRepository extends BaseRepository {
 
 	public function findByPlayerAndTurn(Player $player, Turn $turn) {
 		$sql = "SELECT * FROM $this->tableName WHERE ownerId = ? and turnId = ?";
-		$rows = $this->db->fetchAll($sql, array((int)$player->id), (int)$turn->id);
+		$rows = $this->db->fetchAll($sql, array((int)$player->id, (int)$turn->id));
 		return $this->converter->batchFromDB($this->tableName, $rows);
 	}
 

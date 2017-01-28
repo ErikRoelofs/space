@@ -23,6 +23,14 @@ class Game
 		return $found;
 	}
 
+	public function getTurn($turnId) {
+	    foreach($this->turns as $turn) {
+	        if($turn->id == $turnId) {
+	            return $turn;
+            }
+        }
+    }
+
 	public function currentOrdersForPlayer(Player $player) {
 	    $turn = $this->currentTurn();
 	    $out = [];
@@ -34,7 +42,7 @@ class Game
         return $out;
     }
 
-    public function findTileInCurrentTurn($id) {
+    public function findTile($id) {
         $turn = $this->currentTurn();
         foreach($turn->tiles as $tile) {
             if($tile->id == $id) {
@@ -42,6 +50,27 @@ class Game
             }
         }
         return null;
+    }
+
+    public function findPieceInTurn(Turn $turn, $pieceId) {
+	    foreach($turn->pieces as $piece) {
+	        if($piece->id == $pieceId) {
+	            return $piece;
+            }
+        }
+    }
+
+    public function findCurrentPiecesForPlayer(Player $player) {
+	    $turn = $this->currentTurn();
+	    $out = [];
+	    foreach($turn->tiles as $tile) {
+            foreach ($tile->pieces as $piece) {
+                if ($piece->ownerId == $player->id) {
+                    $out[] = $piece;
+                }
+            }
+        }
+        return $out;
     }
 
 }

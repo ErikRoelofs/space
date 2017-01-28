@@ -2,6 +2,8 @@
 
 namespace Plu\Repository;
 
+use Plu\Entity\Game;
+
 class TileRepository extends BaseRepository
 {
     public function __construct($db, $converter)

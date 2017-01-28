@@ -75,9 +75,9 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     {
 
         $turn = $game->currentTurn();
-        $tile = $game->findTileInCurrentTurn($data['tile']);
+        $tile = $game->findTile($data['tile']);
         if(!$tile) {
-            throw new \Exception("This tile is not a part of the current turn.");
+            throw new \Exception("This tile is not a part of this game.");
         }
 
         // not have any other orders by this player
@@ -92,8 +92,11 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
         // all ships sent must be valid
         foreach($data['pieces'] as $pieceId) {
-
-            if(!$this->validatePiece($piece, $tile, $player)) {
+            $piece = $game->findPieceInTurn($turn, $pieceId);
+            if(!$piece) {
+                throw new \Exception("A piece does not exist.");
+            }
+            if(!$this->validatePiece($piece, $tile, $player, $game)) {
                 throw new \Exception("A piece was sent that is not valid for this move");
             }
         }
@@ -143,22 +146,18 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         return self::TAG;
     }
 
-    public function getPotentialPiecesForOrder(Tile $tile, Player $player) {
-		$turn = $this->getTurn();
-        $pieces = $this->pieceRepo->findByPlayerAndTurn($player, $turn);
+    public function getPotentialPiecesForOrder(Tile $tile, Player $player, Game $game) {
+        $pieces = $game->findCurrentPiecesForPlayer($player);
         $potentials = [];
         foreach($pieces as $piece) {
-            if($this->validatePiece($piece, $tile, $player)) {
+            if($this->validatePiece($piece, $tile, $player, $game)) {
                 $potentials[] = $piece;
             }
         }
         return $potentials;
     }
 
-    private function validatePiece(Piece $piece, Tile $tile, Player $player) {
-		// exist in the current turn
-		// @TODO
-
+    private function validatePiece(Piece $piece, Tile $tile, Player $player, Game $game) {
         // belong to the player
         if($player->id != $piece->ownerId) {
             return false;
@@ -174,7 +173,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         }
 
         // has no orders
-        if(!$this->validateNoOrdersSet($piece, $player)) {
+        if(!$this->validateNoOrdersSet($piece, $player, $game)) {
             return false;
         }
 
@@ -186,9 +185,9 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         return true;
     }
 
-    private function validateNoOrdersSet(Piece $piece, Player $player) {
+    private function validateNoOrdersSet(Piece $piece, Player $player, Game $game) {
 
-        $otherOrders = $this->ordersService->getActiveOrdersForPlayer($player);
+        $otherOrders = $game->currentOrdersForPlayer($player);
         // not have any other tactical orders set
         foreach($otherOrders as $order) {
             if($order->orderType == $this->type) {
@@ -212,9 +211,5 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     {
 
     }
-
-	public function getTurn() {
-		// @TODO
-	}
 
 }
