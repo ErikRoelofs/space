@@ -6,7 +6,7 @@ class Tile
 {
 
     public $id;
-    public $boardId;
+    public $gameId;
     public $pieces = [];
     public $coordinates;
 

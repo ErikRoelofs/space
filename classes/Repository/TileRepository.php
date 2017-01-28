@@ -2,8 +2,6 @@
 
 namespace Plu\Repository;
 
-use Plu\Entity\Board;
-
 class TileRepository extends BaseRepository
 {
     public function __construct($db, $converter)
@@ -11,9 +9,9 @@ class TileRepository extends BaseRepository
         return parent::__construct($db, $converter, 'tile');
     }
 
-    public function findByBoard(Board $board) {
-        $sql = "SELECT * FROM $this->tableName WHERE boardId = ?";
-        $rows = $this->db->fetchAll($sql, array((int) $board->id));
+    public function findByGame(Game $game) {
+        $sql = "SELECT * FROM $this->tableName WHERE gameId = ?";
+        $rows = $this->db->fetchAll($sql, array((int) $game->id));
         return $this->converter->batchFromDB($this->tableName, $rows);
     }
 

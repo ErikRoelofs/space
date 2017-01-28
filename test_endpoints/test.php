@@ -73,3 +73,7 @@ $app->get('/test/groundbattle', function() use ($app) {
     print_r($report);
     exit;
 });
+
+$app->get('/test/tacticalorder', function() use ($app) {
+
+});

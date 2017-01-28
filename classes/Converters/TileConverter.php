@@ -16,7 +16,7 @@ class TileConverter implements ConverterInterface
     public function __construct($app) {
         $this->c = new Conv\ConfigurableConverter([
             'id' => new Conv\NativeConverter(),
-            'boardId' => new Conv\NativeConverter(),
+            'gameId' => new Conv\NativeConverter(),
             'coordinates' => new Conv\DataConverter(),
         ]);
         $this->app = $app;

@@ -2,8 +2,6 @@
 
 namespace Plu\Repository;
 
-use Plu\Entity\Board;
-use Plu\Entity\Piece;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
 use Plu\Entity\Turn;
@@ -13,9 +11,9 @@ class PieceRepository extends BaseRepository {
 		return parent::__construct($db, $converter, 'piece');
 	}
 
-	public function findByBoardAndTurn(Board $board, Turn $turn) {
-		$sql = "SELECT * FROM $this->tableName WHERE boardId = ? and turnId = ?";
-		$rows = $this->db->fetchAll($sql, array((int)$board->id,(int)$turn->id));
+	public function findByGameAndTurn(Game $game, Turn $turn) {
+		$sql = "SELECT * FROM $this->tableName WHERE gameId = ? and turnId = ?";
+		$rows = $this->db->fetchAll($sql, array((int)$game->id,(int)$turn->id));
 		return $this->converter->batchFromDB($this->tableName, $rows);
 	}
 

@@ -4,7 +4,6 @@ namespace Plu\Service;
 
 use Plu\Entity\Game;
 use Plu\Entity\Player;
-use Plu\Repository\BoardRepository;
 use Plu\Repository\GameRepository;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
@@ -21,11 +20,6 @@ class GameService
      * @var GameRepository
      */
     private $gameRepo;
-
-    /**
-     * @var BoardRepository
-     */
-    private $boardRepo;
 
     /**
      * @var TileRepository
@@ -60,7 +54,6 @@ class GameService
     /**
      * GameService constructor.
      * @param GameRepository $gameRepo
-     * @param BoardRepository $boardRepo
      * @param TileRepository $tileRepo
      * @param PieceRepository $pieceRepo
      * @param PlayerRepository $playerRepo
@@ -68,10 +61,9 @@ class GameService
      * @param OrderRepository $orderRepository
      * @param TurnRepository $turnRepository
      */
-    public function __construct(GameRepository $gameRepo, BoardRepository $boardRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository)
+    public function __construct(GameRepository $gameRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository)
     {
         $this->gameRepo = $gameRepo;
-        $this->boardRepo = $boardRepo;
         $this->tileRepo = $tileRepo;
         $this->pieceRepo = $pieceRepo;
         $this->playerRepo = $playerRepo;
@@ -82,12 +74,11 @@ class GameService
 
     public function buildGame($gameId) {
         $game = $this->gameRepo->findByIdentifier($gameId);
-        $game->board = $this->boardRepo->findByGame($game);
         $game->players = $this->playerRepo->findByGame($game);
         $game->turns = $this->turnRepository->findByGame($game);
         $game->pieceTypes = $this->pieceTypeRepo->findAll();
 
-        $tiles = $this->tileRepo->findByBoard($game->board);
+        $tiles = $this->tileRepo->findByGame($game);
         foreach($game->turns as $turn) {
             foreach($tiles as $originalTile) {
                 $tile = clone $originalTile;

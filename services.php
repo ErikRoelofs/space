@@ -20,7 +20,6 @@ $app['converter-service'] = function($app) {
     $s = new \Plu\Service\ConverterService();
 
     $s->addConverter('\Plu\Entity\Game', new Conv\GameConverter($app));
-    $s->addConverter('\Plu\Entity\Board', new Conv\BoardConverter($app));
     $s->addConverter('\Plu\Entity\GivenOrder', new Conv\OrderConverter($app));
     $s->addConverter('\Plu\Entity\Piece', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
@@ -60,9 +59,6 @@ $app['temp-repo'] = function($app) {
 };
 $app['game-repo'] = function($app) {
     return new Repo\GameRepository($app['db'], $app['converter-service']);
-};
-$app['board-repo'] = function($app) {
-    return new Repo\BoardRepository($app['db'], $app['converter-service']);
 };
 $app['order-repo'] = function($app) {
     return new Repo\OrderRepository($app['db'], $app['converter-service']);
@@ -104,12 +100,12 @@ $app['orders-service'] = function($app) {
 };
 
 $app['piece-service'] = function($app) {
-    return new \Plu\Service\PieceService($app['piece-type-repo'], $app['piece-repo'], $app['board-repo']);
+    return new \Plu\Service\PieceService($app['piece-type-repo'], $app['piece-repo']);
 };
 
 $app['order-service'] = function($app) {
     $s = new \Plu\Service\OrderService($app['order-repo']);
-    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service'], $app['pathfinding-service']));
+    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service'], $app['pathfinding-service'], $app['tile-repo'], $app['player-service']));
 
     return $s;
 };
@@ -139,7 +135,7 @@ $app['piece-types-service'] = function($app) {
 };
 
 $app['game-service'] = function($app) {
-    return new \Plu\Service\GameService($app['game-repo'], $app['board-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
+    return new \Plu\Service\GameService($app['game-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
 };
 
 $app['end-of-turn-service'] = function($app) {

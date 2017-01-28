@@ -27,7 +27,7 @@ function registerEndpoints($app, $endpoint, $name, $repo)
     });
 }
 
-$register = [ 'game', 'board', 'givenOrder', 'piece', 'pieceType', 'planet', 'player', 'resolution', 'tile', 'turn'];
+$register = [ 'game', 'givenOrder', 'piece', 'pieceType', 'planet', 'player', 'resolution', 'tile', 'turn'];
 foreach($register as $toRegister) {
     registerEndpoints($app, $toRegister, $toRegister, $toRegister . '-repo');
 }

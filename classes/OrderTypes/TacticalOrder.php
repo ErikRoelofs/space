@@ -71,17 +71,17 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $this->tileRepo = $tileRepo;
     }
 
-    public function validateOrderAllowed(Player $player, $data)
+    public function validateOrderAllowed(Player $player, Game $game, $data)
     {
 
-        $tile = $this->tileRepo->findByIdentifier($data['tile']);
-
-        // the targeted tile must
-		// exist in the same game as this player
-
+        $turn = $game->currentTurn();
+        $tile = $game->findTileInCurrentTurn($data['tile']);
+        if(!$tile) {
+            throw new \Exception("This tile is not a part of the current turn.");
+        }
 
         // not have any other orders by this player
-        $otherOrders = $this->ordersService->getActiveOrdersForPlayer($player);
+        $otherOrders = $game->currentOrdersForPlayer($player);
         foreach($otherOrders as $order) {
             if($order->orderType == $this->type) {
                 if($order->data['tile'] == $tile->id) {
@@ -92,7 +92,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
         // all ships sent must be valid
         foreach($data['pieces'] as $pieceId) {
-            $piece = $this->pieceRepo->findByIdentifier($pieceId);
+
             if(!$this->validatePiece($piece, $tile, $player)) {
                 throw new \Exception("A piece was sent that is not valid for this move");
             }

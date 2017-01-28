@@ -45,7 +45,7 @@ abstract class AbstractBattlePhaseService
 	public function resolveAllGroundBattles(Game $game) {
 		$logs = [];
 		$turn = $game->currentTurn();
-		foreach($game->board->tiles as $tile) {
+		foreach($turn->tiles as $tile) {
 			$pieces = $tile->pieces[$turn->number];
 			if($this->hasBattle($pieces)) {
 				$logs[] = $this->battleService->resolveBattle($pieces, $this->newLog($tile));

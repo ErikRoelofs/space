@@ -12,3 +12,7 @@ $app->get('/admin/game/{id}', function($id) use ($app) {
     $game = $app['game-service']->buildGame($id);
     return $app['converter-service']->toJson($game);
 });
+
+$app->get('/admin/order', function($id) use ($app) {
+
+});

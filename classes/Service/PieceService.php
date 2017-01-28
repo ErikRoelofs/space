@@ -2,11 +2,7 @@
 
 namespace Plu\Service;
 
-use Plu\Entity\Board;
 use Plu\Entity\Piece;
-use Plu\Entity\Tile;
-use Plu\Repository\BoardRepository;
-use Plu\Repository\PieceRepository;
 use Plu\Repository\PieceTypeRepository;
 use Plu\Repository\PlanetRepository;
 

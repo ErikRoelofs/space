@@ -2,7 +2,6 @@
 
 namespace Plu\Service;
 
-use Plu\Entity\Board;
 use Plu\Entity\Game;
 use Plu\Entity\Tile;
 use Plu\Entity\Turn;
@@ -33,17 +32,13 @@ class NewBoardService
     }
 
     public function newBoard(Game $game, Turn $turn, $players) {
-        $board = new Board();
-        $board->gameId = $game->id;
-
         $this->remainingPlayers = $players;
         shuffle($this->remainingPlayers);
         $tiles = [];
         foreach($this->tileCoords as $data) {
             $tiles[] = $this->newTile($data[0], $data[1], isset($data[2]) ? $data[2] : null, $turn);
         }
-        $board->tiles = $tiles;
-        return $board;
+        return $tiles;
     }
 
     private function newTile($x, $y, $special, Turn $turn) {

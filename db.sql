@@ -17,17 +17,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `board`
---
-
-CREATE TABLE `board` (
-  `id` int(11) NOT NULL,
-  `gameId` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `game`
 --
 
@@ -136,7 +125,6 @@ CREATE TABLE `resolution` (
 
 CREATE TABLE `tile` (
   `id` int(11) NOT NULL,
-  `boardId` int(11) NOT NULL,
   `coordinates` char(7) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -155,12 +143,6 @@ CREATE TABLE `turn` (
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `board`
---
-ALTER TABLE `board`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `game`
@@ -232,11 +214,6 @@ ALTER TABLE `turn`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `board`
---
-ALTER TABLE `board`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `game`
 --

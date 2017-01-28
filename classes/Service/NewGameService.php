@@ -31,10 +31,9 @@ class NewGameService
         }
         $game->players = $players;
 
-        $board = $this->app['new-board-service']->newBoard($game, $turn, $players);
-        $this->app['board-repo']->add($board);
-        foreach($board->tiles as $tile) {
-            $tile->boardId = $board->id;
+        $tiles = $this->app['new-board-service']->newBoard($game, $turn, $players);
+        foreach($tiles as $tile) {
+            $tile->gameId = $game->id;
             $this->app['tile-repo']->add($tile);
             if(count($tile->pieces)) {
 				// there is only 1, which is the planet
@@ -44,7 +43,6 @@ class NewGameService
                 $this->app['piece-repo']->add($planet);
             }
         }
-        $game->board = $board;
 
         $units = $this->app['starting-units-service']->createStartingUnitsForGame($game, $turn);
         foreach($units as $unit) {

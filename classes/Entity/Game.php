@@ -8,7 +8,6 @@ class Game
     public $id;
     public $turns;
     public $players;
-    public $board;
     public $pieceTypes;
     public $orderTypes;
 
@@ -23,4 +22,26 @@ class Game
 		}
 		return $found;
 	}
+
+	public function currentOrdersForPlayer(Player $player) {
+	    $turn = $this->currentTurn();
+	    $out = [];
+	    foreach($turn->orders as $order) {
+	        if($order->ownerId == $player->id) {
+	            $out[] = $order;
+            }
+        }
+        return $out;
+    }
+
+    public function findTileInCurrentTurn($id) {
+        $turn = $this->currentTurn();
+        foreach($turn->tiles as $tile) {
+            if($tile->id == $id) {
+                return $tile;
+            }
+        }
+        return null;
+    }
+
 }

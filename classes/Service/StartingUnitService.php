@@ -2,7 +2,6 @@
 
 namespace Plu\Service;
 
-use Plu\Entity\Board;
 use Plu\Entity\Game;
 use Plu\Entity\Piece;
 use Plu\Entity\Player;
@@ -13,7 +12,6 @@ class StartingUnitService
 {
 
 	private $turn;
-    private $board;
 
     /**
      * @var PieceTypeRepository
@@ -28,7 +26,6 @@ class StartingUnitService
 
     public function createStartingUnitsForGame(Game $game, Turn $turn) {
 		$this->turn = $turn;
-        $this->board = $game->board;
         $allPieces = [];
         foreach($game->players as $player) {
             $allPieces = array_merge($allPieces, $this->createStartingUnitsForPlayer($player));
@@ -37,7 +34,7 @@ class StartingUnitService
     }
 
     private function createStartingUnitsForPlayer(Player $player) {
-        $homeTile = $this->getHomeTileForPlayer($this->board, $player);
+        $homeTile = $this->getHomeTileForPlayer($this->game, $player);
         $pieces = [];
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
@@ -61,8 +58,8 @@ class StartingUnitService
         return $piece;
     }
 
-    private function getHomeTileForPlayer(Board $board, Player $player) {
-        foreach($board->tiles as $tile) {
+    private function getHomeTileForPlayer(Player $player) {
+        foreach($this->turn->tiles as $tile) {
             if(isset($tile->pieces[$this->turn->number]) && count($tile->pieces[$this->turn->number]) && $tile->pieces[$this->turn->number][0]->ownerId == $player->id) {
                 return $tile;
             }
