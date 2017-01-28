@@ -38,6 +38,7 @@ class NewBoardService
         foreach($this->tileCoords as $data) {
             $tiles[] = $this->newTile($data[0], $data[1], isset($data[2]) ? $data[2] : null, $turn);
         }
+        $turn->tiles = $tiles;
         return $tiles;
     }
 
