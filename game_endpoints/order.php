@@ -10,7 +10,15 @@ $app->post('/order/{player}/place/{type}', function($player, $type) use ($app) {
 });
 
 $app->delete('/order/{player}/{order}', function($player, $order) use ($app) {
+    $order = $app['order-repo']->findByIdentifier($order);
+    $player = $app['player-repo']->findByIdentifier($player);
 
+    if($order->ownerId != $player->id) {
+        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException("This is not your order.");
+    }
+    $app['order-service']->revertOrder($order);
+
+    return '';
 });
 
 $app->get('/order/tactical/{player}/{tile}', function($player, $tile) use ($app) {
