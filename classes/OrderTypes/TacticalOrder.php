@@ -4,7 +4,6 @@ namespace Plu\OrderTypes;
 
 use Plu\Entity\Game;
 use Plu\Entity\GivenOrder;
-use Plu\Entity\Log;
 use Plu\Entity\Piece;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
@@ -83,7 +82,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         // not have any other orders by this player
         $otherOrders = $game->currentOrdersForPlayer($player);
         foreach($otherOrders as $order) {
-            if($order->orderType == $this->type) {
+            if($order->orderType == self::TAG) {
                 if($order->data['tile'] == $tile->id) {
                     throw new \Exception("A tactical order already exists for this sector.");
                 }
@@ -114,12 +113,12 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     }
 
-    public function createOrder(Player $player, $data)
+    public function createOrder(Player $player, Game $game, $data)
     {
-        $this->validateOrderAllowed($player, $data);
+        $this->validateOrderAllowed($player, $game, $data);
         $order = new GivenOrder();
         $order->ownerId = $player->id;
-        $order->orderType = $this->type;
+        $order->orderType = self::TAG;
         $order->data = $data;
 
         return $order;
@@ -190,7 +189,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $otherOrders = $game->currentOrdersForPlayer($player);
         // not have any other tactical orders set
         foreach($otherOrders as $order) {
-            if($order->orderType == $this->type) {
+            if($order->orderType == self::TAG) {
                 foreach($order->data['pieces'] as $otherPieceId) {
                     if($piece->id == $otherPieceId) {
                         return false;

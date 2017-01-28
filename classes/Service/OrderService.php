@@ -16,9 +16,15 @@ class OrderService
      */
     protected $orderRepo;
 
-    public function __construct($orderRepo)
+    /**
+     * @var GameService
+     */
+    protected $gameService;
+
+    public function __construct(OrderRepository $orderRepo, GameService $gameService)
     {
         $this->orderRepo = $orderRepo;
+        $this->gameService =$gameService;
     }
 
     public function addOrderType(OrderTypeInterface $type) {
@@ -29,7 +35,8 @@ class OrderService
         if(!isset($this->types[$type])) {
             throw new \Exception("No known order type: " . $type);
         }
-        $order = $this->types[$type]->createOrder($player, $instructions);
+        $game = $this->gameService->buildGame($player->gameId);
+        $order = $this->types[$type]->createOrder($player, $game, $instructions);
         $order->turnId = 1;
         $this->orderRepo->add($order);
 

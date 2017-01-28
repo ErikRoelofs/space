@@ -53,9 +53,11 @@ class Game
     }
 
     public function findPieceInTurn(Turn $turn, $pieceId) {
-	    foreach($turn->pieces as $piece) {
-	        if($piece->id == $pieceId) {
-	            return $piece;
+        foreach($turn->tiles as $tile) {
+            foreach ($tile->pieces as $piece) {
+                if ($piece->id == $pieceId) {
+                    return $piece;
+                }
             }
         }
     }
