@@ -8,10 +8,13 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
         link: function(scope) {
 
             $http.get('/game/1').then(function(response) {
-                boardService.setBoard(response.data.turns[0]);
+
+                var currentTurn = response.data.turns.length - 1;
+
+                boardService.setBoard(response.data.turns[currentTurn]);
 
                 var pieces = [];
-                angular.forEach( response.data.turns[0].tiles, function(tile) {
+                angular.forEach( response.data.turns[currentTurn].tiles, function(tile) {
                     angular.forEach( tile.pieces, function(piece) {
                         pieces.push(piece);
                     })

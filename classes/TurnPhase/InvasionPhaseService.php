@@ -2,6 +2,7 @@
 
 namespace Plu\TurnPhase;
 
+use Plu\Entity\Piece;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\Grounded;
 use Plu\Service\Loggers\GroundBattleLog;

@@ -2,6 +2,7 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Game;
 use Plu\Entity\Player;
 use Plu\Repository\GameRepository;
 use Plu\Repository\OrderRepository;

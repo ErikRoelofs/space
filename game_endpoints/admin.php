@@ -13,6 +13,8 @@ $app->get('/admin/game/{id}', function($id) use ($app) {
     return $app['converter-service']->toJson($game);
 });
 
-$app->get('/admin/order', function($id) use ($app) {
-
+$app->get('/admin/game/{id}/next', function($id) use ($app) {
+    $game = $app['game-service']->buildGame($id);
+    $endService = $app['end-of-turn-service']->endRound($game);
+    return '';
 });

@@ -15,6 +15,6 @@ interface OrderTypeInterface
 
     public function createOrder(Player $player, Game $game, $data);
 
-    public function resolveOrder(Player $player, GivenOrder $order);
+    public function resolveOrder(Player $player, Game $game, GivenOrder $order);
 
 }

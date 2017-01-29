@@ -2,6 +2,9 @@
 
 namespace Plu\Service\Loggers;
 
+use Plu\Entity\Player;
+use Plu\Entity\Tile;
+
 class TacticalOrderLog implements LoggerInterface {
 
 	private $data = [
@@ -21,21 +24,41 @@ class TacticalOrderLog implements LoggerInterface {
         $this->givenOrder = $givenOrder;
     }
 
+    public function setTile(Tile $tile) {
+        $this->data['tile'] = $tile;
+    }
+
     public function addPlayer(Player $player) {
 		$this->data['player'] = $player->id;
 	}
 
-	public function addPieceMoved($from, $piece) {
-		$this->data['moved'] = [$from, $piece->id];
+	public function addPieceMoved($piece) {
+		$this->data['moved'][] = $piece->id;
 	}
 
-	public function addPieceBuilt($piece) {
-		$this->data['built'] = [$piece->id];
+	public function addPieceBuilt($pieceType) {
+		$this->data['built'][] = $pieceType->id;
 	}
 
 	public function storeLog() {
 		return $this->data;
 	}
+
+	public function getTile() {
+        return $this->data['tile'];
+    }
+
+    public function getMovedPieces() {
+        return $this->data['moved'];
+    }
+
+    public function getBuiltPieces() {
+        return $this->data['built'];
+    }
+
+    public function getPlayer() {
+        return $this->data['player'];
+    }
 
 	public function getService()
     {

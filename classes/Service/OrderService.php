@@ -52,6 +52,7 @@ class OrderService
     }
 
 	public function resolveOrder(Player $player, GivenOrder $order) {
-		return $this->types[$order->orderType]->resolveOrder($player, $order);
+        $game = $this->gameService->buildGame($player->gameId);
+		return $this->types[$order->orderType]->resolveOrder($player, $game, $order);
 	}
 }

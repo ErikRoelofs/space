@@ -3,6 +3,7 @@
 namespace Plu\TurnPhase;
 
 use Plu\Entity\Game;
+use Plu\Entity\Piece;
 use Plu\Entity\Tile;
 use Plu\Entity\Turn;
 use Plu\PieceTrait\Grounded;
@@ -42,11 +43,11 @@ abstract class AbstractBattlePhaseService
 		$this->pieceService = $pieceService;
 	}
 
-	public function resolveAllGroundBattles(Game $game) {
+	public function resolveAllBattles(Game $game) {
 		$logs = [];
 		$turn = $game->currentTurn();
 		foreach($turn->tiles as $tile) {
-			$pieces = $tile->pieces[$turn->number];
+			$pieces = $tile->pieces;
 			if($this->hasBattle($pieces)) {
 				$logs[] = $this->battleService->resolveBattle($pieces, $this->newLog($tile));
 			}

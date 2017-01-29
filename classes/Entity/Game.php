@@ -75,4 +75,8 @@ class Game
         return $out;
     }
 
+    public function currentOrders() {
+        return $this->currentTurn()->orders;
+    }
+
 }

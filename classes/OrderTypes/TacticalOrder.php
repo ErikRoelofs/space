@@ -124,15 +124,16 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         return $order;
     }
 
-    public function resolveOrder(Player $player, GivenOrder $order)
+    public function resolveOrder(Player $player, Game $game, GivenOrder $order)
     {
 		$log = new TacticalOrderLog($order);
+		$log->setTile($game->findTile($order->data['tile']));
 		$log->addPlayer($player);
 
 		foreach($order->data['pieces'] as $pieceId) {
 			$piece = $this->pieceRepo->findByIdentifier($pieceId);
 			// log the move
-			$log->addPieceMoved($piece->location, $piece);
+			$log->addPieceMoved($piece);
 		}
 
 		// handle construction
@@ -208,7 +209,12 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     public function updateGamestate(Game $game, LoggerInterface $log)
     {
-
+        $tile = $log->getTile();
+        $turn = $game->currentTurn();
+        foreach( $log->getMovedPieces() as $moved) {
+            $piece = $game->findPieceInTurn($turn, $moved);
+            $piece->tileId = $tile->id;
+        }
     }
 
 }

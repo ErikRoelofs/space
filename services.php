@@ -45,7 +45,7 @@ $app['converter-service'] = function($app) {
     $s->addConverter('\Plu\Entity\Log', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
         'turnId' => new Conv\NativeConverter(),
-        'class' => new Conv\NativeConverter(),
+        'service' => new Conv\NativeConverter(),
         'results' => new Conv\DataConverter(),
         'origin' => new Conv\NativeConverter(),
         'originId' => new Conv\NativeConverter(),
@@ -77,6 +77,10 @@ $app['tile-repo'] = function($app) {
 };
 $app['turn-repo'] = function($app) {
     return new Repo\TurnRepository($app['db'], $app['converter-service']);
+};
+
+$app['log-repo'] = function($app) {
+    return new Repo\LogRepository($app['db'], $app['converter-service']);
 };
 
 $app['starting-units-service'] = function($app) {
@@ -122,12 +126,15 @@ $app['space-battle-service'] = function($app) {
     return new \Plu\Service\SpaceBattleService($app['piece-service']);
 };
 
-$app['ground-battle-service'] = function($app) {
+$app['invasion-battle-service'] = function($app) {
     return new \Plu\Service\GroundBattleService($app['piece-service']);
 };
 
 $app['combat-phase-service'] = function($app) {
-    return new \Plu\Service\CombatPhaseService($app['space-battle-service']);
+    return new \Plu\TurnPhase\CombatPhaseService($app['space-battle-service'], $app['piece-repo'], $app['piece-service']);
+};
+$app['invasion-phase-service'] = function($app) {
+    return new \Plu\TurnPhase\InvasionPhaseService($app['invasion-battle-service'], $app['piece-repo'], $app['piece-service']);
 };
 
 $app['piece-types-service'] = function($app) {
@@ -139,5 +146,5 @@ $app['game-service'] = function($app) {
 };
 
 $app['end-of-turn-service'] = function($app) {
-    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo']);
+    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app);
 };
