@@ -26,7 +26,6 @@ class PathfindingService
 
 
     public function getInReach(Piece $piece, Tile $tile) {
-
         $currentLocation = $piece->tile->coordinates;
         $targetLocation = $tile->coordinates;
 

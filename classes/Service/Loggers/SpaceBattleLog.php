@@ -9,7 +9,7 @@ class SpaceBattleLog extends AbstractBattleLog {
 	private $lostCargo = [];
 
 	public function logLostCargo($player, $piece) {
-        $this->lostCargo[] = [ 'player' => $player, 'cargo' => $piece ];
+        $this->lostCargo[] = [ 'player' => $player->id, 'cargo' => $piece->id ];
     }
 
 	public function compileLog() {
@@ -21,19 +21,32 @@ class SpaceBattleLog extends AbstractBattleLog {
         ];
 	}
 
-
-
-
 	public function getClass() {
 		return SpaceBattleService::class;
 	}
 
 	public function getService() {
-		// TODO: Implement getService() method.
+		return 'space-battle-service';
 	}
 
 	public function storeLog() {
-		// TODO: Implement storeLog() method.
+		return $this->compileLog();
 	}
+
+	public function getTile() {
+	    return $this->tile;
+    }
+
+	public function getHits() {
+	    return $this->hits;
+    }
+
+    public function getLostCargo() {
+	    return $this->lostCargo;
+    }
+
+    public function getCaptures() {
+	    return $this->captures;
+    }
 
 }

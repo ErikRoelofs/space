@@ -25,7 +25,7 @@ class TacticalOrderLog implements LoggerInterface {
     }
 
     public function setTile(Tile $tile) {
-        $this->data['tile'] = $tile;
+        $this->data['tile'] = $tile->id;
     }
 
     public function addPlayer(Player $player) {

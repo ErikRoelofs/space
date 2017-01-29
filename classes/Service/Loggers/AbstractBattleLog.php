@@ -12,15 +12,15 @@ abstract class AbstractBattleLog implements LoggerInterface
 	protected $captures = [];
 
     public function __construct(Tile $tile) {
-        $this->tile = $tile;
+        $this->tile = $tile->id;
     }
 
 	public function logPieceCaptured($piece, $newOwner) {
-		$this->captures = [ $piece->id, $newOwner ];
+		$this->captures = [ 'piece' => $piece->id, 'newOwner' => $newOwner->id ];
 	}
 
 	public function logHit($phase, $round, $by, $to) {
-        $this->hits[] = [ 'phase' => $phase, 'round' => $round, 'scoredBy' => $by, 'target' => $to ];
+        $this->hits[] = [ 'phase' => $phase, 'round' => $round, 'scoredBy' => $by, 'target' => $to->id ];
     }
 
     abstract public function compileLog();

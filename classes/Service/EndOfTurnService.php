@@ -68,40 +68,24 @@ class EndOfTurnService {
 
     public function endRound(Game $game) {
 		$logs = [];
-		$currentTurn = $this->turnRepo->getCurrentForGame($game);
-
-		// collect & run orders
-		$orders = $game->currentOrders();
-		foreach($orders as $order) {
-			$logs[] = $this->orderService->resolveOrder($this->playerRepo->findByIdentifier($order->ownerId), $order);
-		}
-
-		// run all space battles
-        $logs = array_merge($logs, $this->combatPhaseService->resolveAllBattles($game));
-
-        // run all invasions
-        $logs = array_merge($logs, $this->invasionPhaseService->resolveAllBattles($game));
-
-		// save all the logs
-        $logEntities = [];
-        foreach($logs as $log) {
-            $logEntity = new Log();
-            $logEntity->service = $log->getService();
-            $logEntity->results = $log->storeLog();
-            $logEntity->turnId = $currentTurn->id;
-            $logEntity->origin = $log->getOrigin();
-            $logEntity->originId = $log->getOriginId();
-            $logEntities[] = [$logEntity, $log];
-            $this->logRepo->add($logEntity);
-        }
 
         // generate a new turn & copy all the pieces
         $currentTurn = $this->nextTurn($game);
 
-        // update the actual gamestate
-        foreach($logEntities as $item) {
-            $this->updateGamestate($game, $item[0], $item[1]);
-        }
+        // collect & run orders
+		$orders = $game->currentOrders();
+		foreach($orders as $order) {
+			$logs[] = $this->orderService->resolveOrder($game->findPlayer($order->ownerId), $order);
+		}
+		$this->completePhase($game, $currentTurn, $logs);
+
+		// run all space battles
+        $logs = $this->combatPhaseService->resolveAllBattles($game);
+        $this->completePhase($game, $currentTurn, $logs);
+
+        // run all invasions
+        $logs = $this->invasionPhaseService->resolveAllBattles($game);
+        $this->completePhase($game, $currentTurn, $logs);
 
         // pop the ids off the pieces and persist the new ones
         $pieceRepo = $this->app['piece-repo'];
@@ -114,6 +98,26 @@ class EndOfTurnService {
         }
 
 	}
+
+	private function completePhase(Game $game, Turn $currentTurn, array $logs) {
+        // save all the logs
+        $logEntities = [];
+        foreach($logs as $log) {
+            $logEntity = new Log();
+            $logEntity->service = $log->getService();
+            $logEntity->results = $log->storeLog();
+            $logEntity->turnId = $currentTurn->id;
+            $logEntity->origin = $log->getOrigin();
+            $logEntity->originId = $log->getOriginId();
+            $logEntities[] = [$logEntity, $log];
+            $this->logRepo->add($logEntity);
+        }
+
+        // update the actual gamestate
+        foreach($logEntities as $item) {
+            $this->updateGamestate($game, $item[0], $item[1]);
+        }
+    }
 
 	private function updateGamestate(Game $game, Log $log, LoggerInterface $logEntity) {
         $this->app[$log->service]->updateGamestate($game, $logEntity);

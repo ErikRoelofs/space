@@ -96,7 +96,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
                 throw new \Exception("A piece does not exist.");
             }
             if(!$this->validatePiece($piece, $tile, $player, $game)) {
-                throw new \Exception("A piece was sent that is not valid for this move");
+                throw new \Exception("A piece ({$piece->id}) was sent that is not valid for this move ({$this->reason})");
             }
         }
 
@@ -160,25 +160,30 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     private function validatePiece(Piece $piece, Tile $tile, Player $player, Game $game) {
         // belong to the player
         if($player->id != $piece->ownerId) {
+            $this->reason = 'wrong owner';
             return false;
         }
 
         // spaceborne
         if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG)) {
+            $this->reason = 'not spaceborne';
             return false;
         }
         // mobile or is cargo
         if(!$this->pieceService->hasTrait($piece, Mobile::TAG) || $this->pieceService->hasTrait($piece, Cargo::TAG)) {
+            $this->reason = 'not mobile or cargo';
             return false;
         }
 
         // has no orders
         if(!$this->validateNoOrdersSet($piece, $player, $game)) {
+            $this->reason = 'has orders';
             return false;
         }
 
         // in range (if not carried)
         if(!$this->pathfindingService->getInReach($piece, $tile) && !$this->pieceService->hasTrait($piece, Cargo::TAG) ) {
+            $this->reason = 'out of range';
             return false;
         }
 
@@ -209,10 +214,18 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     public function updateGamestate(Game $game, LoggerInterface $log)
     {
-        $tile = $log->getTile();
+        $tile = $game->findTile($log->getTile());
         $turn = $game->currentTurn();
         foreach( $log->getMovedPieces() as $moved) {
             $piece = $game->findPieceInTurn($turn, $moved);
+            $oldTile = $game->findTile($piece->tileId);
+            foreach($oldTile->pieces as $key => $findPiece) {
+                if($piece->id == $findPiece->id) {
+                    unset($oldTile->pieces[$key]);
+                    break;
+                }
+            }
+            $tile->pieces[] = $piece;
             $piece->tileId = $tile->id;
         }
     }

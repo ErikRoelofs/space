@@ -2,11 +2,13 @@
 
 namespace Plu\Service;
 
+use Plu\Entity\Game;
 use Plu\Entity\Piece;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\Capturable;
 use Plu\PieceTrait\Tiny;
 use Plu\Service\Loggers\AbstractBattleLog;
+use Plu\Service\Loggers\LoggerInterface;
 
 abstract class AbstractBattleService
 {
@@ -205,9 +207,36 @@ abstract class AbstractBattleService
 		}
 	}
 
-	protected function allPieces() {
+    public function updateGamestate(Game $game, LoggerInterface $log)
+    {
+        $tile = $game->findTile($log->getTile());
 
-	}
+        foreach($log->getHits() as $hit) {
+            foreach($tile->pieces as $key => $piece) {
+                if($hit['target'] == $piece->id) {
+                    unset($tile->pieces[$key]);
+                    continue;
+                }
+            }
+        }
+        foreach($log->getLostCargo() as $lost) {
+            foreach($tile->pieces as $key => $piece) {
+                if($lost['cargo'] == $piece->id) {
+                    unset($tile->pieces[$key]);
+                    continue;
+                }
+            }
+        }
 
+        foreach($log->getCaptures() as $capture) {
+            foreach($tile->pieces as $key => $piece) {
+                if($capture['piece'] == $piece->id) {
+                    $piece->ownerId = $capture['newOwner'];
+                    continue;
+                }
+            }
+        }
+
+    }
 
 }

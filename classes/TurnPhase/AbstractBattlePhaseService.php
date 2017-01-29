@@ -9,6 +9,7 @@ use Plu\Entity\Turn;
 use Plu\PieceTrait\Grounded;
 use Plu\Repository\PieceRepository;
 use Plu\Service\AbstractBattleService;
+use Plu\Service\GamestateUpdate;
 use Plu\Service\GroundBattleService;
 use Plu\Service\PieceService;
 
@@ -21,11 +22,6 @@ abstract class AbstractBattlePhaseService
 	protected $battleService;
 
 	/**
-	 * @var PieceRepository
-	 */
-	protected $pieceRepo;
-
-	/**
 	 * @var PieceService
 	 */
 	protected $pieceService;
@@ -34,12 +30,10 @@ abstract class AbstractBattlePhaseService
 	 * AbstractBattlePhaseService constructor.
 	 *
 	 * @param \Plu\Service\AbstractBattleService $battleService
-	 * @param \Plu\Repository\PieceRepository $pieceRepo
 	 * @param \Plu\Service\PieceService $pieceService
 	 */
-	public function __construct(\Plu\Service\AbstractBattleService $battleService, \Plu\Repository\PieceRepository $pieceRepo, \Plu\Service\PieceService $pieceService) {
+	public function __construct(\Plu\Service\AbstractBattleService $battleService, \Plu\Service\PieceService $pieceService) {
 		$this->battleService = $battleService;
-		$this->pieceRepo = $pieceRepo;
 		$this->pieceService = $pieceService;
 	}
 
@@ -75,10 +69,6 @@ abstract class AbstractBattlePhaseService
 			}
 		}
 		return false;
-	}
-
-	private function collectPieces(Tile $tile, Turn $turn) {
-		return $this->pieceRepo->findByTileAndTurn($tile, $turn);
 	}
 
 	abstract protected function involved(Piece $piece);

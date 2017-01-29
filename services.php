@@ -131,10 +131,10 @@ $app['invasion-battle-service'] = function($app) {
 };
 
 $app['combat-phase-service'] = function($app) {
-    return new \Plu\TurnPhase\CombatPhaseService($app['space-battle-service'], $app['piece-repo'], $app['piece-service']);
+    return new \Plu\TurnPhase\CombatPhaseService($app['space-battle-service'], $app['piece-service']);
 };
 $app['invasion-phase-service'] = function($app) {
-    return new \Plu\TurnPhase\InvasionPhaseService($app['invasion-battle-service'], $app['piece-repo'], $app['piece-service']);
+    return new \Plu\TurnPhase\InvasionPhaseService($app['invasion-battle-service'], $app['piece-service']);
 };
 
 $app['piece-types-service'] = function($app) {

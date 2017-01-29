@@ -20,11 +20,11 @@ class GroundBattleLog extends AbstractBattleLog {
     }
 
 	public function getService() {
-		// TODO: Implement getService() method.
+        return 'invasion-battle-service';
 	}
 
 	public function storeLog() {
-		// TODO: Implement storeLog() method.
+		return $this->compileLog();
 	}
 
 }

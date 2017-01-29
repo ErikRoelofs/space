@@ -79,4 +79,12 @@ class Game
         return $this->currentTurn()->orders;
     }
 
+    public function findPlayer($id) {
+	    foreach($this->players as $player) {
+	        if($player->id == $id) {
+	            return $player;
+            }
+        }
+    }
+
 }
