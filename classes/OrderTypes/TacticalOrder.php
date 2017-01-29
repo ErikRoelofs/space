@@ -5,6 +5,7 @@ namespace Plu\OrderTypes;
 use Plu\Entity\Game;
 use Plu\Entity\GivenOrder;
 use Plu\Entity\Piece;
+use Plu\Entity\PieceType;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\Cargo;
@@ -137,6 +138,11 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 		}
 
 		// handle construction
+        foreach($order->data['newPieces'] as $pieceTypeId) {
+		    $pieceType = new PieceType();
+		    $pieceType->id = $pieceTypeId;
+		    $log->addPieceBuilt($pieceType);
+        }
 
 		return $log;
     }
@@ -227,6 +233,14 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
             }
             $tile->pieces[] = $piece;
             $piece->tileId = $tile->id;
+        }
+
+        foreach( $log->getBuiltPieces() as $pieceType ) {
+            $piece = new Piece();
+            $piece->typeId = $pieceType;
+            $piece->ownerId = $log->getPlayer();
+            $piece->tileId = $tile->id;
+            $tile->pieces[] = $piece;
         }
     }
 
