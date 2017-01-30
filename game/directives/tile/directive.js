@@ -2,11 +2,20 @@ angular.module('game').directive('tile', ['$http', 'boardService', 'piecesServic
     return {
         restrict: 'E',
         scope: {
-            coords: '=',
+            coords: '=?',
+			id: '=?'
         },
         templateUrl: "directives/tile/template.html",
         link: function(scope) {
-            scope.tile = boardService.getTileByCoordinates(scope.coords);
+			if(scope.coords) {
+				scope.tile = boardService.getTileByCoordinates(scope.coords);
+			}
+			else if(scope.id) {
+				scope.tile = boardService.getTileById(scope.id);
+			}
+			else {
+				throw Error("Tile directive should receive either coords or id.");
+			}
             scope.planet = piecesService.getPlanetForTile(scope.tile);
             scope.showDetails = function() {
                 $rootScope.$broadcast('detailsPane.show', 'tile', scope.tile);

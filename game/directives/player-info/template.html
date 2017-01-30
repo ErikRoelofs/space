@@ -3,5 +3,5 @@
 {{ player.industry }} I \ {{ player.social }} S
 <h4>Active orders</h4>
 <div ng-repeat="order in orders">
-    (some order)
+	<tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
 </div>

@@ -1,4 +1,4 @@
-angular.module('game').directive('gameHistory', ['$http', 'pieceTypesService', function($http, pieceTypesService) {
+angular.module('game').directive('gameHistory', ['$http', 'pieceTypesService', 'historyService', function($http, pieceTypesService, historyService) {
     return {
         restrict: 'E',
         scope: {
@@ -6,11 +6,7 @@ angular.module('game').directive('gameHistory', ['$http', 'pieceTypesService', f
         },
         templateUrl: "directives/game-history/template.html",
         link: function(scope) {
-            /*
-            $http.get('/game/' + scope.game + '/history').then(function(response) {
-                scope.game = response.data;
-            })
-            */
+			scope.history = historyService.getHistory(1);
         }
 
     }

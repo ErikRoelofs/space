@@ -22,7 +22,12 @@ angular.module('game', []).service('piecesService', function () {
                 return planets[0];
             }
             return null;
-        }
+        },
+		getPieceById: function(id) {
+			return pieces.filter(function(item) {
+				return item.id == id;
+			})[0];
+		}
     };
 }).service('pieceTypesService', function () {
     var pieceTypes = [];
@@ -53,7 +58,16 @@ angular.module('game', []).service('piecesService', function () {
                 }
             })
             return tile;
-        }
+        },
+		getTileById: function(id) {
+			var tile = null;
+			angular.forEach(board.tiles, function (item) {
+				if (item.id == id) {
+					tile = item;
+				}
+			})
+			return tile;
+		}
     }
 }).service('playersService', function () {
     var players = {};
@@ -71,4 +85,29 @@ angular.module('game', []).service('piecesService', function () {
             return player;
         }
     }
+}).service('historyService', function () {
+	var history = [];
+	return {
+		setHistory: function(theHistory) {
+			history = theHistory;
+		},
+		getHistory: function(turn) {
+			return history[turn];
+		}
+
+	}
+}).service('orderService', function () {
+	var orders = [];
+	return {
+		setOrders: function(theOrders) {
+			orders = theOrders;
+		},
+		getOrders: function(turn) {
+			return orders[turn];
+		},
+		getOrdersForPlayer: function(turn, player) {
+			return orders[turn].filter(function(item) { return item.ownerId == player});
+		}
+
+	}
 })

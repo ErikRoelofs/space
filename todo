@@ -4,3 +4,15 @@ v1:
 ? refactor: game has turns, turns have pieces. allows recapturing old gamestate (needed for order logging). Tile + Turn has pieces???
 - fix up construction of units
 ? handle transportation of cargo
+
+interface:
+v1:
+
+- allow giving tactical orders
+- allow seeing logs
+- allow viewing different game turns
+
+
+issues:
+- fix naming scheme to work on unix
+- new turn is copying over orders; shouldn't
