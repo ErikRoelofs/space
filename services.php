@@ -50,6 +50,13 @@ $app['converter-service'] = function($app) {
         'origin' => new Conv\NativeConverter(),
         'originId' => new Conv\NativeConverter(),
     ]));
+	$s->addConverter('\Plu\Entity\ResourceClaim', new Conv\ConfigurableConverter([
+		'id' => new Conv\NativeConverter(),
+		'turnId' => new Conv\NativeConverter(),
+		'playerId' => new Conv\NativeConverter(),
+		'resource' => new Conv\NativeConverter(),
+		'amount' => new Conv\NativeConverter(),
+	]));
 
     return $s;
 };
@@ -81,6 +88,9 @@ $app['turn-repo'] = function($app) {
 
 $app['log-repo'] = function($app) {
     return new Repo\LogRepository($app['db'], $app['converter-service']);
+};
+$app['resource-claim-repo'] = function($app) {
+	return new Repo\ResourceClaimRepository($app['db'], $app['converter-service']);
 };
 
 $app['starting-units-service'] = function($app) {
@@ -147,4 +157,8 @@ $app['game-service'] = function($app) {
 
 $app['end-of-turn-service'] = function($app) {
     return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app);
+};
+
+$app['resource-service'] = function($app) {
+	return new \Plu\Service\ResourceService($app['piece-service'], $app['game-service'], $app['resource-claim-repo']);
 };

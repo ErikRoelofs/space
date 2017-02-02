@@ -3,7 +3,9 @@
 namespace Plu\Service;
 
 use Plu\Entity\Player;
+use Plu\Entity\ResourceClaim;
 use Plu\PieceTrait\GivesResources;
+use Plu\Repository\ResourceClaimRepository;
 
 class ResourceService {
 
@@ -21,15 +23,21 @@ class ResourceService {
 	protected $gameService;
 
 	/**
+	 * @var ResourceClaimRepository
+	 */
+	protected $claimRepo;
+
+	/**
 	 * ResourceService constructor.
 	 * !OPERATES ON THE CURRENT TURN, ALWAYS!
 	 *
 	 * @param \Plu\Service\PieceService $pieceService
 	 * @param \Plu\Service\GameService $gameService
 	 */
-	public function __construct(\Plu\Service\PieceService $pieceService, \Plu\Service\GameService $gameService) {
+	public function __construct(\Plu\Service\PieceService $pieceService, \Plu\Service\GameService $gameService, ResourceClaimRepository $claimRepo) {
 		$this->pieceService = $pieceService;
 		$this->gameService = $gameService;
+		$this->claimRepo = $claimRepo;
 	}
 
 	public function getInitialResources(Player $player) {
@@ -58,7 +66,7 @@ class ResourceService {
 		$amount = $this->getInitialResource($player, $resource);
 		// deduct all active claims
 		foreach($this->getClaims($player, $resource) as $claim) {
-			$amount -= $claim->getAmount();
+			$amount -= $claim->amount;
 		}
 		return $amount;
 	}
@@ -78,15 +86,20 @@ class ResourceService {
 		if(!$this->hasResources($player, $resource, $amount)) {
 			throw new \Exception("Cannot claim resources; not available");
 		}
-		// do claim
+		$claim = new ResourceClaim();
+		$claim->playerId = $player->id;
+		$claim->resource = $resource;
+		$claim->amount = $amount;
+		$claim->turnId = $this->gameService->buildGame($player->gameId)->currentTurn()->id;
+		return $this->claimRepo->add($claim);
 	}
 
 	public function cancelClaim($claim) {
-		// remove claim
+		$this->claimRepo->remove($claim);
 	}
 
 	private function getClaims(Player $player, $resource) {
-		// list claims
+		return $this->claimRepo->findClaimsByPlayerTurnAndResource($player, $this->gameService->buildGame($player->gameId)->currentTurn(), $resource );
 	}
 
 }
