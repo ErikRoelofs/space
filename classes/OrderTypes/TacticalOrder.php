@@ -89,10 +89,13 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
                 }
             }
         }
-
-        // all ships sent must be valid
-        foreach($data['pieces'] as $pieceId) {
-            $piece = $game->findPieceInTurn($turn, $pieceId);
+		// collect piece objects
+		$pieceObjects = [];
+		foreach($data['pieces'] as $pieceId) {
+			$pieceObjects[] = $game->findPieceInTurn($turn, $pieceId);
+		}
+		// all ships sent must be valid
+        foreach($pieceObjects as $piece) {
             if(!$piece) {
                 throw new \Exception("A piece does not exist.");
             }
@@ -101,8 +104,20 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
             }
         }
 
-		// the fleet must have room for all its cargo
-		// @TODO
+		// each moving fleet must have room for all its cargo
+		$piecesByTile = [];
+		foreach($pieceObjects as $piece) {
+			// split out per tile of origin
+			if(!isset($piecesByTile[$piece->tileId])) {
+				$piecesByTile[$piece->tileId] = [];
+			}
+			$piecesByTile[$piece->tileId][] = $piece;
+		}
+		foreach($piecesByTile as $tile => $pieces) {
+			if(!$this->groupHasEnoughCargoSpace($pieces)) {
+				throw new \Exception("Not enough cargo space for pieces from tile " . $pieces[0]->tileId);
+			}
+		}
 
         // all items queued for construction must
         foreach($data['newPieces'] as $pieceTypeId) {
@@ -113,6 +128,20 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         }
 
     }
+
+	private function groupHasEnoughCargoSpace($pieces) {
+		$cargoAllowed = 0;
+		$cargoUsed = 0;
+		foreach($pieces as $piece) {
+			if($this->pieceService->hasTrait($piece, Cargo::TAG)) {
+				$cargoUsed++;
+			}
+			if($this->pieceService->hasTrait($piece, Transports::TAG)) {
+				$cargoAllowed += $this->pieceService->getTraitContents($piece, Transports::TAG);
+			}
+		}
+		return $cargoUsed <= $cargoAllowed;
+	}
 
     public function createOrder(Player $player, Game $game, $data)
     {
