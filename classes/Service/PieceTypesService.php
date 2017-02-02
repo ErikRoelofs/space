@@ -39,7 +39,6 @@ class PieceTypesService
         $types[] = $this->makeGroundForce();
         $types[] = $this->makeDefenseSystem();
 
-
         return $types;
     }
 

@@ -2,6 +2,8 @@
 
 namespace Plu\PieceTrait;
 
+use Plu\Service\ResourceService;
+
 class GivesResources implements TraitInterface {
 
 	const TAG = 'resources';
@@ -26,8 +28,8 @@ class GivesResources implements TraitInterface {
 
 	public function getTraitContent() {
 		return [
-			'industry' => $this->industry,
-			'social' => $this->social
+			ResourceService::INDUSTRY => $this->industry,
+			ResourceService::SOCIAL => $this->social
 		];
 	}
 

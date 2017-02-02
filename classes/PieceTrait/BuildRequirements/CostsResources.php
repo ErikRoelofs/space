@@ -6,6 +6,8 @@ use Plu\PieceTrait\TraitInterface;
 
 class CostsResources implements TraitInterface
 {
+
+	const TAG = 'build.requirement.resources';
     private $amount;
 
     /**
@@ -19,7 +21,7 @@ class CostsResources implements TraitInterface
 
     public function getTraitName()
     {
-        return 'build.requirement.resources';
+        return self::TAG;
     }
 
     public function getTraitContent()

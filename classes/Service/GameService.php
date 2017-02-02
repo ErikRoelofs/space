@@ -51,6 +51,8 @@ class GameService
      */
     private $turnRepository;
 
+	private $builtGames = [];
+
     /**
      * GameService constructor.
      * @param GameRepository $gameRepo
@@ -73,25 +75,27 @@ class GameService
     }
 
     public function buildGame($gameId) {
-        $game = $this->gameRepo->findByIdentifier($gameId);
-        $game->players = $this->playerRepo->findByGame($game);
-        $game->turns = $this->turnRepository->findByGame($game);
-        $game->pieceTypes = $this->pieceTypeRepo->findAll();
+		if(!isset($this->builtGames[$gameId])) {
+			$game = $this->gameRepo->findByIdentifier($gameId);
+			$game->players = $this->playerRepo->findByGame($game);
+			$game->turns = $this->turnRepository->findByGame($game);
+			$game->pieceTypes = $this->pieceTypeRepo->findAll();
 
-        $tiles = $this->tileRepo->findByGame($game);
-        foreach($game->turns as $turn) {
-            foreach($tiles as $originalTile) {
-                $tile = clone $originalTile;
-                $tile->pieces = $this->pieceRepo->findByTileAndTurn($tile, $turn);
-                foreach($tile->pieces as $piece) {
-                    $piece->tile = $tile;
-                }
-                $turn->tiles[] = $tile;
-            }
-            $turn->orders = $this->orderRepository->findByTurn($turn);
-        }
-
-        return $game;
+			$tiles = $this->tileRepo->findByGame($game);
+			foreach ($game->turns as $turn) {
+				foreach ($tiles as $originalTile) {
+					$tile = clone $originalTile;
+					$tile->pieces = $this->pieceRepo->findByTileAndTurn($tile, $turn);
+					foreach ($tile->pieces as $piece) {
+						$piece->tile = $tile;
+					}
+					$turn->tiles[] = $tile;
+				}
+				$turn->orders = $this->orderRepository->findByTurn($turn);
+			}
+			$this->builtGames[$gameId] = $game;
+		}
+		return $this->builtGames[$gameId];
     }
 
     public function buildGameFromPlayer(Player $player) {

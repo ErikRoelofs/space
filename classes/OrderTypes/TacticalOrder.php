@@ -8,6 +8,8 @@ use Plu\Entity\Piece;
 use Plu\Entity\PieceType;
 use Plu\Entity\Player;
 use Plu\Entity\Tile;
+use Plu\PieceTrait\BuildRequirements\CostsResources;
+use Plu\PieceTrait\BuildsPieces;
 use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
@@ -21,6 +23,7 @@ use Plu\Repository\TileRepository;
 use Plu\Service\OrdersService;
 use Plu\Service\PathfindingService;
 use Plu\Service\PieceService;
+use Plu\Service\ResourceService;
 
 class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 {
@@ -119,14 +122,23 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 			}
 		}
 
-        // all items queued for construction must
-        foreach($data['newPieces'] as $pieceTypeId) {
-            $pieceType = $this->pieceTypeRepo->findByIdentifier($pieceTypeId);
+		$pieceTypes = [];
+		foreach($data['newPieces'] as $pieceTypeId) {
+			$pieceType = $this->pieceTypeRepo->findByIdentifier($pieceTypeId);
+			$pieceTypes[] = $pieceType;
+		}
+
+        // all items queued for construction must be valid
+        foreach($pieceTypes as $pieceType) {
             if(!$this->validateConstructionOrder($pieceType, $tile, $player )) {
                 throw new \Exception("A constuction order that was sent is not valid");
             }
         }
 
+		// make sure there are enough resources
+		if(!$this->validateEnoughResources($pieceTypes, $tile, $player)) {
+			throw new \Exception("Not enough resources available.");
+		}
     }
 
 	private function groupHasEnoughCargoSpace($pieces) {
@@ -243,9 +255,43 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 
     private function validateConstructionOrder(PieceType $type, Tile $tile, Player $player) {
         // be buildable by the player in this location
-        // be affordable
-
+		$buildable = [];
+		$ok = false;
+		foreach($tile->pieces as $piece) {
+			if($this->pieceService->hasTrait($piece, BuildsPieces::TAG)) {
+				$buildable = array_merge($buildable, $this->pieceService->getTraitContents($piece, BuildsPieces::TAG));
+			}
+		}
+		foreach($buildable as $name) {
+			if($type->name == $name) {
+				$ok = true;
+			}
+		}
+		if(!$ok) {
+			throw new \Exception("A new piece of type $type->name cannot be built here; not supported by tile.");
+		}
     }
+
+	private function getTotalCost($pieceTypes, Tile $tile, Player $player) {
+		$totalCost = 0;
+		foreach($pieceTypes as $type) {
+			// be affordable
+			$piece = new Piece();
+			$piece->typeId = $type->id;
+			$piece->tileId = $tile->id;
+			$piece->ownerId = $player->id;
+
+			if (!$this->pieceService->hasTrait($piece, CostsResources::TAG)) {
+				throw new \Exception("Trying to build a piece with no listed cost? This is probably a settings bug.");
+			}
+			$totalCost += $this->pieceService->getTraitContents($piece, CostsResources::TAG);
+		}
+		return $totalCost;
+	}
+
+	private function validateEnoughResources($pieceTypes, Tile $tile, Player $player) {
+		return $this->resourceService->hasResources($player, ResourceService::INDUSTRY, $this->getTotalCost($pieceTypes, $tile, $player));
+	}
 
     public function updateGamestate(Game $game, LoggerInterface $log)
     {
