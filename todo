@@ -1,14 +1,18 @@
 backend:
 v1:
 
-? refactor: game has turns, turns have pieces. allows recapturing old gamestate (needed for order logging). Tile + Turn has pieces???
 - fix up construction of units
+- adding an order should claim resources; cancelling that order should free resources
+- start with the advanced pieceType system
+- give each planet its own (random) ind/soc values
+
 ? handle transportation of cargo
+? make sure neutral planet capturing works
 
 interface:
 v1:
 
-- allow giving tactical orders
+- allow giving tactical orders (incl production)
 - allow seeing logs
 - allow viewing different game turns
 
@@ -16,3 +20,81 @@ v1:
 issues:
 - fix naming scheme to work on unix
 - new turn is copying over orders; shouldn't
+
+
+v2:
+
+victory points, winning
+
+- create 'objective' entity
+- open a random new one each turn
+- create a ClaimVictoryOrder to let players capture a VP (once)
+- create objective types:
+	- social objective
+	- industry objective
+	- possess Pieces (with criteria) objectives
+- check win conditions at end of turn; end games
+
+mvp:
+
+different board sizes, users, lobby, communication, autoresolving
+
+- attach a user management system
+- allow login, overview of active games
+- allow users to setup new games; allow users to sign up to games
+- check authorization when calling a url (mostly when getting player data; game can be public)
+- allow players to chat with each other in games
+- allow users to chat with each other in game lobbies
+- update board generator for different player amounts
+- allow game settings:
+	- VP limit
+	- turn time limit
+	- immediately advance when everyone is ready?
+	- # players
+- remove social resource until used?
+- or use it for adjacent planet annexing or something?
+
+later:
+
+command counters
+- gain counters each turn
+- pay a counter for each tac-action
+- maintain a reserve of counters for fleet supply
+- scrap ships at turn start if not enough reserved
+
+strategies
+- add the pickStrategy action (including making choices)
+- allow players to pick a turn 1 strategy in the lobby (including making choices for it)
+- at end of turn, resolve each player's chosen strategy
+- during turn, allow player's to use each other's secondary strategy ability
+- implement Strategies:
+	- [Research]
+	 	- P: pick a free research; pick an optional second research at cost
+	 	- S: pick a research at cost
+	- [Command]
+		- P: gain free Command Counters
+		- S: buy Command Counters for Social
+	- [Production]
+		- P: ?? (produce ships away from spacedock?)
+		- S: ?? (gain bonus industry to build with?)
+	- [Politics]
+		- P: pick a suggested policy to favor. Gain extra votes in the next turn
+		- S: gain extra votes this turn
+	- [Trade]
+		- P: pick a player to propose trade to. gain base trade goods + trade goods for (newly) active agreements.
+		- S: gain trade goods based on active agreements
+	- [Victory]
+		- P: ??
+		- S: ??
+	- [War]
+		- P: gain +1 firepower for all ships
+		- S: gain +1 firepower on one tile
+	- [Action]
+		- P: draw additional action cards
+		- S: draw additional action cards
+
+research
+races
+actions
+politics
+trade
