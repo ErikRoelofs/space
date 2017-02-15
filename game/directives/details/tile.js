@@ -9,7 +9,6 @@ angular.module('game').controller('tileDetailsController', ['$http', 'activePlay
 	}
 
 	controller.createOrder = function() {
-		console.log('emitting');
 		$scope.$emit('game.mode', 'tactical', tile);
 	}
 

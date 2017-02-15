@@ -1,4 +1,13 @@
 <div style="position: fixed; top: 10px; right: 10px; background-color: white" ng-if="open">
     <div ng-click="close()" style="border: 2px solid black">close</div>
     Tactical pane.
+	<div>Units to move:</div>
+	<piece piece="piece" ng-repeat="piece in piecesToMove"></piece>
+	<div>Units to build:</div>
+	<piece piece="piece" ng-repeat="piece in piecesToBuild"></piece>
+
+	<div>Buildable units:</div>
+	<buildablepiece ng-repeat="buildable in buildablePieces"></buildablepiece>
+
+	<button ng-click="createOrder()">Confirm order</button>
 </div>

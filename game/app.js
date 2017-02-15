@@ -126,27 +126,24 @@ angular.module('game', []).service('piecesService', function () {
 }).service('detailsCommand', ['$rootScope', function($rootScope) {
 	return {
 		entityClicked: function(type, entity) {
-			console.log('details received ' + type );
 			$rootScope.$broadcast('details.show', type, entity);
 		},
 		unload: function() {
 			$rootScope.$broadcast('details.close');
-			console.log('unloading details');
 		},
 		load: function(data) {
-			console.log('loading details');
 		}
 	}
 }]).service('tacticalCommand',['$rootScope', function($rootScope) {
 	return {
 		entityClicked: function(type, entity) {
-			console.log('tactical received ' + type );
+			if(type == 'piece') {
+				$rootScope.$broadcast('tactical.add', entity.piece);
+			}
 		},
 		unload: function() {
-			console.log('unloading tactical');
 		},
 		load: function(tile) {
-			console.log('loading tactical');
 			$rootScope.$broadcast('tactical.show', tile);
 		}
 	}

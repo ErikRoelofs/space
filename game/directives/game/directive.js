@@ -41,8 +41,6 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
 				activeControl.entityClicked(toShow, data);
 			});
 			scope.$on('game.mode', function(event, mode, data) {
-				console.log('mode change ' + mode);
-				console.log(data);
 				activeControl.unload();
 				if(mode=='details') {
 					activeControl = detailsCommand;
