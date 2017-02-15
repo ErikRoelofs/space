@@ -13,6 +13,7 @@ use Plu\PieceTrait\BuildsPieces;
 use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\Mobile;
 use Plu\PieceTrait\Spaceborne;
+use Plu\PieceTrait\Transports;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 
@@ -60,11 +61,16 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
      */
     protected $tileRepo;
 
+	/**
+	 * @var ResourceService
+	 */
+	protected $resourceService;
+
     /**
      * TacticalOrder constructor.
      * @param $orderRepo
      */
-    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService, TileRepository $tileRepo)
+    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService, TileRepository $tileRepo, ResourceService $resourceService)
     {
         $this->orderRepo = $orderRepo;
         $this->ordersService = $ordersService;
@@ -72,6 +78,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $this->pieceService = $pieceService;
         $this->pathfindingService = $pathfindingService;
         $this->tileRepo = $tileRepo;
+		$this->resourceService = $resourceService;
     }
 
     public function validateOrderAllowed(Player $player, Game $game, $data)
@@ -116,7 +123,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 			}
 			$piecesByTile[$piece->tileId][] = $piece;
 		}
-		foreach($piecesByTile as $tile => $pieces) {
+		foreach($piecesByTile as $tileId => $pieces) {
 			if(!$this->groupHasEnoughCargoSpace($pieces)) {
 				throw new \Exception("Not enough cargo space for pieces from tile " . $pieces[0]->tileId);
 			}
