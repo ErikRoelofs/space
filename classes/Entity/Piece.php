@@ -9,5 +9,6 @@ class Piece
     public $typeId;
     public $ownerId;
 	public $turnId;
+	public $traits = [];
 
 }

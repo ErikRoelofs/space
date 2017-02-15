@@ -50,7 +50,6 @@ class PieceTypesService
 		$type->traits[] = new Grounded();
 		$type->traits[] = new Transports(100);
 		$type->traits[] = new Capturable();
-		$type->traits[] = new GivesResources(2,2);
 		$type->traits[] = new TileLimit(1);
 		$type->traits[] = new BuildsPieces(['SpaceDock']);
 

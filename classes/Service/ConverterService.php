@@ -21,7 +21,7 @@ class ConverterService
     }
 
     public function fromDB($entityName, $data) {
-        $classname = '\Plu\Entity\\' . $entityName;
+        $classname = '\Plu\Entity\\' . ucfirst($entityName);
         $obj = new $classname;
         return $this->getConverter($classname)->fromDB($obj, $data);
     }

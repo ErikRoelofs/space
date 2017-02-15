@@ -21,7 +21,6 @@ issues:
 - fix naming scheme to work on unix
 - new turn is copying over orders; shouldn't
 
-
 v2:
 
 victory points, winning
@@ -62,6 +61,26 @@ command counters
 - maintain a reserve of counters for fleet supply
 - scrap ships at turn start if not enough reserved
 
+research
+- create a bunch of researches
+- add the ResearchOrder to purchase one
+- enable Traits to modify other Traits
+- show each player's Researches
+- build a Tech-Tree with requirements for research
+- enable tech-discount on planets
+
+races
+- create a bunch of races
+- allow players to pick one in the lobby (or random)
+- assing racial traits to each player
+[- enable Traits to modify other Traits]
+- show each player's Racial Traits
+
+actions
+politics
+trade
+secret objectives
+
 strategies
 - add the pickStrategy action (including making choices)
 - allow players to pick a turn 1 strategy in the lobby (including making choices for it)
@@ -93,8 +112,24 @@ strategies
 		- P: draw additional action cards
 		- S: draw additional action cards
 
-research
-races
-actions
-politics
-trade
+
+
+Trait:
+
+ - tag
+ - type : piece or trait
+ - applies ( Piece )
+ - modifies ( Trait )
+ - value
+
+traitpile:
+	- all piece ones (find: on the piece; applies: "yes")
+ 	- all piecetype ones (find: just all of them; applies: "is it of this type?")
+ 	- all research ones (find: from research by this player; applies: research custom )
+ 	- all racial ones (find: from owner's race; applies: "racial custom")
+ 	- all action ones (find: from active action cards; applies: action custom)
+ 	- all political ones (find: from active policies; applies: policy custom)
+
+- find all the traits that apply to this piece
+- set the base traits for the piece
+- run all the ones that modify traits for better values

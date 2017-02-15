@@ -6,6 +6,6 @@ class PieceType
 {
     public $id;
     public $name;
-    public $traits;
+    public $traits = [];
 
 }
