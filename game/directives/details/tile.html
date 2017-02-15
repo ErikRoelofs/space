@@ -1,1 +1,6 @@
-Tile. {{ data.id }} {{ data.coordinates[0] }} , {{ data.coordinates[1] }}
+<div ng-controller="tileDetailsController as controller">
+	Tile {{ data.id }}: [{{ data.coordinates[0] }},{{ data.coordinates[1] }}]
+	<div ng-if="controller.showCreateOrder">
+		<button ng-click="controller.createOrder()">Tactical Order</button>
+	</div>
+</div>

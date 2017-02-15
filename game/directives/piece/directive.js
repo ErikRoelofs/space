@@ -13,8 +13,8 @@ angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'player
             scope.color = function() {
                 return playersService.getPlayer(scope.piece.ownerId).color;
             };
-            scope.showDetails = function() {
-                $rootScope.$broadcast('detailsPane.show', 'piece', { piece: scope.piece, pieceType: scope.pieceType });
+            scope.clicked = function() {
+                $rootScope.$broadcast('entity.clicked', 'piece', { piece: scope.piece, pieceType: scope.pieceType });
             }
         }
 

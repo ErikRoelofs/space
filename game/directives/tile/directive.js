@@ -17,9 +17,9 @@ angular.module('game').directive('tile', ['$http', 'boardService', 'piecesServic
 				throw Error("Tile directive should receive either coords or id.");
 			}
             scope.planet = piecesService.getPlanetForTile(scope.tile);
-            scope.showDetails = function() {
-                $rootScope.$broadcast('detailsPane.show', 'tile', scope.tile);
+            scope.clicked = function() {
+                $rootScope.$broadcast('entity.clicked', 'tile', scope.tile);
             }
-        }
+		}
     }
 }]);

@@ -1,4 +1,5 @@
-angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService) {
+angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', 'detailsCommand', 'tacticalCommand',
+	function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService, detailsCommand, tacticalCommand) {
     return {
         restrict: 'E',
         scope: {
@@ -34,6 +35,24 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
             $timeout(function() {
                 scope.ready = true;
             }, 500);
+
+			var activeControl = detailsCommand;
+			scope.$on('entity.clicked', function(event, toShow, data) {
+				activeControl.entityClicked(toShow, data);
+			});
+			scope.$on('game.mode', function(event, mode, data) {
+				console.log('mode change ' + mode);
+				console.log(data);
+				activeControl.unload();
+				if(mode=='details') {
+					activeControl = detailsCommand;
+				}
+				else if(mode=='tactical') {
+					activeControl = tacticalCommand;
+				}
+				activeControl.load(data);
+			});
+
         }
     }
 }]);
