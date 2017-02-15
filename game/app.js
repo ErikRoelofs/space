@@ -110,4 +110,14 @@ angular.module('game', []).service('piecesService', function () {
 		}
 
 	}
+}).service('activePlayerService', function () {
+	var data = {};
+	return {
+		setData: function (theData) {
+			data = theData;
+		},
+		getResources: function () {
+			return data.resources;
+		}
+	}
 })

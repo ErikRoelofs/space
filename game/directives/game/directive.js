@@ -1,4 +1,4 @@
-angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService) {
+angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService) {
     return {
         restrict: 'E',
         scope: {
@@ -25,6 +25,10 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
 				historyService.setHistory(response.data.turns.map(function(item) { return item.logs}));
 				orderService.setOrders(response.data.turns.map(function(item) { return item.orders}));
             });
+
+			$http.get('/game/1/player/1').then(function(response) {
+				activePlayerService.setData(response.data);
+			})
 
             scope.ready = false;
             $timeout(function() {
