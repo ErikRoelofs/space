@@ -1,0 +1,14 @@
+<span width="120px;">{{ pieceType.name }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('mobile')">Speed: {{ getTraitValue('mobile') }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('transports')">Cargo space: {{ getTraitValue('transports') }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.space')">Priority: {{ getTraitValue('combat.space').priority }}, Hull: {{ getTraitValue('combat.space').defense }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.main')">Firepower: {{ getTraitValue('combat.weapon.main').shots }} x {{ getTraitValue('combat.weapon.main').firepower }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.torpedoes')">Torpedoes: {{ getTraitValue('combat.weapon.torpedoes').shots }} x {{ getTraitValue('combat.weapon.torpedoes').firepower }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.flak')">Flak: {{ getTraitValue('combat.weapon.flak').shots }} x {{ getTraitValue('combat.weapon.flak').firepower }}</span></span>
+
+<span width="120px;"><span ng-if="hasTrait('combat.ground')">Priority: {{ getTraitValue('combat.ground').priority }}, Hull: {{ getTraitValue('combat.ground').defense }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.ground')">Firepower: {{ getTraitValue('combat.weapon.ground').shots }} x {{ getTraitValue('combat.weapon.ground').firepower }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.artillery')">Firepower: {{ getTraitValue('combat.weapon.artillery').shots }} x {{ getTraitValue('combat.weapon.artillery').firepower }}</span></span>
+<span width="120px;"><span ng-if="hasTrait('combat.weapon.bombs')">Firepower: {{ getTraitValue('combat.weapon.bombs').shots }} x {{ getTraitValue('combat.weapon.bombs').firepower }}</span></span>
+
+<span width="120px;"><span ng-if="hasTrait('location.cargo')">Counts as cargo</span></span>

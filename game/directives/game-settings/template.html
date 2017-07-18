@@ -1,9 +1,10 @@
-<div>
+<>
     <h3>Game settings:</h3>
 <h4>Unit types</h4>
-    <div ng-repeat="pieceType in pieceTypes">
-        {{ pieceType.name }} ( {{ pieceType.traits }}
-    </div>
+
+	<div ng-repeat="pieceType in pieceTypes">
+		<piece-type-info piece-type="pieceType"></piece-type-info>
+	</div>
     <h4>Order types</h4>
     <div ng-repeat="orderType in game.orderTypes">
         {{ orderType }}

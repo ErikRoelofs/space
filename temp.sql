@@ -1,9 +1,9 @@
 
 TRUNCATE `game`;
-TRUNCATE `givenorder`;
+TRUNCATE `givenOrder`;
 TRUNCATE `log`;
 TRUNCATE `piece`;
-TRUNCATE `piecetype`;
+TRUNCATE `pieceType`;
 TRUNCATE `player`;
 TRUNCATE `tile`;
 TRUNCATE `turn`;
@@ -33,10 +33,10 @@ INSERT INTO `game` (`id`) VALUES
 (1);
 
 --
--- Dumping data for table `givenorder`
+-- Dumping data for table `givenOrder`
 --
 
-INSERT INTO `givenorder` (`id`, `turnId`, `ownerId`, `orderType`, `data`) VALUES
+INSERT INTO `givenOrder` (`id`, `turnId`, `ownerId`, `orderType`, `data`) VALUES
 (1, 1, 1, 'tactical', '{"tile":35,"pieces":[25,26],"newPieces":[]}'),
 (2, 1, 5, 'tactical', '{"tile":35,"pieces":[54,55],"newPieces":[]}');
 
@@ -113,10 +113,10 @@ INSERT INTO `piece` (`id`, `ownerId`, `typeId`, `turnId`, `tileId`) VALUES
 (66, 6, 4, 1, 22);
 
 --
--- Dumping data for table `piecetype`
+-- Dumping data for table `pieceType`
 --
 
-INSERT INTO `piecetype` (`id`, `name`, `traits`) VALUES
+INSERT INTO `pieceType` (`id`, `name`, `traits`) VALUES
 (1, 'Planet', 'a:6:{i:0;O:23:"Plu\\PieceTrait\\Grounded":0:{}i:1;O:25:"Plu\\PieceTrait\\Transports":1:{s:32:"\0Plu\\PieceTrait\\Transports\0value";i:100;}i:2;O:25:"Plu\\PieceTrait\\Capturable":0:{}i:3;O:29:"Plu\\PieceTrait\\GivesResources":2:{s:11:"\0*\0industry";i:2;s:9:"\0*\0social";i:2;}i:4;O:24:"Plu\\PieceTrait\\TileLimit":1:{s:8:"\0*\0limit";i:1;}i:5;O:27:"Plu\\PieceTrait\\BuildsPieces":1:{s:12:"\0*\0typeNames";a:1:{i:0;s:9:"SpaceDock";}}}'),
 (2, 'Destroyer', 'a:6:{i:0;O:25:"Plu\\PieceTrait\\Spaceborne":0:{}i:1;O:21:"Plu\\PieceTrait\\Mobile":1:{s:28:"\0Plu\\PieceTrait\\Mobile\0value";i:2;}i:2;O:33:"Plu\\PieceTrait\\FightsSpaceBattles":2:{s:43:"\0Plu\\PieceTrait\\FightsSpaceBattles\0priority";i:1;s:42:"\0Plu\\PieceTrait\\FightsSpaceBattles\0defense";i:1;}i:3;O:26:"Plu\\PieceTrait\\FlakCannons":2:{s:33:"\0Plu\\PieceTrait\\FlakCannons\0shots";i:2;s:37:"\0Plu\\PieceTrait\\FlakCannons\0firepower";i:2;}i:4;O:25:"Plu\\PieceTrait\\MainCannon":2:{s:32:"\0Plu\\PieceTrait\\MainCannon\0shots";i:1;s:36:"\0Plu\\PieceTrait\\MainCannon\0firepower";i:2;}i:5;O:47:"Plu\\PieceTrait\\BuildRequirements\\CostsResources":1:{s:55:"\0Plu\\PieceTrait\\BuildRequirements\\CostsResources\0amount";i:1;}}'),
 (3, 'Carrier', 'a:6:{i:0;O:25:"Plu\\PieceTrait\\Spaceborne":0:{}i:1;O:21:"Plu\\PieceTrait\\Mobile":1:{s:28:"\0Plu\\PieceTrait\\Mobile\0value";i:1;}i:2;O:25:"Plu\\PieceTrait\\Transports":1:{s:32:"\0Plu\\PieceTrait\\Transports\0value";i:6;}i:3;O:33:"Plu\\PieceTrait\\FightsSpaceBattles":2:{s:43:"\0Plu\\PieceTrait\\FightsSpaceBattles\0priority";i:3;s:42:"\0Plu\\PieceTrait\\FightsSpaceBattles\0defense";i:1;}i:4;O:25:"Plu\\PieceTrait\\MainCannon":2:{s:32:"\0Plu\\PieceTrait\\MainCannon\0shots";i:1;s:36:"\0Plu\\PieceTrait\\MainCannon\0firepower";i:2;}i:5;O:47:"Plu\\PieceTrait\\BuildRequirements\\CostsResources":1:{s:55:"\0Plu\\PieceTrait\\BuildRequirements\\CostsResources\0amount";i:3;}}'),
@@ -188,3 +188,7 @@ INSERT INTO `tile` (`id`, `gameId`, `coordinates`) VALUES
 
 INSERT INTO `turn` (`id`, `number`, `gameId`) VALUES
 (1, 1, 1);
+
+
+CREATE TABLE `games`.`resourceclaim` ( `id` INT NOT NULL , `ownerId` INT NOT NULL , `resource` VARCHAR(255) NOT NULL , `turnId` INT NOT NULL , `amount` INT NOT NULL ) ENGINE = InnoDB;
+ALTER TABLE `piece` ADD `traits` TEXT NOT NULL AFTER `turnId`;

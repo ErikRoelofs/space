@@ -6,11 +6,20 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
         },
         templateUrl: "directives/tactical-pane/template.html",
         link: function(scope) {
+        	var player = 1;
+
             scope.open = false;
 			scope.tile = null;
 			scope.$on('tactical.show', function(event, tile) {
 				scope.open = true;
 				scope.tile = tile;
+
+				$http.get('/order/tactical/' + player + '/' + scope.tile.id + '/moveable').then(function(response) {
+					scope.moveablePieces = response.data;
+				});
+                $http.get('/order/tactical/' + player + '/' + scope.tile.id + '/buildable').then(function(response) {
+                	scope.buildablePieces = response.data;
+                });
 			});
 
 			scope.$on('tactical.add', function(event, piece) {
@@ -26,7 +35,7 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
 					newPieces: scope.piecesToBuild.map(function(item) { return item.id}),
 				};
 
-				$http.post('/order/1/place/tactical', order).then(function(response) {
+				$http.post('/order/' + player + '/place/tactical', order).then(function(response) {
 					console.log(response);
 				},function(error) {
 					console.log(error);

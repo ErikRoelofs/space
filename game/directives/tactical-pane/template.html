@@ -7,7 +7,7 @@
 	<piece piece="piece" ng-repeat="piece in piecesToBuild"></piece>
 
 	<div>Buildable units:</div>
-	<buildablepiece ng-repeat="buildable in buildablePieces"></buildablepiece>
+	<buildablepiece piece-type="buildable" ng-repeat="buildable in buildablePieces"></buildablepiece>
 
 	<button ng-click="createOrder()">Confirm order</button>
 </div>

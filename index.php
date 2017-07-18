@@ -7,6 +7,7 @@ $app['debug'] = true;
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
+
 require_once('services.php');
 
 require_once('endpoints/rest.php');

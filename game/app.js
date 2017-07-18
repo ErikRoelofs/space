@@ -116,6 +116,9 @@ angular.module('game', []).service('piecesService', function () {
 		setData: function (theData) {
 			data = theData;
 		},
+		activePlayerId: function() {
+			return 1;
+		},
 		getResources: function () {
 			return data.resources;
 		},

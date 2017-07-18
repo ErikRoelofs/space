@@ -80,18 +80,6 @@ CREATE TABLE `piecetype` (
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `planet`
---
-
-CREATE TABLE `planet` (
-  `id` int(11) NOT NULL,
-  `tileId` int(11) NOT NULL,
-  `ownerId` int(11) NOT NULL,
-  `industry` int(11) NOT NULL,
-  `social` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
 -- --------------------------------------------------------
 
 --
@@ -101,21 +89,11 @@ CREATE TABLE `planet` (
 CREATE TABLE `player` (
   `id` int(11) NOT NULL,
   `gameId` int(11) NOT NULL,
-  `industry` int(11) NOT NULL,
-  `social` int(11) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `resolution`
---
-
-CREATE TABLE `resolution` (
-  `id` int(11) NOT NULL,
-  `givenOrderId` int(11) NOT NULL,
-  `data` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -174,28 +152,9 @@ ALTER TABLE `piece`
 ALTER TABLE `piecetype`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `planet`
---
-ALTER TABLE `planet`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `player`
 --
 ALTER TABLE `player`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `resolution`
---
-ALTER TABLE `resolution`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `temp`
---
-ALTER TABLE `temp`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -240,26 +199,12 @@ ALTER TABLE `piece`
 ALTER TABLE `piecetype`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `planet`
---
-ALTER TABLE `planet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `resolution`
---
-ALTER TABLE `resolution`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `temp`
---
-ALTER TABLE `temp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
+
+
 -- AUTO_INCREMENT for table `tile`
 --
 ALTER TABLE `tile`
@@ -269,3 +214,24 @@ ALTER TABLE `tile`
 --
 ALTER TABLE `turn`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+  ALTER TABLE `piece` CHANGE `location` `tileId` INT(11) NOT NULL;
+  ALTER TABLE `piece` ADD `turnId` INT(11) NOT NULL AFTER `typeId`;
+
+  ALTER TABLE `piecetype`
+  DROP `allowedLocationTypes`,
+  DROP `attack`,
+  DROP `defense`,
+  DROP `speed`,
+  DROP `traits`,
+  DROP `priority`;
+
+  ALTER TABLE `piecetype` ADD `traits` TEXT NOT NULL AFTER `name`;
+
+  CREATE TABLE `games`.`log` ( `id` INT NOT NULL , `results` TEXT NOT NULL , `service` INT NOT NULL , `origin` INT NOT NULL , `originId` INT NOT NULL , `turnId` INT NOT NULL ) ENGINE = InnoDB;
+
+  ALTER TABLE `givenorder` CHANGE `orderTypeId` `orderType` INT(11) NOT NULL;
+  ALTER TABLE `player` CHANGE `industry` `name` VARCHAR(255) NOT NULL, CHANGE `social` `color` VARCHAR(7) NOT NULL;
+  ALTER TABLE `tile` ADD `gameId` INT NOT NULL AFTER `coordinates`;
+  ALTER TABLE `piece` CHANGE `ownerId` `ownerId` INT(11) NULL;
+  ALTER TABLE `givenOrder` CHANGE `orderType` `orderType` VARCHAR(255) NOT NULL;

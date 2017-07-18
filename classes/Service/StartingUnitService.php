@@ -36,6 +36,7 @@ class StartingUnitService
     private function createStartingUnitsForPlayer(Player $player) {
         $homeTile = $this->getHomeTileForPlayer($player);
         $pieces = [];
+        $pieces[] = $this->addPieceToSpace($player, 'Spacedock', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $carrier = $this->addPieceToSpace($player, 'Carrier', $homeTile);

@@ -211,6 +211,31 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         return $potentials;
     }
 
+    public function getBuildablePieceTypesForOrder(Tile $tile, Player $player, Game $game) {
+        $buildable = [];
+        foreach($game->pieceTypes as $type) {
+            if($this->canBuildPieceType($tile, $player, $type)) {
+                $buildable[] = $type;
+            }
+        }
+        return $buildable;
+    }
+
+    private function canBuildPieceType(Tile $tile, Player $player, PieceType $type) {
+        foreach($tile->pieces as $piece) {
+            if($piece->ownerId === $player->id) {
+                if ($this->pieceService->hasTrait($piece, BuildsPieces::TAG)) {
+                    foreach ($this->pieceService->getTraitContents($piece, BuildsPieces::TAG) as $buildable) {
+                        if ($buildable === $type->name) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private function validatePiece(Piece $piece, Tile $tile, Player $player, Game $game) {
         // belong to the player
         if($player->id != $piece->ownerId) {

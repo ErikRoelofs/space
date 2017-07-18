@@ -3,8 +3,6 @@ v1:
 
 - fix up construction of units
 - adding an order should claim resources; cancelling that order should free resources
-- start with the advanced pieceType system
-- give each planet its own (random) ind/soc values
 
 ? handle transportation of cargo
 ? make sure neutral planet capturing works
@@ -44,6 +42,7 @@ different board sizes, users, lobby, communication, autoresolving
 - check authorization when calling a url (mostly when getting player data; game can be public)
 - allow players to chat with each other in games
 - allow users to chat with each other in game lobbies
+- generate fair maps
 - update board generator for different player amounts
 - allow game settings:
 	- VP limit
