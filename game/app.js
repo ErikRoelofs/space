@@ -119,6 +119,9 @@ angular.module('game', []).service('piecesService', function () {
 		activePlayerId: function() {
 			return 1;
 		},
+		color: function() {
+			return '#ff0000';
+		},
 		getResources: function () {
 			return data.resources;
 		},

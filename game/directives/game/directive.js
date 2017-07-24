@@ -29,7 +29,7 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
 
 			$http.get('/game/1/player/1').then(function(response) {
 				activePlayerService.setData(response.data);
-			})
+			});
 
             scope.ready = false;
             $timeout(function() {

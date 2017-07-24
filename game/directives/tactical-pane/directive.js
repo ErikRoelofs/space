@@ -1,4 +1,4 @@
-angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boardService', function($http, piecesService, boardService) {
+angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boardService', '$rootScope', function($http, piecesService, boardService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -10,6 +10,7 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
 
             scope.open = false;
 			scope.tile = null;
+			scope.color = '#ff0000';
 			scope.$on('tactical.show', function(event, tile) {
 				scope.open = true;
 				scope.tile = tile;
@@ -28,6 +29,15 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
 				}
 			});
 
+			scope.$on('tactical.cancel', function(event) {
+				scope.open = false;
+				scope.tile = undefined;
+			});
+
+			scope.$on('tactical.produce', function(event, pieceType) {
+				scope.piecesToBuild.push(pieceType);
+			});
+
 			scope.createOrder = function() {
 				var order = {
 					tile: scope.tile.id,
@@ -40,6 +50,12 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
 				},function(error) {
 					console.log(error);
 				})
+			};
+
+			// ugly. this should not know about rootscope / game.mode
+			scope.close = function() {
+				$rootScope.$broadcast('game.mode', 'details');
+                $rootScope.$broadcast('tactical.cancel');
 			}
 
 			scope.piecesToMove = [];

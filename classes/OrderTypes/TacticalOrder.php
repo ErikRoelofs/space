@@ -294,6 +294,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 				$buildable = array_merge($buildable, $this->pieceService->getTraitContents($piece, BuildsPieces::TAG));
 			}
 		}
+		// this is wrong; it should check EACH buildable is okay
 		foreach($buildable as $name) {
 			if($type->name == $name) {
 				$ok = true;
