@@ -6,7 +6,7 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
         },
         templateUrl: "directives/player-info/template.html",
         link: function(scope) {
-			scope.orders = orderService.getOrdersForPlayer(0, 1);
+			scope.orders = orderService.getCurrentOrdersForPlayer(1);
 			scope.resources = activePlayerService.getResources();
 
             scope.cancel = function(order) {
@@ -18,6 +18,12 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
                     })
                     scope.orders = [];
                 });
+            }
+
+            scope.endTurn = function() {
+                $http.get('/admin/game/1/next').then(function(response) {
+                    console.log('next turn. refresh!');
+                })
             }
 
         }

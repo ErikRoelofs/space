@@ -7,7 +7,7 @@ angular.module('game').directive('gameOrders', ['$http', 'pieceTypesService', 'o
         templateUrl: "directives/game-orders/template.html",
         link: function(scope) {
 
-			scope.orders = orderService.getOrders(0);
+			scope.orders = orderService.getPreviousTurnOrders();
         }
 
     }

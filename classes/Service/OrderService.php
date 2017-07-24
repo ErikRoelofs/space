@@ -37,7 +37,6 @@ class OrderService
         }
         $game = $this->gameService->buildGame($player->gameId);
         $order = $this->types[$type]->createOrder($player, $game, $instructions);
-        $order->turnId = 1;
         $this->orderRepo->add($order);
 
     }

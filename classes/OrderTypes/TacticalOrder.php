@@ -174,6 +174,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $this->validateOrderAllowed($player, $game, $data);
         $order = new GivenOrder();
         $order->ownerId = $player->id;
+        $order->turnId = $game->currentTurn()->id;
         $order->orderType = self::TAG;
         $order->data = $data;
 

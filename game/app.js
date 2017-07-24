@@ -112,6 +112,15 @@ angular.module('game', []).service('piecesService', function () {
 		},
 		getOrdersForPlayer: function(turn, player) {
 			return orders[turn].filter(function(item) { return item.ownerId == player});
+		},
+		getCurrentOrdersForPlayer: function(player) {
+            return orders[orders.length - 1].filter(function(item) { return item.ownerId == player});
+		},
+		getPreviousTurnOrders: function() {
+			if(orders.length < 2) {
+				return [];
+			}
+            return orders[orders.length - 2];
 		}
 
 	}

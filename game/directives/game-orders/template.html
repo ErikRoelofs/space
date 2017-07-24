@@ -1,5 +1,5 @@
 <div>
-    <h3>All orders:</h3>
+    <h3>Previous turn's orders:</h3>
     <div ng-repeat="order in orders">
 		<div>Order:</div>
         <tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
