@@ -1,10 +1,63 @@
-<>
-    <h3>Game settings:</h3>
+<h3>Game settings:</h3>
 <h4>Unit types</h4>
 
-	<div ng-repeat="pieceType in pieceTypes">
-		<piece-type-info piece-type="pieceType"></piece-type-info>
-	</div>
+	<table>
+        <thead>
+            <tr>
+                <th>Icon</th>
+
+                <th>Name</th>
+                <th>Speed</th>
+                <th>Capacity</th>
+                <th>Role (space)</th>
+                <th>Hull</th>
+                <th>Role (ground)</th>
+                <th>Armor</th>
+                <th>Cost</th>
+                <th>Is cargo?</th>
+                <th>Weapon systems</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="pieceType in pieceTypes">
+                <td><piece-type-icon piece-type="pieceType" color="color"></piece-type-icon></td>
+
+                <td>{{ pieceType.name }}</td>
+                <td><span ng-if="hasTrait(pieceType, 'mobile')">{{ getTraitValue(pieceType, 'mobile') }}</span></td>
+                <td><span ng-if="hasTrait(pieceType, 'transports')">{{ getTraitValue(pieceType, 'transports') }}</span></td>
+                <td>
+                    <span ng-if="hasTrait(pieceType, 'combat.space')">
+                        <span ng-if="getTraitValue(pieceType, 'combat.space').priority == 1">Vanguard</span>
+                        <span ng-if="getTraitValue(pieceType, 'combat.space').priority == 2">Main</span>
+                        <span ng-if="getTraitValue(pieceType, 'combat.space').priority == 3">Support</span>
+                    </span>
+                </td>
+                <td><span ng-if="hasTrait(pieceType, 'combat.space')">{{ getTraitValue(pieceType, 'combat.space').defense }}</span></td>
+
+                <td>
+                    <span ng-if="hasTrait(pieceType, 'combat.ground')">
+                        <span ng-if="getTraitValue(pieceType, 'combat.ground').priority == 1">Vanguard</span>
+                        <span ng-if="getTraitValue(pieceType, 'combat.ground').priority == 2">Main</span>
+                        <span ng-if="getTraitValue(pieceType, 'combat.ground').priority == 3">Support</span>
+                    </span>
+                </td>
+                <td><span ng-if="hasTrait(pieceType, 'combat.ground')">{{ getTraitValue(pieceType, 'combat.ground').defense }}</span></td>
+
+                <td><span ng-if="hasTrait(pieceType, 'build.requirement.resources')">{{ getTraitValue(pieceType, 'build.requirement.resources') }}</span></td>
+                <td><span ng-if="hasTrait(pieceType, 'location.cargo')">Yes</span></td>
+
+                <td>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.main')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.main')" name="Lasers" /></span>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.torpedoes')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.torpedoes')" name="Torpedoes" /></span>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.flak')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.flak')" name="PD turrets" /></span>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.ground')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.ground')" name="Cannons" /></span>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.artillery')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.artillery')" name="Shells" /></span>
+                    <span ng-if="hasTrait(pieceType, 'combat.weapon.bombs')"><weapon-system trait="getTraitValue(pieceType, 'combat.weapon.bombs')" name="Bombs" /></span>
+                </td>
+
+            </tr>
+        </tbody>
+	</table>
     <h4>Order types</h4>
     <div ng-repeat="orderType in game.orderTypes">
         {{ orderType }}
