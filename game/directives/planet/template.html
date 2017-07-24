@@ -2,14 +2,14 @@
     <div style="position: relative; left: 10px; width: 80px; height: 40px; top: 50px; background: rgba(255,255,255,0.4); border: 2px solid white" ng-style="{'border-color': getBorderColor()}">
         <table style="width: 100%" cellpadding="0" cellspacing="0">
             <tr>
-                <td style="width: 33%"><img src="/assets/icons/tech-red.png" alt="Red"/></td>
-                <td style="width: 33%">{{ planet.traits.resources.industry }} <img src="/assets/icons/industry.png" alt="I" /></td>
-                <td style="width: 33%">{{ planet.traits.resources.social }} <img src="/assets/icons/people.png" alt="S" /></td>
+                <td style="width: 33%"><img src="/assets/icons/tech-red.png" alt="Red" title="Tech affinity"/></td>
+                <td style="width: 33%">{{ planet.traits.resources.industry }} <img src="/assets/icons/industry.png" alt="I" title="Industry"/></td>
+                <td style="width: 33%">{{ planet.traits.resources.social }} <img src="/assets/icons/people.png" alt="S" title="Social power"/></td>
             </tr>
             <tr>
-                <td>{{ fighters() }} <img src="/assets/icons/fighter.png" alt="F"/></td>
-                <td>{{ troops() }} <img src="/assets/icons/troop.png" alt="T"/></td>
-                <td>{{ defenders() }} <img src="/assets/icons/defender.png" alt="D"/></td>
+                <td>{{ fighters() }} <img src="/assets/icons/fighter.png" alt="F" title="Fighters"/></td>
+                <td>{{ troops() }} <img src="/assets/icons/troop.png" alt="T" title="Troops"/></td>
+                <td>{{ defenders() }} <img src="/assets/icons/defender.png" alt="D" title="Defense systems"/></td>
             </tr>
         </table>
     </div>
