@@ -18,6 +18,7 @@ class TurnConverter implements ConverterInterface
             'id' => new Conv\NativeConverter(),
             'gameId' => new Conv\NativeConverter(),
             'number' => new Conv\NativeConverter(),
+            'logs' => new Conv\NativeConverter()
         ]);
         $this->app = $app;
     }
@@ -27,6 +28,7 @@ class TurnConverter implements ConverterInterface
         $base = $this->c->toJSON($data);
         $base['orders'] = $this->app['converter-service']->batchToJSONObject($data->orders);
         $base['tiles'] = $this->app['converter-service']->batchToJSONObject($data->tiles);
+        $base['logs'] = $this->app['converter-service']->batchToJSONObject($data->logs);
         return $base;
     }
 

@@ -5,6 +5,7 @@ namespace Plu\Service;
 use Plu\Entity\Game;
 use Plu\Entity\Player;
 use Plu\Repository\GameRepository;
+use Plu\Repository\LogRepository;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 use Plu\Repository\PieceTypeRepository;
@@ -51,6 +52,11 @@ class GameService
      */
     private $turnRepository;
 
+    /**
+     * @var LogRepository
+     */
+    private $logRepository;
+
 	private $builtGames = [];
 
     /**
@@ -62,8 +68,9 @@ class GameService
      * @param PieceTypeRepository $pieceTypeRepo
      * @param OrderRepository $orderRepository
      * @param TurnRepository $turnRepository
+     * @param LogRepository $logRepository
      */
-    public function __construct(GameRepository $gameRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository)
+    public function __construct(GameRepository $gameRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository, LogRepository $logRepository)
     {
         $this->gameRepo = $gameRepo;
         $this->tileRepo = $tileRepo;
@@ -72,6 +79,7 @@ class GameService
         $this->pieceTypeRepo = $pieceTypeRepo;
         $this->orderRepository = $orderRepository;
         $this->turnRepository = $turnRepository;
+        $this->logRepository = $logRepository;
     }
 
     public function buildGame($gameId) {
@@ -92,6 +100,7 @@ class GameService
 					$turn->tiles[] = $tile;
 				}
 				$turn->orders = $this->orderRepository->findByTurn($turn);
+				$turn->logs = $this->logRepository->findByTurn($turn);
 			}
 			$this->builtGames[$gameId] = $game;
 		}

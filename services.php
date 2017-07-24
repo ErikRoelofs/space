@@ -153,7 +153,7 @@ $app['piece-types-service'] = function($app) {
 };
 
 $app['game-service'] = function($app) {
-    return new \Plu\Service\GameService($app['game-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo']);
+    return new \Plu\Service\GameService($app['game-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo'], $app['log-repo']);
 };
 
 $app['end-of-turn-service'] = function($app) {
