@@ -17,6 +17,7 @@ use Plu\PieceTrait\Transports;
 use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 
+use Plu\Repository\PieceTypeRepository;
 use Plu\Service\GamestateUpdate;
 use Plu\Service\Loggers\LoggerInterface;
 use Plu\Service\Loggers\TacticalOrderLog;
@@ -47,6 +48,11 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
     protected $pieceRepo;
 
     /**
+     * @var PieceTypeRepository
+     */
+    protected $pieceTypeRepo;
+
+    /**
      * @var PieceService
      */
     protected $pieceService;
@@ -70,11 +76,12 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
      * TacticalOrder constructor.
      * @param $orderRepo
      */
-    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceService $pieceService, PathfindingService $pathfindingService, TileRepository $tileRepo, ResourceService $resourceService)
+    public function __construct(OrderRepository $orderRepo, OrdersService $ordersService, PieceRepository $pieceRepo, PieceTypeRepository $pieceTypeRepo, PieceService $pieceService, PathfindingService $pathfindingService, TileRepository $tileRepo, ResourceService $resourceService)
     {
         $this->orderRepo = $orderRepo;
         $this->ordersService = $ordersService;
         $this->pieceRepo = $pieceRepo;
+        $this->pieceTypeRepo = $pieceTypeRepo;
         $this->pieceService = $pieceService;
         $this->pathfindingService = $pathfindingService;
         $this->tileRepo = $tileRepo;
@@ -138,7 +145,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         // all items queued for construction must be valid
         foreach($pieceTypes as $pieceType) {
             if(!$this->validateConstructionOrder($pieceType, $tile, $player )) {
-                throw new \Exception("A constuction order that was sent is not valid");
+                throw new \Exception("A construction order that was sent is not valid");
             }
         }
 
@@ -294,15 +301,15 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 				$buildable = array_merge($buildable, $this->pieceService->getTraitContents($piece, BuildsPieces::TAG));
 			}
 		}
-		// this is wrong; it should check EACH buildable is okay
 		foreach($buildable as $name) {
-			if($type->name == $name) {
-				$ok = true;
-			}
-		}
+            if ($type->name == $name) {
+                $ok = true;
+            }
+        }
 		if(!$ok) {
 			throw new \Exception("A new piece of type $type->name cannot be built here; not supported by tile.");
 		}
+		return true;
     }
 
 	private function getTotalCost($pieceTypes, Tile $tile, Player $player) {

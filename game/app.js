@@ -40,6 +40,11 @@ angular.module('game', []).service('piecesService', function () {
                 return item.id == piece.typeId
             })[0];
         },
+		getPieceTypeById: function(id) {
+        	return pieceTypes.filter(function (item) {
+        		return item.id == id;
+			})[0];
+		},
         getAll: function() {
             return pieceTypes;
         }

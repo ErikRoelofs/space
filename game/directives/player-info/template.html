@@ -4,4 +4,5 @@
 <h4>Current orders ({{ orders.length }})</h4>
 <div ng-repeat="order in orders">
 	<tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
+	<button ng-click="cancel(order)">Cancel this order</button>
 </div>

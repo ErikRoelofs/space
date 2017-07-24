@@ -120,7 +120,7 @@ $app['piece-service'] = function($app) {
 
 $app['order-service'] = function($app) {
     $s = new \Plu\Service\OrderService($app['order-repo'], $app['game-service']);
-    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-service'], $app['pathfinding-service'], $app['tile-repo'], $app['resource-service']));
+    $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-type-repo'], $app['piece-service'], $app['pathfinding-service'], $app['tile-repo'], $app['resource-service']));
 
     return $s;
 };
