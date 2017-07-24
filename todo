@@ -101,6 +101,17 @@ strategies
 	- [Trade]
 		- P: pick a player to propose trade to. gain base trade goods + trade goods for (newly) active agreements.
 		- S: gain trade goods based on active agreements
+
+		ALT:
+		Create a trade pool of Trade Resources with a value based on the total production of the sector.
+		Players lose some percentage of their normal income based on (total trade rating?)
+		Each player gains Trade Resources from the trade pool based on how high their trade rating is.
+		(Players with terrible Trade Rating will lose more than they gain and vice-versa)
+
+		Trade ships add to your trade rating based on the value of their location (they orbit a planet)
+		- P: increase trade rating for this turn? boost trade fleet move speed? create a free trade fleet?
+		- S: increase trade rating next turn?
+
 	- [Victory]
 		- P: ??
 		- S: ??
