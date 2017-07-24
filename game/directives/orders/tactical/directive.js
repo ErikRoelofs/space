@@ -1,4 +1,4 @@
-angular.module('game').directive('tacticalOrder', ['$http', 'piecesService', 'orderService', function($http, piecesService, orderService) {
+angular.module('game').directive('tacticalOrder', ['$http', 'piecesService', 'pieceTypesService', 'orderService', function($http, piecesService, pieceTypesService, orderService) {
     return {
         restrict: 'E',
         scope: {
@@ -8,7 +8,10 @@ angular.module('game').directive('tacticalOrder', ['$http', 'piecesService', 'or
         link: function(scope) {
 			scope.getPiece = function(id) {
 				return piecesService.getPieceById(id);
-			}
+			};
+            scope.getPieceType = function(id) {
+                return pieceTypesService.getPieceTypeById(id);
+            };
 		}
 
     }

@@ -3,7 +3,12 @@
 <div style="width: 200px; height: 200px">
 	<tile id="order.data.tile"></tile>
 </div>
-<div>Owner: {{ order.data.ownerId }}</div>
-<div>Moving: {{ order.data.pieces }}</div>
-<piece ng-repeat="id in order.data.pieces" piece="getPiece(id)"></piece>
-<div>Building: {{ order.data.newPieces }}</div>
+<div>Owner: {{ order.ownerId }}</div>
+<div ng-if="order.data.pieces.length">
+	<span>Inbound: </span>
+	<piece ng-repeat="id in order.data.pieces" piece="getPiece(id)"></piece>
+</div>
+<div ng-if="order.data.newPieces.length">
+	<span>Building: </span>
+	<piece-type-icon piece-type="getPieceType(id)" ng-repeat="id in order.data.newTypes"></piece-type-icon>
+</div>

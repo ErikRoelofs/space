@@ -1,7 +1,7 @@
 <h3>Player info</h3>
 <h4>Resources</h4>
 {{ resources.current.industry }} of {{ resources.initial.industry }} I \ {{ resources.current.social }} of {{ resources.initial.social }} S
-<h4>Active orders ({{ orders.length }})</h4>
+<h4>Current orders ({{ orders.length }})</h4>
 <div ng-repeat="order in orders">
 	<tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
 </div>
