@@ -1,0 +1,30 @@
+<h4>A space combat log</h4>
+<h5>Starting pieces:</h5>
+<piece-type-icon piece-type="getPieceType(piece.typeId)" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.initialPieces"></piece-type-icon>
+<h5>Remaining pieces:</h5>
+<piece-type-icon piece-type="getPieceType(piece.typeId)" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.remainingPieces"></piece-type-icon>
+<h5>Hits:</h5>
+
+<table>
+	<thead>
+		<tr>
+			<th>Phase</th>
+			<th>Player</th>
+			<th>Hit</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="hit in fullLog.hits">
+			<td>
+				<span ng-if="hit.phase != 'main'">{{ hit.phase }}</span>
+				<span ng-if="hit.phase == 'main'">{{ hit.round + 1}}</span>
+			</td>
+			<td>
+				{{ getNameByPlayer(hit.scoredBy) }}
+			</td>
+			<td>
+				{{ hit.target }}
+			</td>
+		</tr>
+	</tbody>
+</table>
