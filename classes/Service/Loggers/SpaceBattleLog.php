@@ -6,6 +6,8 @@ use Plu\Service\SpaceBattleService;
 
 class SpaceBattleLog extends AbstractBattleLog {
 
+    const SERVICE = 'space-battle-service';
+
 	private $lostCargo = [];
 
 	public function logLostCargo($player, $piece) {
@@ -26,7 +28,7 @@ class SpaceBattleLog extends AbstractBattleLog {
 	}
 
 	public function getService() {
-		return 'space-battle-service';
+		return self::SERVICE;
 	}
 
 	public function storeLog() {

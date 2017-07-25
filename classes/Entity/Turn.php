@@ -10,4 +10,12 @@ class Turn
     public $orders = [];
     public $tiles = [];
     public $logs = [];
+
+    public function getTileById($id) {
+        foreach($this->tiles as $tile) {
+            if($tile->id === $id) {
+                return $tile;
+            }
+        }
+    }
 }

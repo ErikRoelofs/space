@@ -163,3 +163,18 @@ $app['end-of-turn-service'] = function($app) {
 $app['resource-service'] = function($app) {
 	return new \Plu\Service\ResourceService($app['piece-service'], $app['game-service'], $app['resource-claim-repo']);
 };
+
+$app['space-combat-log-expander'] = function($app) {
+    return new \Plu\Service\LogExpanders\SpaceCombatLogExpander(
+        $app['game-service'],
+        $app['converter-service'],
+        $app['turn-repo'],
+        $app['piece-repo']
+    );
+};
+
+$app['log-expander'] = function($app) {
+    $exp = new \Plu\Service\LogExpanderService();
+    $exp->addExpander('space-battle-service', $app['space-combat-log-expander']);
+    return $exp;
+};

@@ -1,7 +1,15 @@
 backend:
 v1:
 
-- fix up construction of units
+- put the current turn in a service-var; make everything use THAT instead of its own logic
+    - board display
+    - history display
+    - player info display
+    - previous turn's orders display
+- disable creating orders for any turn except the most recent
+- allow turn switching to view previous gamestates
+
+
 - adding an order should claim resources; cancelling that order should free resources
 
 ? handle transportation of cargo

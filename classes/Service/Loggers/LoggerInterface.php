@@ -2,6 +2,8 @@
 
 namespace Plu\Service\Loggers;
 
+use Plu\Entity\Log;
+
 interface LoggerInterface {
 
     const ORIGIN_ORDER = 'order';

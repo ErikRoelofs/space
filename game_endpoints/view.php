@@ -17,3 +17,9 @@ $app->get('/game/{id}/player/{player}', function($id, $player) use ($app) {
 
 	return json_encode(['resources'=>['initial' => $initial, 'current' => $current],'orders' => $orders]);
 });
+
+$app->get('/log/{id}', function($id) use ($app) {
+   $log = $app['log-repo']->findByIdentifier($id);
+
+   return $app['log-expander']->expand($log);
+});
