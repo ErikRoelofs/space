@@ -107,6 +107,19 @@ angular.module('game', []).service('piecesService', function () {
 		setOrders: function(theOrders) {
 			orders = theOrders;
 		},
+		getCurrentOrderForTileAndPlayer: function(tile, player) {
+            var currentTileOrder = orders[orders.length - 1]
+				.filter(function(item) { return item.ownerId == player})
+				.filter(function(item) { return item.data.tile === tile.id });
+            if(currentTileOrder.length) {
+            	return currentTileOrder[0];
+			}
+			return false;
+		},
+		getPreviousActivityForTile: function(tile) {
+            return orders[orders.length - 2]
+                .filter(function(item) { return item.data.tile === tile.id });
+		},
 		getOrders: function(turn) {
 			return orders[turn];
 		},

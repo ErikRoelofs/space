@@ -1,4 +1,4 @@
-angular.module('game').directive('tile', ['$http', 'boardService', 'piecesService', '$rootScope', function($http, boardService, piecesService, $rootScope) {
+angular.module('game').directive('tile', ['$http', 'boardService', 'piecesService', '$rootScope', 'activePlayerService', 'orderService', function($http, boardService, piecesService, $rootScope, activePlayerService, orderService) {
     return {
         restrict: 'E',
         scope: {
@@ -16,6 +16,9 @@ angular.module('game').directive('tile', ['$http', 'boardService', 'piecesServic
 			else {
 				throw Error("Tile directive should receive either coords or id.");
 			}
+
+			scope.currentOrder = orderService.getCurrentOrderForTileAndPlayer(scope.tile, 1);
+			scope.previousOrders = orderService.getPreviousActivityForTile(scope.tile);
             scope.planet = piecesService.getPlanetForTile(scope.tile);
             scope.clicked = function() {
                 $rootScope.$broadcast('entity.clicked', 'tile', scope.tile);

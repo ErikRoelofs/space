@@ -1,4 +1,7 @@
 <div style="background-image: url('/assets/tiles/starfield1.png'); height: 100%; clear: both" ng-click="clicked();  $event.stopPropagation();">
     <planet planet="planet" ng-if="planet"></planet>
     <tile-space tile="tile"></tile-space>
+    <div style="clear: both"></div>
+    <div ng-if="currentOrder" style="color: white">Active order</div>
+    <div ng-repeat="order in previousOrders" style="color: white">Something happened!</div>
 </div>

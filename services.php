@@ -173,8 +173,13 @@ $app['space-combat-log-expander'] = function($app) {
     );
 };
 
+$app['tactical-order-log-expander'] = function($app) {
+    return new \Plu\Service\LogExpanders\TacticalOrderLogExpander($app['piece-repo']);
+};
+
 $app['log-expander'] = function($app) {
     $exp = new \Plu\Service\LogExpanderService();
     $exp->addExpander('space-battle-service', $app['space-combat-log-expander']);
+    $exp->addExpander('tactical-order-service', $app['tactical-order-log-expander']);
     return $exp;
 };
