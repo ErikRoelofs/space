@@ -59,6 +59,10 @@ class SpaceCombatLogExpander implements LogExpanderInterface
         $remainingPieces = $this->converterService->batchToJSONObject($tile->pieces);
         $initialPieces = $this->collectInitialPieces($tile, $log);
 
+        foreach($log->results['hits'] as $key => $hit) {
+            $log->results['hits'][$key]['target'] = $this->converterService->toJSONObject($this->pieceRepository->findByIdentifier($hit['target']));
+        }
+
         $expanded = [
             'hits' => $log->results['hits'],
             'captures' => $log->results['captures'],

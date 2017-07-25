@@ -23,7 +23,7 @@
 				{{ getNameByPlayer(hit.scoredBy) }}
 			</td>
 			<td>
-				{{ hit.target }}
+				<piece-type-icon piece-type="getPieceType(hit.target.typeId)" color="getColorByPlayer(hit.target.ownerId)"></piece-type-icon>
 			</td>
 		</tr>
 	</tbody>
