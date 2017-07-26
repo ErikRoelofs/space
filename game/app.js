@@ -208,6 +208,9 @@ angular.module('game', []).service('piecesService', function () {
 		},
 		hasPreviousTurn: function() {
 			return turn > 1;
+		},
+		showingLastTurn: function() {
+			return turn === lastTurn;
 		}
 	}
 	return self;

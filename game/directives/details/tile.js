@@ -1,15 +1,15 @@
-angular.module('game').controller('tileDetailsController', ['$http', 'activePlayerService', '$scope', function($http, activePlayerService, $scope) {
+angular.module('game').controller('tileDetailsController', ['$http', 'activePlayerService', '$scope', 'turnService', '$rootScope', function($http, activePlayerService, $scope, turnService, $rootScope) {
 	var controller = this;
 	var tile = $scope.data;
 
-	if( activePlayerService.tileHasOrder(tile) ) {
+	if( activePlayerService.tileHasOrder(tile) || !turnService.showingLastTurn() ) {
 	}
 	else {
 		controller.showCreateOrder = true;
 	}
 
 	controller.createOrder = function() {
-		$scope.$emit('game.mode', 'tactical', tile);
+		$rootScope.$broadcast('game.mode', 'tactical', tile);
 	}
 
 }]);

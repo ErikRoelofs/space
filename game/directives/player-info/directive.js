@@ -31,6 +31,12 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
                 })
             }
 
+            scope.allowHistory = true;
+            scope.$on('game.mode', function(event, mode) {
+                scope.allowHistory = ( mode != 'tactical' );
+            })
+
+
             scope.currentTurn = turnService.getLatestTurn;
             scope.viewingTurn = turnService.getCurrentTurn;
 
