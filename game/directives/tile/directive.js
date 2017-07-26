@@ -22,7 +22,6 @@ angular.module('game').directive('tile', ['$http', 'boardService', 'piecesServic
                     throw Error("Tile directive should receive either coords or id.");
                 }
 
-                console.log(scope.tile);
                 scope.planet = piecesService.getPlanetForTileAndTurn(scope.tile, turnService.getCurrentTurn());
                 scope.currentOrder = orderService.getCurrentOrderForTileAndPlayer(scope.tile, 1);
                 scope.previousOrders = orderService.getPreviousActivityForTile(scope.tile);

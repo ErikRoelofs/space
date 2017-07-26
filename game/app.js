@@ -117,6 +117,9 @@ angular.module('game', []).service('piecesService', function () {
 			return false;
 		},
 		getPreviousActivityForTile: function(tile) {
+			if(!orders[turnService.getCurrentTurn() - 2]) {
+				return [];
+			}
             return orders[turnService.getCurrentTurn() - 2]
                 .filter(function(item) { return item.data.tile === tile.id });
 		},

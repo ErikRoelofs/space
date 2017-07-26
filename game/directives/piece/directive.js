@@ -14,7 +14,10 @@ angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'player
             }, function() {
                 scope.pieceType = pieceTypesService.getPieceTypeForPiece(scope.piece);
                 scope.color = playersService.getPlayer(scope.piece.ownerId).color;
-                console.log('piece changed; updating pieceType');
+                if(!scope.pieceType) {
+                    console.log('no piece type?');
+                    console.log(scope.piece);
+                }
             });
 
             scope.clicked = function() {
