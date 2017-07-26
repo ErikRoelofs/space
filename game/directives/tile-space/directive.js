@@ -1,4 +1,4 @@
-angular.module('game').directive('tileSpace', ['$http', 'piecesService', function($http, piecesService) {
+angular.module('game').directive('tileSpace', ['$http', 'piecesService', 'turnService', function($http, piecesService, turnService) {
     return {
         restrict: 'E',
         scope: {
@@ -6,7 +6,11 @@ angular.module('game').directive('tileSpace', ['$http', 'piecesService', functio
         },
         templateUrl: "directives/tile-space/template.html",
         link: function(scope) {
-            scope.myPieces = piecesService.getPiecesForTile(scope.tile);
+            scope.$watch(function() {
+                return turnService.getCurrentTurn();
+            }, function() {
+                scope.myPieces = piecesService.getPiecesForTileAndTurn(scope.tile, turnService.getCurrentTurn());
+            });
         }
     }
 }]);

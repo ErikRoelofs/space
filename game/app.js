@@ -4,19 +4,19 @@ angular.module('game', []).service('piecesService', function () {
         setAllPieces: function (thePieces) {
             pieces = thePieces;
         },
-        getPiecesForTile: function (tile) {
+        getPiecesForTileAndTurn: function (tile, turn) {
             return pieces.filter(function (item) {
-                return item.tileId == tile.id && item.typeId != 4 && item.typeId != 1;
+                return item.tileId == tile.id && item.typeId != 4 && item.typeId != 1 && item.turnId == turn;
             });
         },
-        getPiecesForPlanet: function (planet) {
+        getPiecesForPlanetAndTurn: function (planet, turn) {
             return pieces.filter(function (item) {
-                return item.tileId == planet.tileId && item.typeId == 4;
+                return item.tileId == planet.tileId && item.typeId == 4 && item.turnId == turn;
             });
         },
-        getPlanetForTile: function (tile) {
+        getPlanetForTileAndTurn: function (tile, turn) {
             var planets = pieces.filter(function (item) {
-                return item.tileId == tile.id && item.typeId == 1;
+                return item.tileId == tile.id && item.typeId == 1 && item.turnId == turn;
             });
             if(planets.length) {
                 return planets[0];
@@ -55,18 +55,18 @@ angular.module('game', []).service('piecesService', function () {
         setBoard: function (theBoard) {
             board = theBoard;
         },
-        getTileByCoordinates: function (coords) {
+        getTileByCoordinatesAndTurn: function (coords, turn) {
             var tile = null;
-            angular.forEach(board.tiles, function (item) {
+            angular.forEach(board[turn - 1].tiles, function (item) {
                 if (item.coordinates[0] == coords[0] && item.coordinates[1] == coords[1]) {
                     tile = item;
                 }
             })
             return tile;
         },
-		getTileById: function(id) {
+		getTileByIdAndTurn: function(id, turn) {
 			var tile = null;
-			angular.forEach(board.tiles, function (item) {
+			angular.forEach(board[turn - 1].tiles, function (item) {
 				if (item.id == id) {
 					tile = item;
 				}
@@ -101,14 +101,14 @@ angular.module('game', []).service('piecesService', function () {
 		}
 
 	}
-}).service('orderService', function () {
+}).service('orderService', ['turnService', function (turnService) {
 	var orders = [];
 	return {
 		setOrders: function(theOrders) {
 			orders = theOrders;
 		},
 		getCurrentOrderForTileAndPlayer: function(tile, player) {
-            var currentTileOrder = orders[orders.length - 1]
+            var currentTileOrder = orders[turnService.getCurrentTurn() - 1]
 				.filter(function(item) { return item.ownerId == player})
 				.filter(function(item) { return item.data.tile === tile.id });
             if(currentTileOrder.length) {
@@ -117,7 +117,7 @@ angular.module('game', []).service('piecesService', function () {
 			return false;
 		},
 		getPreviousActivityForTile: function(tile) {
-            return orders[orders.length - 2]
+            return orders[turnService.getCurrentTurn() - 2]
                 .filter(function(item) { return item.data.tile === tile.id });
 		},
 		getOrders: function(turn) {
@@ -127,17 +127,17 @@ angular.module('game', []).service('piecesService', function () {
 			return orders[turn].filter(function(item) { return item.ownerId == player});
 		},
 		getCurrentOrdersForPlayer: function(player) {
-            return orders[orders.length - 1].filter(function(item) { return item.ownerId == player});
+            return orders[turnService.getCurrentTurn() - 1].filter(function(item) { return item.ownerId == player});
 		},
 		getPreviousTurnOrders: function() {
-			if(orders.length < 2) {
+			if(turnService.getCurrentTurn() < 2) {
 				return [];
 			}
-            return orders[orders.length - 2];
+            return orders[turnService.getCurrentTurn() - 2];
 		}
 
 	}
-}).service('activePlayerService', function () {
+}]).service('activePlayerService', function () {
 	var data = {};
 	return {
 		setData: function (theData) {
@@ -180,4 +180,32 @@ angular.module('game', []).service('piecesService', function () {
 			$rootScope.$broadcast('tactical.show', tile);
 		}
 	}
+}]).service('turnService', [function() {
+    var turn = 1;
+    var lastTurn = 1;
+    return {
+		setLatestTurn: function(turnNum) {
+			turn = turnNum;
+			lastTurn = turnNum;
+		},
+		getCurrentTurn: function() {
+			return turn;
+		},
+		getLatestTurn: function() {
+			return lastTurn;
+		},
+		showNextTurn: function() {
+            turn = Math.min( turn + 1, lastTurn );
+		},
+		showPreviousTurn: function() {
+			turn = Math.max( turn - 1, 0 );
+		},
+		hasNextTurn: function() {
+			return turn < lastTurn;
+		},
+		hasPreviousTurn: function() {
+			return turn > 1;
+		}
+	}
+	return self;
 }]);

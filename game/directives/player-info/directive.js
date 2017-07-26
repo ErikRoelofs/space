@@ -1,4 +1,4 @@
-angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', function($http, activePlayerService, orderService) {
+angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', function($http, activePlayerService, orderService, turnService) {
     return {
         restrict: 'E',
         scope: {
@@ -6,7 +6,12 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
         },
         templateUrl: "directives/player-info/template.html",
         link: function(scope) {
-			scope.orders = orderService.getCurrentOrdersForPlayer(1);
+            scope.$watch(function() {
+                return turnService.getCurrentTurn();
+            }, function() {
+                scope.orders = orderService.getCurrentOrdersForPlayer(1);
+            });
+
 			scope.resources = activePlayerService.getResources();
 
             scope.cancel = function(order) {
@@ -25,6 +30,15 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
                     console.log('next turn. refresh!');
                 })
             }
+
+            scope.currentTurn = turnService.getLatestTurn;
+            scope.viewingTurn = turnService.getCurrentTurn;
+
+            scope.hasNextTurn = turnService.hasNextTurn;
+            scope.hasPrevTurn = turnService.hasPreviousTurn;
+
+            scope.nextTurn = turnService.showNextTurn;
+            scope.prevTurn = turnService.showPreviousTurn;
 
         }
     }

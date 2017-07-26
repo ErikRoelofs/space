@@ -1,4 +1,4 @@
-angular.module('game').directive('gameOrders', ['$http', 'pieceTypesService', 'orderService', function($http, pieceTypesService, orderService) {
+angular.module('game').directive('gameOrders', ['$http', 'pieceTypesService', 'orderService', 'turnService', function($http, pieceTypesService, orderService, turnService) {
     return {
         restrict: 'E',
         scope: {
@@ -7,7 +7,12 @@ angular.module('game').directive('gameOrders', ['$http', 'pieceTypesService', 'o
         templateUrl: "directives/game-orders/template.html",
         link: function(scope) {
 
-			scope.orders = orderService.getPreviousTurnOrders();
+            scope.$watch(function() {
+                return turnService.getCurrentTurn();
+            }, function() {
+                scope.orders = orderService.getPreviousTurnOrders();
+            });
+
         }
 
     }

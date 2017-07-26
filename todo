@@ -18,8 +18,6 @@ v1:
 interface:
 v1:
 
-- allow giving tactical orders (incl production)
-- allow seeing logs
 - allow viewing different game turns
 
 

@@ -8,6 +8,15 @@ angular.module('game').directive('piece', ['$http', 'pieceTypesService', 'player
         link: function(scope) {
             scope.pieceType = pieceTypesService.getPieceTypeForPiece(scope.piece);
             scope.color = playersService.getPlayer(scope.piece.ownerId).color;
+
+            scope.$watch(function() {
+                return scope.piece;
+            }, function() {
+                scope.pieceType = pieceTypesService.getPieceTypeForPiece(scope.piece);
+                scope.color = playersService.getPlayer(scope.piece.ownerId).color;
+                console.log('piece changed; updating pieceType');
+            });
+
             scope.clicked = function() {
                 $rootScope.$broadcast('entity.clicked', 'piece', { piece: scope.piece, pieceType: scope.pieceType });
             }

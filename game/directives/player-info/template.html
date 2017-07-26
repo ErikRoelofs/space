@@ -1,4 +1,9 @@
 <h3>Player info</h3>
+<h4>Turn information</h4>
+Current turn is: {{ currentTurn() }}<br />
+Viewing turn: {{ viewingTurn() }}<br />
+<button ng-disabled="!hasPrevTurn()" ng-click="prevTurn()">View previous</button>
+<button ng-disabled="!hasNextTurn()" ng-click="nextTurn()">View next</button>
 <h4>Resources</h4>
 {{ resources.current.industry }} of {{ resources.initial.industry }} I \ {{ resources.current.social }} of {{ resources.initial.social }} S
 <h4>Current orders ({{ orders.length }})</h4>

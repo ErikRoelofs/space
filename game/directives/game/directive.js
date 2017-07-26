@@ -1,5 +1,5 @@
-angular.module('game').directive('game', ['$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', 'detailsCommand', 'tacticalCommand',
-	function ($timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService, detailsCommand, tacticalCommand) {
+angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', 'detailsCommand', 'tacticalCommand', 'turnService',
+	function ($rootScope, $timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService, detailsCommand, tacticalCommand, turnService) {
     return {
         restrict: 'E',
         scope: {
@@ -10,21 +10,23 @@ angular.module('game').directive('game', ['$timeout', '$http', 'boardService', '
 
             $http.get('/game/1').then(function(response) {
 
-                var currentTurn = response.data.turns.length - 1;
-
-                boardService.setBoard(response.data.turns[currentTurn]);
+                boardService.setBoard(response.data.turns);
 
                 var pieces = [];
-                angular.forEach( response.data.turns[currentTurn].tiles, function(tile) {
-                    angular.forEach( tile.pieces, function(piece) {
-                        pieces.push(piece);
-                    })
-                });
+                angular.forEach( response.data.turns, function( turn ) {
+                    angular.forEach( turn.tiles, function(tile) {
+                        angular.forEach( tile.pieces, function(piece) {
+                            pieces.push(piece);
+                        })
+                    });
+                } )
                 piecesService.setAllPieces(pieces);
+
                 pieceTypesService.setAllPieceTypes(response.data.pieceTypes);
                 playersService.setPlayers(response.data.players);
 				historyService.setHistory(response.data.turns.map(function(item) { return item.logs}));
 				orderService.setOrders(response.data.turns.map(function(item) { return item.orders}));
+				turnService.setLatestTurn(response.data.turns.length);
             });
 
 			$http.get('/game/1/player/1').then(function(response) {
