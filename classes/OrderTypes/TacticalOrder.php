@@ -272,7 +272,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
             return false;
         }
         // mobile or is cargo
-        if(!$this->pieceService->hasTrait($piece, Mobile::TAG) || $this->pieceService->hasTrait($piece, Cargo::TAG)) {
+        if(!($this->pieceService->hasTrait($piece, Mobile::TAG) || $this->pieceService->hasTrait($piece, Cargo::TAG))) {
             $this->reason = 'not mobile or cargo';
             return false;
         }

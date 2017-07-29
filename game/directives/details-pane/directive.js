@@ -25,6 +25,7 @@ angular.module('game').directive('detailsPane', ['$http', 'piecesService', 'boar
                 switch(type) {
                     case 'piece': return 'directives/details/piece.html';
                     case 'tile': return 'directives/details/tile.html';
+                    case 'planet': return 'directives/details/planet.html';
                 }
             }
 

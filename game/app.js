@@ -6,12 +6,12 @@ angular.module('game', []).service('piecesService', function () {
         },
         getPiecesForTileAndTurn: function (tile, turn) {
             return pieces.filter(function (item) {
-                return item.tileId == tile.id && item.typeId != 4 && item.typeId != 1 && item.turnId == turn;
+                return item.tileId == tile.id && item.typeId != 1 && item.turnId == turn;
             });
         },
         getPiecesForPlanetAndTurn: function (planet, turn) {
             return pieces.filter(function (item) {
-                return item.tileId == planet.tileId && item.typeId == 4 && item.turnId == turn;
+                return item.tileId == planet.tileId && item.turnId == turn;
             });
         },
         getPlanetForTileAndTurn: function (tile, turn) {

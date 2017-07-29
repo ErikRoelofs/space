@@ -1,5 +1,5 @@
-angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceTypesService', 'playersService', 'turnService',
-    function($http, piecesService, pieceTypesService, playersService, turnService) {
+angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceTypesService', 'playersService', 'turnService', '$rootScope',
+    function($http, piecesService, pieceTypesService, playersService, turnService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -32,6 +32,11 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
                 }
                 return playersService.getPlayer(scope.planet.ownerId).color;
             }
+
+            scope.clicked = function() {
+                $rootScope.$broadcast('entity.clicked', 'planet', scope.planet);
+            }
+
         }
     }
 }]);
