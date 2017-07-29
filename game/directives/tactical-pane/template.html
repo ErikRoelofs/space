@@ -4,7 +4,7 @@
 	<div>Units to move:</div>
 	<piece piece="piece" ng-repeat="piece in piecesToMove"></piece>
 	<div>Units to build:</div>
-	<piece-type-icon piece-type="piece" color="color" ng-repeat="piece in piecesToBuild"></piece-type-icon>
+	<piece-type-icon piece-type="piece" color="color" ng-repeat="piece in piecesToBuild track by $index"></piece-type-icon>
 
 	<div>Buildable units:</div>
 	<buildablepiece piece-type="buildable" ng-repeat="buildable in buildablePieces"></buildablepiece>

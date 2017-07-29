@@ -54,6 +54,9 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
 
 			// ugly. this should not know about rootscope / game.mode
 			scope.close = function() {
+                scope.piecesToMove = [];
+                scope.piecesToBuild = [];
+
 				$rootScope.$broadcast('game.mode', 'details');
                 $rootScope.$broadcast('tactical.cancel');
 			}
