@@ -7,6 +7,7 @@ use Plu\Entity\GivenOrder;
 use Plu\Entity\Piece;
 use Plu\Entity\PieceType;
 use Plu\Entity\Player;
+use Plu\Entity\ResourceClaim;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\BuildRequirements\CostsResources;
 use Plu\PieceTrait\BuildsPieces;
@@ -18,6 +19,7 @@ use Plu\Repository\OrderRepository;
 use Plu\Repository\PieceRepository;
 
 use Plu\Repository\PieceTypeRepository;
+use Plu\Repository\ResourceClaimRepository;
 use Plu\Service\GamestateUpdate;
 use Plu\Service\Loggers\LoggerInterface;
 use Plu\Service\Loggers\TacticalOrderLog;
@@ -136,11 +138,7 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 			}
 		}
 
-		$pieceTypes = [];
-		foreach($data['newPieces'] as $pieceTypeId) {
-			$pieceType = $this->pieceTypeRepo->findByIdentifier($pieceTypeId);
-			$pieceTypes[] = $pieceType;
-		}
+		$pieceTypes = $this->getPieceTypesByIds($data['newPieces']);
 
         // all items queued for construction must be valid
         foreach($pieceTypes as $pieceType) {
@@ -153,6 +151,15 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 		if(!$this->validateEnoughResources($pieceTypes, $tile, $player)) {
 			throw new \Exception("Not enough resources available.");
 		}
+    }
+
+    private function getPieceTypesByIds($ids) {
+        $pieceTypes = [];
+        foreach($ids as $pieceTypeId) {
+            $pieceType = $this->pieceTypeRepo->findByIdentifier($pieceTypeId);
+            $pieceTypes[] = $pieceType;
+        }
+        return $pieceTypes;
     }
 
 	private function groupHasEnoughCargoSpace($pieces) {
@@ -177,6 +184,14 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
         $order->turnId = $game->currentTurn()->id;
         $order->orderType = self::TAG;
         $order->data = $data;
+
+
+        $claim = new ResourceClaim();
+        $claim->turnId = $game->currentTurn()->id;
+        $claim->amount = $this->getTotalCost($this->getPieceTypesByIds($data['newPieces']), $game->findTile($data['tile']), $player);
+        $claim->resource = 'industry';
+        $claim->ownerId = $player->id;
+        $order->claims[] = $claim;
 
         return $order;
     }

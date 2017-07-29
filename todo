@@ -5,6 +5,9 @@ v1:
 
 ? handle transportation of cargo
 ? make sure neutral planet capturing works
+? fix rendering multiple of the same unit when constructing
+? clean construction list when closing tac-tab without confirming
+? setup transactions!
 
 interface:
 v1:

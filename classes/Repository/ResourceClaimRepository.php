@@ -2,6 +2,7 @@
 
 namespace Plu\Repository;
 
+use Plu\Entity\GivenOrder;
 use Plu\Entity\Player;
 use Plu\Entity\Turn;
 
@@ -17,5 +18,11 @@ class ResourceClaimRepository extends BaseRepository
 		$rows = $this->db->fetchAll($sql, array((int) $player->id, (int) $turn->id, $resource));
 		return $this->converter->batchFromDB($this->tableName, $rows);
 	}
+
+    public function findClaimsByOrder(GivenOrder $order) {
+        $sql = "SELECT * FROM $this->tableName WHERE orderId = ?";
+        $rows = $this->db->fetchAll($sql, array((int) $order->id));
+        return $this->converter->batchFromDB($this->tableName, $rows);
+    }
 
 }

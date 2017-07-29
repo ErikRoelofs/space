@@ -54,7 +54,8 @@ $app['converter-service'] = function($app) {
 	$s->addConverter('\Plu\Entity\ResourceClaim', new Conv\ConfigurableConverter([
 		'id' => new Conv\NativeConverter(),
 		'turnId' => new Conv\NativeConverter(),
-		'playerId' => new Conv\NativeConverter(),
+		'ownerId' => new Conv\NativeConverter(),
+		'orderId' => new Conv\NativeConverter(),
 		'resource' => new Conv\NativeConverter(),
 		'amount' => new Conv\NativeConverter(),
 	]));
@@ -69,7 +70,7 @@ $app['game-repo'] = function($app) {
     return new Repo\GameRepository($app['db'], $app['converter-service']);
 };
 $app['order-repo'] = function($app) {
-    return new Repo\OrderRepository($app['db'], $app['converter-service']);
+    return new Repo\OrderRepository($app['db'], $app['resource-claim-repo'], $app['converter-service']);
 };
 $app['piece-repo'] = function($app) {
     return new Repo\PieceRepository($app['db'], $app['converter-service']);
