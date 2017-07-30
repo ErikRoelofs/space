@@ -35,10 +35,6 @@ class SpaceBattleLog extends AbstractBattleLog {
 		return $this->compileLog();
 	}
 
-	public function getTile() {
-	    return $this->tile;
-    }
-
 	public function getHits() {
 	    return $this->hits;
     }

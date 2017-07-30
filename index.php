@@ -27,6 +27,7 @@ $app->get('/load/pieces', function() use ($app) {
 
 $app->get('/newgame', function() use ($app) {
     $app['new-game-service']->newGame(6);
+    return 'done.';
 });
 
 $app->run();

@@ -9,6 +9,7 @@ use Plu\PieceTrait\Bombs;
 use Plu\PieceTrait\Capturable;
 use Plu\PieceTrait\FightsGroundBattles;
 use Plu\PieceTrait\GroundCannon;
+use Plu\PieceTrait\Grounded;
 use Plu\Service\Loggers\GroundBattleLog;
 
 class GroundBattleService  extends AbstractBattleService {
@@ -19,11 +20,10 @@ class GroundBattleService  extends AbstractBattleService {
 	 * @param \Plu\Service\PieceService $pieceService
 	 */
 	public function __construct(\Plu\Service\PieceService $pieceService) {
-        parent::__construct($pieceService, FightsGroundBattles::TAG, FightsGroundBattles::PRIORITY);
+        parent::__construct($pieceService, FightsGroundBattles::TAG, Grounded::TAG, FightsGroundBattles::PRIORITY);
 	}
 
 	protected function resolve() {
-
 
 		// drop bombs
 		$this->phase = 'bombs';
@@ -41,7 +41,6 @@ class GroundBattleService  extends AbstractBattleService {
 		$this->resolveCaptures();
 
 		return $this->historyLog;
-
 	}
 
 	private function handleBombs() {

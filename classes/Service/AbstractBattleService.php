@@ -18,7 +18,8 @@ abstract class AbstractBattleService
      */
     protected $pieceService;
 
-    protected $tag;
+    protected $fightingTag;
+    protected $involvedTag;
     protected $priority;
 
 	protected $pieces;
@@ -39,10 +40,11 @@ abstract class AbstractBattleService
      * @param $tag
      * @param $priority
      */
-    public function __construct(PieceService $pieceService, $tag, $priority)
+    public function __construct(PieceService $pieceService, $fightingTag, $involvementTag, $priority)
     {
         $this->pieceService = $pieceService;
-        $this->tag = $tag;
+        $this->fightingTag = $fightingTag;
+        $this->involvedTag = $involvementTag;
         $this->priority = $priority;
 
 	}
@@ -62,7 +64,7 @@ abstract class AbstractBattleService
         $out = [];
         foreach($this->pieces as $piece) {
             // only the ones that fight in this battle
-            if(!$this->pieceService->hasTrait($piece, $this->tag)) {
+            if(!$this->pieceService->hasTrait($piece, $this->fightingTag)) {
                 continue;
             }
             // sort them out per player
@@ -117,7 +119,7 @@ abstract class AbstractBattleService
         $lowest = 100;
         $found = [];
         foreach($pieces as $piece) {
-            $stats = $this->pieceService->getTraitContents($piece, $this->tag);
+            $stats = $this->pieceService->getTraitContents($piece, $this->fightingTag);
             if($stats[$this->priority] == $lowest) {
                 $found[] = $piece;
             }
@@ -198,7 +200,7 @@ abstract class AbstractBattleService
 			if(count($pieces) > 0) {
 				foreach($capturables as $capture) {
 				    // only capture things that carry the tag for this battle type
-				    if($this->pieceService->hasTrait($capture, $this->tag)) {
+				    if($this->pieceService->hasTrait($capture, $this->involvedTag)) {
                         $capture->ownerId = $player;
                         $this->historyLog->logPieceCaptured($capture, $player);
                     }

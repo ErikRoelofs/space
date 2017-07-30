@@ -16,12 +16,7 @@ class InvasionPhaseService extends AbstractBattlePhaseService
 	}
 
 	protected function involved(Piece $piece) {
-		$this->pieceService->hasTrait($piece, Grounded::TAG);
+		return $this->pieceService->hasTrait($piece, Grounded::TAG);
 	}
-
-    public function updateGamestate(Game $game, LoggerInterface $log)
-    {
-        // TODO: Implement updateGamestate() method.
-    }
 
 }

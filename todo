@@ -1,8 +1,6 @@
 backend:
 v1:
 
-? handle transportation of cargo
-? make sure neutral planet capturing works
 ? setup transactions!
 
 interface:
@@ -10,6 +8,7 @@ v1:
 
 issues:
 - fix naming scheme to work on unix
+- fix duplication issues in battle logs
 
 v2:
 

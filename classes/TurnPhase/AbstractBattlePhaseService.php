@@ -56,15 +56,16 @@ abstract class AbstractBattlePhaseService
 	 * @return bool
 	 */
 	private function hasBattle(array $pieces) {
-		$first = null;
+	    // false, because "null" is a valid owner id for neutral pieces
+		$first = false;
 		foreach($pieces as $piece) {
 			if(!$this->involved($piece)) {
 				continue;
 			}
-			if(!$first) {
+			if($first === false) {
 				$first = $piece->ownerId;
 			}
-			if($first && $piece->ownerId != $first) {
+			if($piece->ownerId != $first) {
 				return true;
 			}
 		}

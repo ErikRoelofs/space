@@ -27,4 +27,15 @@ class GroundBattleLog extends AbstractBattleLog {
 		return $this->compileLog();
 	}
 
+    public function getHits() {
+        return $this->hits;
+    }
+
+    public function getCaptures() {
+        return $this->captures;
+    }
+
+    public function getLostCargo() {
+	    return [];
+    }
 }

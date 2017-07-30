@@ -7,6 +7,7 @@ use Plu\PieceTrait\Cargo;
 use Plu\PieceTrait\FightsSpaceBattles;
 use Plu\PieceTrait\FlakCannons;
 use Plu\PieceTrait\MainCannon;
+use Plu\PieceTrait\Spaceborne;
 use Plu\PieceTrait\Torpedoes;
 use Plu\PieceTrait\Transports;
 use Plu\Service\Loggers\SpaceBattleLog;
@@ -23,7 +24,7 @@ class SpaceBattleService extends AbstractBattleService
 	 * @param int $round
 	 */
 	public function __construct(\Plu\Service\PieceService $pieceService) {
-	    parent::__construct($pieceService, FightsSpaceBattles::TAG, FightsSpaceBattles::PRIORITY);
+	    parent::__construct($pieceService, FightsSpaceBattles::TAG, Spaceborne::TAG,FightsSpaceBattles::PRIORITY);
 	}
 
 	protected function resolve() {

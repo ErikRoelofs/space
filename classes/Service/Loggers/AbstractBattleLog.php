@@ -16,7 +16,7 @@ abstract class AbstractBattleLog implements LoggerInterface
     }
 
 	public function logPieceCaptured($piece, $newOwner) {
-		$this->captures = [ 'piece' => $piece->id, 'newOwner' => $newOwner->id ];
+		$this->captures[] = [ 'piece' => $piece->id, 'newOwner' => $newOwner];
 	}
 
 	public function logHit($phase, $round, $by, $to) {
@@ -34,6 +34,10 @@ abstract class AbstractBattleLog implements LoggerInterface
     public function getOriginId()
     {
         return null;
+    }
+
+    public function getTile() {
+        return $this->tile;
     }
 
 
