@@ -174,7 +174,7 @@ $app['piece-types-service'] = function($app) {
 };
 
 $app['game-service'] = function($app) {
-    return new \Plu\Service\GameService($app['game-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo'], $app['log-repo']);
+    return new \Plu\Service\GameService($app['game-repo'], $app['tile-repo'], $app['piece-repo'], $app['player-repo'], $app['piece-type-repo'], $app['order-repo'], $app['turn-repo'], $app['log-repo'], $app['active-objective-repo'], $app['claimed-objective-repo']);
 };
 
 $app['end-of-turn-service'] = function($app) {

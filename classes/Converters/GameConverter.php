@@ -35,6 +35,12 @@ class GameConverter implements ConverterInterface
         if($data->players) {
             $base['players'] = $this->app['converter-service']->batchToJSONObject($data->players);
         }
+        if($data->objectives) {
+            $base['objectives'] = $this->app['converter-service']->batchToJSONObject($data->objectives);
+        }
+        if($data->claimedObjectives) {
+            $base['claimedObjectives'] = $this->app['converter-service']->batchToJSONObject($data->claimedObjectives);
+        }
         return $base;
     }
 

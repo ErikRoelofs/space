@@ -10,6 +10,8 @@ class Game
     public $players;
     public $pieceTypes;
     public $orderTypes;
+    public $objectives;
+    public $claimedObjectives;
 
 	public function currentTurn() {
 		$highest = 0;

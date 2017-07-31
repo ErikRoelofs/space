@@ -13,7 +13,7 @@ use Plu\Service\ObjectiveService;
 class ClaimObjectiveOrder implements OrderTypeInterface
 {
 
-    const TAG = 'order.claimObjective';
+    const TAG = 'claimObjective';
 
     /**
      * @var ObjectiveService

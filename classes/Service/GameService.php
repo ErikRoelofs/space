@@ -4,6 +4,8 @@ namespace Plu\Service;
 
 use Plu\Entity\Game;
 use Plu\Entity\Player;
+use Plu\Repository\ActiveObjectiveRepository;
+use Plu\Repository\ClaimedObjectiveRepository;
 use Plu\Repository\GameRepository;
 use Plu\Repository\LogRepository;
 use Plu\Repository\OrderRepository;
@@ -57,6 +59,16 @@ class GameService
      */
     private $logRepository;
 
+    /**
+     * @var ActiveObjectiveRepository
+     */
+    private $activeObjectiveRepository;
+
+    /**
+     * @var ClaimedObjectiveRepository
+     */
+    private $claimedObjectiveRepository;
+
 	private $builtGames = [];
 
     /**
@@ -69,8 +81,10 @@ class GameService
      * @param OrderRepository $orderRepository
      * @param TurnRepository $turnRepository
      * @param LogRepository $logRepository
+     * @param ActiveObjectiveRepository $activeObjectiveRepository
+     * @param ClaimedObjectiveRepository $claimedObjectiveRepository
      */
-    public function __construct(GameRepository $gameRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository, LogRepository $logRepository)
+    public function __construct(GameRepository $gameRepo, TileRepository $tileRepo, PieceRepository $pieceRepo, PlayerRepository $playerRepo, PieceTypeRepository $pieceTypeRepo, OrderRepository $orderRepository, TurnRepository $turnRepository, LogRepository $logRepository, ActiveObjectiveRepository $activeObjectiveRepository, ClaimedObjectiveRepository $claimedObjectiveRepository)
     {
         $this->gameRepo = $gameRepo;
         $this->tileRepo = $tileRepo;
@@ -80,6 +94,8 @@ class GameService
         $this->orderRepository = $orderRepository;
         $this->turnRepository = $turnRepository;
         $this->logRepository = $logRepository;
+        $this->activeObjectiveRepository = $activeObjectiveRepository;
+        $this->claimedObjectiveRepository = $claimedObjectiveRepository;
     }
 
     public function buildGame($gameId) {
@@ -88,6 +104,8 @@ class GameService
 			$game->players = $this->playerRepo->findByGame($game);
 			$game->turns = $this->turnRepository->findByGame($game);
 			$game->pieceTypes = $this->pieceTypeRepo->findAll();
+			$game->objectives = $this->activeObjectiveRepository->findByGame($game);
+			$game->claimedObjectives = $this->claimedObjectiveRepository->findByGame($game);
 
 			$tiles = $this->tileRepo->findByGame($game);
 			foreach ($game->turns as $turn) {
