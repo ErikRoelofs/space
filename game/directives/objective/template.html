@@ -3,6 +3,7 @@
 
     <div>Since turn: {{ objective.turnId }}</div>
     <div>Value: {{ objective.value }}</div>
-    <div>{{ message }}</div>
+    <div>Params: {{ objective.params }}</div>
     <div ng-repeat="claim in objective.claimed">Claimed by player {{ claim.playerId }} in turn {{ claim.turnId }}</div>
+    <button ng-click="claim()">Claim this objective</button>
 </div>

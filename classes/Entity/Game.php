@@ -89,4 +89,23 @@ class Game
         }
     }
 
+    public function findObjective($id) {
+        foreach($this->objectives as $objective) {
+            if($objective->id == $id) {
+                return $objective;
+            }
+        }
+    }
+
+    public function findClaimsByPlayer(Player $player) {
+        $out = [];
+        foreach($this->claimedObjectives as $claimed) {
+            if($claimed->playerId == $player->id) {
+                $out[] = $claimed;
+            }
+        }
+        return $out;
+    }
+
+
 }

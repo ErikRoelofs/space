@@ -1,5 +1,5 @@
-angular.module('game').directive('objective', [
-    function() {
+angular.module('game').directive('objective', [ '$http',
+    function($http) {
     return {
         restrict: 'E',
         scope: {
@@ -8,7 +8,18 @@ angular.module('game').directive('objective', [
         templateUrl: "directives/objective/template.html",
         link: function(scope) {
 
-            scope.message = 'the message';
+            scope.claim = function() {
+                var player = 1;
+                var order = {
+                    objectiveId: scope.objective.id
+                };
+
+                $http.post('/order/' + player + '/place/claimObjective', order).then(function(response) {
+                    console.log(response);
+                },function(error) {
+                    console.log(error);
+                })
+            };
         }
     }
 }]);

@@ -8,34 +8,22 @@ Game:
 
 Orders:
  V expand with "claimObjectiveOrder"
- - block claiming the same objective multiple times
-
-Entities:
- V add ActiveObjective
-   - game
-   - turn-added
-   - claimedBy
-   - value
-   - params
-
- V add ObjectiveClaim
-   - player
-   - turn
-
-  - add functional repositories
+ V block claiming the same objective multiple times
+ V block claiming multiple objectives in the same turn
 
 Objectives:
- - create abstract objective or interface
- - "attemptclaim"
- - resource Objective
+ V create abstract objective or interface
+ V "attemptclaim"
+ V resource Objective
  - piece Objective - blo
 
 ---
 Frontend:
 
-- display objectives
-- display claims by each player; total scores
-- allow claiming a new objective
+V display objectives
+V display claims by each player;
+- total scores
+V allow claiming a new objective
 
 ----
 

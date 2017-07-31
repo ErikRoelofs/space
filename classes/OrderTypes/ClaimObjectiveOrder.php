@@ -46,6 +46,25 @@ class ClaimObjectiveOrder implements OrderTypeInterface
         if(!isset($data['objectiveId'])) {
             throw new \Exception("Requires an objective ID!");
         }
+        $objective = $game->findObjective($data['objectiveId']);
+        if(!$objective) {
+            throw new \Exception("Objective not a part of this game");
+        }
+
+        $otherOrders = $game->currentOrdersForPlayer($player);
+        foreach($otherOrders as $order) {
+            if ($order->orderType == self::TAG) {
+                throw new \Exception("Unable to claim objective; a claim is already present.");
+            }
+        }
+
+        $claims = $game->findClaimsByPlayer($player);
+        foreach($claims as $claim) {
+            if($claim->objectiveId == $objective->id) {
+                throw new \Exception("You have already claimed this objective.");
+            }
+        }
+
         return true;
     }
 
