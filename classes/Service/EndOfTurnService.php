@@ -82,6 +82,11 @@ class EndOfTurnService {
     }
 
     public function endRound(Game $game) {
+
+        if(!$game->active) {
+            throw new \Exception("Cannot end round; game is not active.");
+        }
+
 		$logs = [];
 
         // generate a new turn & copy all the pieces

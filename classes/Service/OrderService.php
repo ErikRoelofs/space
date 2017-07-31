@@ -36,6 +36,9 @@ class OrderService
             throw new \Exception("No known order type: " . $type);
         }
         $game = $this->gameService->buildGame($player->gameId);
+        if(!$game->active) {
+            throw new \Exception("Cannot add a new order; game is not active");
+        }
         $order = $this->types[$type]->createOrder($player, $game, $instructions);
         $this->orderRepo->add($order);
 
