@@ -1,5 +1,5 @@
-angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', 'detailsCommand', 'tacticalCommand', 'turnService', 'objectiveService',
-	function ($rootScope, $timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService, detailsCommand, tacticalCommand, turnService, objectiveService) {
+angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'boardService', 'piecesService', 'pieceTypesService', 'playersService', 'historyService', 'orderService', 'activePlayerService', 'detailsCommand', 'tacticalCommand', 'turnService', 'objectiveService', 'gameService',
+	function ($rootScope, $timeout, $http, boardService, piecesService, pieceTypesService, playersService, historyService, orderService, activePlayerService, detailsCommand, tacticalCommand, turnService, objectiveService, gameService) {
     return {
         restrict: 'E',
         scope: {
@@ -28,6 +28,7 @@ angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'bo
 				orderService.setOrders(response.data.turns.map(function(item) { return item.orders}));
 				turnService.setLatestTurn(response.data.turns.length);
                 objectiveService.setObjectives(response.data.objectives, response.data.claimedObjectives);
+                gameService.setGame(response.data);
             });
 
 			$http.get('/game/1/player/1').then(function(response) {

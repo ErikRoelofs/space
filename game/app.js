@@ -243,4 +243,14 @@ angular.module('game', []).service('piecesService', function () {
 			return objectives;
 		}
 	}
+}]).service('gameService', [function() {
+	var game;
+	return {
+		setGame: function(theGame) {
+			game = theGame;
+		},
+		getGame: function() {
+			return game;
+		}
+	}
 }]);

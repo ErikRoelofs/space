@@ -5,6 +5,7 @@ EndTurn:
 
 Game:
  V allow closing as completed
+ - block orders & turn progression for inactive games
 
 Orders:
  V expand with "claimObjectiveOrder"
@@ -24,7 +25,7 @@ V display objectives
 V display claims by each player;
 V total scores
 V allow claiming a new objective
-
+- show game is finished
 ----
 
 issues:
