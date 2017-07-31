@@ -6,7 +6,7 @@ class Log
     public $id;
     public $turnId;
     public $service;
-    public $origin; // "order" or "system"
-    public $originId; // only set for orders
+    public $origin; // references the origin type (such as an entity, order, or just "system")
+    public $originId; // an id belonging to the origin type
     public $results;
 }

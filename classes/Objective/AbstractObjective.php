@@ -7,7 +7,6 @@ use Plu\Entity\ActiveObjective;
 use Plu\Entity\ClaimedObjective;
 use Plu\Entity\Game;
 use Plu\Entity\Player;
-use Plu\OrderTypes\ClaimObjectiveOrder;
 use Plu\Repository\ClaimedObjectiveRepository;
 
 abstract class AbstractObjective implements ObjectiveInterface
@@ -16,7 +15,7 @@ abstract class AbstractObjective implements ObjectiveInterface
     /**
      * @var ClaimedObjectiveRepository
      */
-    private $claimsRepository;
+    protected $claimsRepository;
 
     /**
      * AbstractObjective constructor.
@@ -27,10 +26,11 @@ abstract class AbstractObjective implements ObjectiveInterface
         $this->claimsRepository = $claimsRepository;
     }
 
+    // this should be part of updateGameState!
     public function resolveClaim(Game $game, Player $player, ActiveObjective $objective)
     {
         if(!$this->validateClaim($game, $player, $objective)) {
-            throw new \Exception("Trying to resolve an invalid claim.");
+            throw new \Exception("Trying to resolve a claim that could not be validated");
         }
 
         // create the required entities to log this objective for the player
@@ -42,9 +42,10 @@ abstract class AbstractObjective implements ObjectiveInterface
         $this->claimsRepository->add($claimed);
 
         // update the gamestate to reflect the results of this claim (if any)
-        return $this->updateGamestate($game, $player, $objective);
+        $this->updateGamestate($game, $player, $objective);
+        return true;
     }
 
-    abstract function updateGamestate(Game $game, Player $player, ActiveObjective $objective);
+    abstract function updateGameState(Game $game, Player $player, ActiveObjective $objective);
 
 }

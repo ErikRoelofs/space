@@ -6,7 +6,7 @@ namespace Plu\Objective;
 use Plu\Entity\ActiveObjective;
 use Plu\Entity\Game;
 use Plu\Entity\Player;
-use Plu\OrderTypes\ClaimObjectiveOrder;
+use Plu\Repository\ClaimedObjectiveRepository;
 use Plu\Service\ResourceService;
 
 class HasResourceObjective extends AbstractObjective
@@ -18,6 +18,17 @@ class HasResourceObjective extends AbstractObjective
      * @var ResourceService
      */
     private $resourceService;
+
+    /**
+     * HasResourceObjective constructor.
+     * @param ResourceService $resourceService
+     */
+    public function __construct(ResourceService $resourceService, ClaimedObjectiveRepository $claimsRepository)
+    {
+        $this->resourceService = $resourceService;
+        $this->claimsRepository = $claimsRepository;
+    }
+
 
     function updateGamestate(Game $game, Player $player, ActiveObjective $objective)
     {

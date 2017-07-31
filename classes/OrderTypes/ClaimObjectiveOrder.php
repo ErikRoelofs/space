@@ -7,6 +7,7 @@ use Plu\Entity\Game;
 use Plu\Entity\GivenOrder;
 use Plu\Entity\Player;
 use Plu\Repository\ActiveObjectiveRepository;
+use Plu\Service\Loggers\ClaimObjectiveLog;
 use Plu\Service\ObjectiveService;
 
 class ClaimObjectiveOrder implements OrderTypeInterface
@@ -24,6 +25,17 @@ class ClaimObjectiveOrder implements OrderTypeInterface
      */
     private $activeObjectiveRepo;
 
+    /**
+     * ClaimObjectiveOrder constructor.
+     * @param ObjectiveService $objectiveService
+     * @param ActiveObjectiveRepository $activeObjectiveRepo
+     */
+    public function __construct(ObjectiveService $objectiveService, ActiveObjectiveRepository $activeObjectiveRepo)
+    {
+        $this->objectiveService = $objectiveService;
+        $this->activeObjectiveRepo = $activeObjectiveRepo;
+    }
+
     public function getTag()
     {
         return self::TAG;
@@ -31,6 +43,9 @@ class ClaimObjectiveOrder implements OrderTypeInterface
 
     public function validateOrderAllowed(Player $player, Game $game, $data)
     {
+        if(!isset($data['objectiveId'])) {
+            throw new \Exception("Requires an objective ID!");
+        }
         return true;
     }
 
@@ -51,7 +66,13 @@ class ClaimObjectiveOrder implements OrderTypeInterface
         $activeObjective = $this->activeObjectiveRepo->findByIdentifier($order->data['objectiveId']);
         $objective = $this->objectiveService->createObjectiveFromActiveObjective($activeObjective);
 
-        $objective->resolveClaim($game, $player, $activeObjective);
+        $success = $objective->validateClaim($game, $player, $activeObjective);
+        $log = new ClaimObjectiveLog($order);
+        $log->setPlayer($player);
+        $log->setSuccess($success);
+        $log->setActiveObjective($activeObjective);
+        return $log;
+
     }
 
 }

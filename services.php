@@ -141,6 +141,7 @@ $app['piece-service'] = function($app) {
 $app['order-service'] = function($app) {
     $s = new \Plu\Service\OrderService($app['order-repo'], $app['game-service']);
     $s->addOrderType( new \Plu\OrderTypes\TacticalOrder($app['order-repo'], $app['orders-service'], $app['piece-repo'], $app['piece-type-repo'], $app['piece-service'], $app['pathfinding-service'], $app['tile-repo'], $app['resource-service']));
+    $s->addOrderType( new \Plu\OrderTypes\ClaimObjectiveOrder($app['objective-service'], $app['active-objective-repo']));
 
     return $s;
 };
@@ -206,7 +207,7 @@ $app['log-expander'] = function($app) {
 
 $app['objective-service'] = function($app) {
     $s = new \Plu\Service\ObjectiveService($app['active-objective-repo'], $app['objective-creator']);
-    $s->addObjectiveType(new \Plu\Objective\HasResourceObjective($app['claimed-objective-repo']));
+    $s->addObjectiveType(new \Plu\Objective\HasResourceObjective($app['resource-service'], $app['claimed-objective-repo']));
 
     return $s;
 };

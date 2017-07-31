@@ -6,7 +6,7 @@ class ClaimedObjectiveRepository extends BaseRepository
 {
     public function __construct($db, $converter)
     {
-        return parent::__construct($db, $converter, 'claimedobjective');
+        return parent::__construct($db, $converter, 'claimedObjective');
     }
 
 }

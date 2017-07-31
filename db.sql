@@ -236,5 +236,5 @@ ALTER TABLE `turn`
   ALTER TABLE `piece` CHANGE `ownerId` `ownerId` INT(11) NULL;
   ALTER TABLE `givenOrder` CHANGE `orderType` `orderType` VARCHAR(255) NOT NULL;
 
-CREATE TABLE `games`.`claimedobjective` ( `id` INT NOT NULL AUTO_INCREMENT , `playerId` INT NOT NULL , `turnId` INT NOT NULL , `objectiveId` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
-CREATE TABLE `games`.`activeobjective` ( `id` INT NOT NULL AUTO_INCREMENT , `gameId` INT NOT NULL , `turnId` INT NOT NULL , `value` INT NOT NULL , `params` TEXT NOT NULL , `type` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `games`.`claimedObjective` ( `id` INT NOT NULL AUTO_INCREMENT , `playerId` INT NOT NULL , `turnId` INT NOT NULL , `objectiveId` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `games`.`activeObjective` ( `id` INT NOT NULL AUTO_INCREMENT , `gameId` INT NOT NULL , `turnId` INT NOT NULL , `value` INT NOT NULL , `params` TEXT NOT NULL , `type` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

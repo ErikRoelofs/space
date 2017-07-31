@@ -8,6 +8,7 @@ use Plu\Entity\GivenOrder;
 use Plu\Objective\ObjectiveInterface;
 use Plu\OrderTypes\ClaimObjectiveOrder;
 use Plu\Repository\ActiveObjectiveRepository;
+use Plu\Service\Loggers\LoggerInterface;
 
 class ObjectiveService
 {
@@ -68,6 +69,15 @@ class ObjectiveService
 
     public function addObjectiveType(ObjectiveInterface $objective) {
         $this->objectives[] = $objective;
+    }
+
+    public function updateGameState(Game $game, LoggerInterface $log) {
+        if($log->getSuccess()) {
+            $activeObjective = $this->activeObjectiveRepo->findByIdentifier($log->getActiveObjectiveId());
+            $objective = $this->createObjectiveFromActiveObjective($activeObjective);
+
+            $objective->resolveClaim($game, $game->findPlayer($log->getPlayerId()), $activeObjective);
+        }
     }
 
 }
