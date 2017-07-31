@@ -1,14 +1,48 @@
-backend:
-v1:
+EndTurn:
+ V expand with "create new objective"
+ V expand with "see if anyone won"
+ - close the game if someone won
 
-? setup transactions!
+Game:
+ - allow closing as completed
 
-interface:
-v1:
+Orders:
+ V expand with "claimObjectiveOrder"
+ - block claiming the same objective multiple times
+
+Entities:
+ V add ActiveObjective
+   - game
+   - turn-added
+   - claimedBy
+   - value
+   - params
+
+ V add ObjectiveClaim
+   - player
+   - turn
+
+  - add functional repositories
+
+Objectives:
+ - create abstract objective or interface
+ - "attemptclaim"
+ - resource Objective
+ - piece Objective - blo
+
+---
+Frontend:
+
+- display objectives
+- display claims by each player; total scores
+- allow claiming a new objective
+
+----
 
 issues:
 - fix naming scheme to work on unix
 - fix duplication issues in battle logs
+- setup transactions!
 
 v2:
 

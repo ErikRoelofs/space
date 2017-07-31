@@ -59,6 +59,20 @@ $app['converter-service'] = function($app) {
 		'resource' => new Conv\NativeConverter(),
 		'amount' => new Conv\NativeConverter(),
 	]));
+	$s->addConverter('\Plu\Entity\ActiveObjective', new Conv\ConfigurableConverter([
+	    'id' => new Conv\NativeConverter(),
+	    'gameId' => new Conv\NativeConverter(),
+	    'turnId' => new Conv\NativeConverter(),
+	    'value' => new Conv\NativeConverter(),
+	    'type' => new Conv\NativeConverter(),
+	    'params' => new Conv\DataConverter(),
+    ]));
+	$s->addConverter('\Plu\Entity\ClaimedObjective', new Conv\ConfigurableConverter([
+	    'id' => new Conv\NativeConverter(),
+	    'playerId' => new Conv\NativeConverter(),
+	    'turnId' => new Conv\NativeConverter(),
+	    'objectiveId' => new Conv\NativeConverter(),
+    ]));
 
     return $s;
 };
@@ -87,12 +101,17 @@ $app['tile-repo'] = function($app) {
 $app['turn-repo'] = function($app) {
     return new Repo\TurnRepository($app['db'], $app['converter-service']);
 };
-
 $app['log-repo'] = function($app) {
     return new Repo\LogRepository($app['db'], $app['converter-service']);
 };
 $app['resource-claim-repo'] = function($app) {
 	return new Repo\ResourceClaimRepository($app['db'], $app['converter-service']);
+};
+$app['claimed-objective-repo'] = function($app) {
+    return new Repo\ClaimedObjectiveRepository($app['db'], $app['converter-service']);
+};
+$app['active-objective-repo'] = function($app) {
+    return new Repo\ActiveObjectiveRepository($app['db'], $app['converter-service']);
 };
 
 $app['starting-units-service'] = function($app) {
@@ -158,7 +177,7 @@ $app['game-service'] = function($app) {
 };
 
 $app['end-of-turn-service'] = function($app) {
-    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app);
+    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app['objective-service'], $app);
 };
 
 $app['resource-service'] = function($app) {
@@ -183,4 +202,15 @@ $app['log-expander'] = function($app) {
     $exp->addExpander('space-battle-service', $app['space-combat-log-expander']);
     $exp->addExpander('tactical-order-service', $app['tactical-order-log-expander']);
     return $exp;
+};
+
+$app['objective-service'] = function($app) {
+    $s = new \Plu\Service\ObjectiveService($app['active-objective-repo'], $app['objective-creator']);
+    $s->addObjectiveType(new \Plu\Objective\HasResourceObjective($app['claimed-objective-repo']));
+
+    return $s;
+};
+
+$app['objective-creator'] = function($app) {
+    return new \Plu\Service\ObjectiveCreator();
 };

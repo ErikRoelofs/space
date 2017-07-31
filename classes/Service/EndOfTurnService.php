@@ -44,18 +44,25 @@ class EndOfTurnService {
      */
     private $logRepo;
 
+    /**
+     * @var ObjectiveService
+     */
+    private $objectiveService;
+
     private $app;
 
     /**
-     * EndOfRoundService constructor.
+     * EndOfTurnService constructor.
      * @param OrderService $orderService
      * @param PlayerRepository $playerRepo
      * @param CombatPhaseService $combatPhaseService
      * @param InvasionPhaseService $invasionPhaseService
      * @param TurnRepository $turnRepo
      * @param LogRepository $logRepo
+     * @param ObjectiveService $objectiveCreationService
+     * @param $app
      */
-    public function __construct(OrderService $orderService, PlayerRepository $playerRepo, CombatPhaseService $combatPhaseService, InvasionPhaseService $invasionPhaseService, TurnRepository $turnRepo, LogRepository $logRepo, $app)
+    public function __construct(OrderService $orderService, PlayerRepository $playerRepo, CombatPhaseService $combatPhaseService, InvasionPhaseService $invasionPhaseService, TurnRepository $turnRepo, LogRepository $logRepo, ObjectiveService $objectiveService, $app)
     {
         $this->orderService = $orderService;
         $this->playerRepo = $playerRepo;
@@ -63,6 +70,7 @@ class EndOfTurnService {
         $this->invasionPhaseService = $invasionPhaseService;
         $this->turnRepo = $turnRepo;
         $this->logRepo = $logRepo;
+        $this->objectiveService = $objectiveService;
         $this->app = $app;
     }
 
@@ -87,6 +95,9 @@ class EndOfTurnService {
         $logs = $this->invasionPhaseService->resolveAllBattles($game);
         $this->completePhase($game, $currentTurn, $logs);
 
+        // create new objective
+        $this->objectiveService->newObjective($game);
+
         // pop the ids off the pieces and persist the new ones
         $pieceRepo = $this->app['piece-repo'];
         foreach($currentTurn->tiles as $tile) {
@@ -97,6 +108,10 @@ class EndOfTurnService {
             }
         }
 
+        // check if this game is now resolved
+        if($this->objectiveService->hasWinner($game)) {
+            $this->endGame();
+        }
 	}
 
 	private function completePhase(Game $game, Turn $currentTurn, array $logs) {
@@ -137,5 +152,10 @@ class EndOfTurnService {
 
 		return $turn;
 	}
+
+	private function endGame(Game $game) {
+        echo 'game over.';
+        exit;
+    }
 
 }
