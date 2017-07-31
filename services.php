@@ -178,7 +178,7 @@ $app['game-service'] = function($app) {
 };
 
 $app['end-of-turn-service'] = function($app) {
-    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app['objective-service'], $app);
+    return new \Plu\Service\EndOfTurnService($app['order-service'], $app['player-repo'], $app['combat-phase-service'], $app['invasion-phase-service'], $app['turn-repo'], $app['log-repo'], $app['objective-service'], $app['game-repo'], $app);
 };
 
 $app['resource-service'] = function($app) {

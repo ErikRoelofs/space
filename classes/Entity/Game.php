@@ -7,6 +7,7 @@ class Game
 {
     public $id;
     public $vpLimit;
+    public $active;
 
     public $turns;
     public $players;

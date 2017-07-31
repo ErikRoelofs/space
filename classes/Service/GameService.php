@@ -130,5 +130,4 @@ class GameService
         return $this->buildGame($id);
     }
 
-
 }

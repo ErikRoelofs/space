@@ -1,10 +1,10 @@
 EndTurn:
  V expand with "create new objective"
  V expand with "see if anyone won"
- - close the game if someone won
+ V close the game if someone won
 
 Game:
- - allow closing as completed
+ V allow closing as completed
 
 Orders:
  V expand with "claimObjectiveOrder"
@@ -22,7 +22,7 @@ Frontend:
 
 V display objectives
 V display claims by each player;
-- total scores
+V total scores
 V allow claiming a new objective
 
 ----

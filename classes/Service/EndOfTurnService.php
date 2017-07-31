@@ -5,6 +5,7 @@ namespace Plu\Service;
 use Plu\Entity\Game;
 use Plu\Entity\Log;
 use Plu\Entity\Turn;
+use Plu\Repository\GameRepository;
 use Plu\Repository\LogRepository;
 use Plu\Repository\PlayerRepository;
 use Plu\Repository\TurnRepository;
@@ -49,6 +50,11 @@ class EndOfTurnService {
      */
     private $objectiveService;
 
+    /**
+     * @var GameRepository
+     */
+    private $gameRepo;
+
     private $app;
 
     /**
@@ -62,7 +68,7 @@ class EndOfTurnService {
      * @param ObjectiveService $objectiveCreationService
      * @param $app
      */
-    public function __construct(OrderService $orderService, PlayerRepository $playerRepo, CombatPhaseService $combatPhaseService, InvasionPhaseService $invasionPhaseService, TurnRepository $turnRepo, LogRepository $logRepo, ObjectiveService $objectiveService, $app)
+    public function __construct(OrderService $orderService, PlayerRepository $playerRepo, CombatPhaseService $combatPhaseService, InvasionPhaseService $invasionPhaseService, TurnRepository $turnRepo, LogRepository $logRepo, ObjectiveService $objectiveService, GameRepository $gameRepo, $app)
     {
         $this->orderService = $orderService;
         $this->playerRepo = $playerRepo;
@@ -71,6 +77,7 @@ class EndOfTurnService {
         $this->turnRepo = $turnRepo;
         $this->logRepo = $logRepo;
         $this->objectiveService = $objectiveService;
+        $this->gameRepo = $gameRepo;
         $this->app = $app;
     }
 
@@ -154,8 +161,8 @@ class EndOfTurnService {
 	}
 
 	private function endGame(Game $game) {
-        echo 'game over.';
-        exit;
+        $game->active = 0;
+        $this->gameRepo->update($game);
     }
 
 }
