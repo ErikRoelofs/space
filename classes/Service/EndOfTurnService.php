@@ -110,7 +110,7 @@ class EndOfTurnService {
 
         // check if this game is now resolved
         if($this->objectiveService->hasWinner($game)) {
-            $this->endGame();
+            $this->endGame($game);
         }
 	}
 

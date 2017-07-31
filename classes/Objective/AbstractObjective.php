@@ -43,7 +43,8 @@ abstract class AbstractObjective implements ObjectiveInterface
 
         // update the gamestate to reflect the results of this claim (if any)
         $this->updateGamestate($game, $player, $objective);
-        return true;
+
+        return $claimed;
     }
 
     abstract function updateGameState(Game $game, Player $player, ActiveObjective $objective);

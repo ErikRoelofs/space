@@ -5,6 +5,7 @@ namespace Plu\Service;
 use Plu\Entity\ActiveObjective;
 use Plu\Entity\Game;
 use Plu\Entity\GivenOrder;
+use Plu\Entity\Player;
 use Plu\Objective\ObjectiveInterface;
 use Plu\OrderTypes\ClaimObjectiveOrder;
 use Plu\Repository\ActiveObjectiveRepository;
@@ -47,7 +48,21 @@ class ObjectiveService
     }
 
     public function hasWinner(Game $game) {
+        foreach($game->players as $player) {
+            $score = $this->calculateScore($player, $game);
+            if($score >= 3) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    private function calculateScore(Player $player, Game $game) {
+        $score = 0;
+        foreach($game->findClaimsByPlayer($player) as $claim) {
+            $score += $game->findObjective($claim->objectiveId)->value;
+        }
+        return $score;
     }
 
     public function createObjectiveFromOrder(GivenOrder $order) {
@@ -76,7 +91,8 @@ class ObjectiveService
             $activeObjective = $this->activeObjectiveRepo->findByIdentifier($log->getActiveObjectiveId());
             $objective = $this->createObjectiveFromActiveObjective($activeObjective);
 
-            $objective->resolveClaim($game, $game->findPlayer($log->getPlayerId()), $activeObjective);
+            $claim = $objective->resolveClaim($game, $game->findPlayer($log->getPlayerId()), $activeObjective);
+            $game->claimedObjectives[] = $claim;
         }
     }
 
