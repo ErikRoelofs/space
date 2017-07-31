@@ -216,9 +216,25 @@ angular.module('game', []).service('piecesService', function () {
 	return self;
 }]).service('objectiveService', [function() {
 	var objectives = [];
+	var claims = [];
+
+	var attachToObjective = function(claim) {
+		angular.forEach(objectives, function(objective) {
+            if(!objective.claimed) {
+            	objective.claimed = [];
+			}
+			if(objective.id == claim.objectiveId) {
+				objective.claimed.push(claim);
+			}
+		});
+	};
 	return {
-		setObjectives: function(theObjectives) {
+		setObjectives: function(theObjectives, theClaims) {
 			objectives = theObjectives;
+			claims = theClaims;
+			angular.forEach(claims, function(item) {
+				attachToObjective(item);
+			});
 		},
 		getObjectives: function() {
 			return objectives;
