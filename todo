@@ -16,7 +16,8 @@ Objectives:
  V create abstract objective or interface
  V "attemptclaim"
  V resource Objective
- - piece Objective - blo
+ V piece Objective - blo
+ V properly create a few different (basic) objectives
 
 ---
 Frontend:
