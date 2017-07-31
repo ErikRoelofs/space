@@ -88,7 +88,10 @@ angular.module('game', []).service('piecesService', function () {
                 }
             })
             return player;
-        }
+        },
+		getPlayers: function() {
+        	return players;
+		}
     }
 }).service('historyService', function () {
 	var history = [];

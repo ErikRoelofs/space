@@ -2,6 +2,7 @@
 
 namespace Plu\Converters;
 use \Plu\Converters as Conv;
+use Plu\Service\ObjectiveService;
 
 class GameConverter implements ConverterInterface
 {
@@ -12,6 +13,11 @@ class GameConverter implements ConverterInterface
     private $c;
 
     private $app;
+
+    /**
+     * @var ObjectiveService
+     */
+    private $objectiveService;
 
     public function __construct($app) {
         $this->c = new Conv\ConfigurableConverter([
@@ -34,7 +40,17 @@ class GameConverter implements ConverterInterface
             $base['orderTypes'] = $this->app['converter-service']->batchToJSONObject($data->orderTypes);
         }
         if($data->players) {
+            $service = $this->app['objective-service'];
+
             $base['players'] = $this->app['converter-service']->batchToJSONObject($data->players);
+            foreach($data->players as $player) {
+                $score = $service->calculateScore($player, $data);
+                foreach($base['players'] as $key => $playerArray) {
+                    if($playerArray['id'] == $player->id) {
+                        $base['players'][$key]['score'] = $score;
+                    }
+                }
+            }
         }
         if($data->objectives) {
             $base['objectives'] = $this->app['converter-service']->batchToJSONObject($data->objectives);
