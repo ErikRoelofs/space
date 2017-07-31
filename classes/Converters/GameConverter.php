@@ -16,6 +16,7 @@ class GameConverter implements ConverterInterface
     public function __construct($app) {
         $this->c = new Conv\ConfigurableConverter([
             'id' => new Conv\NativeConverter(),
+            'vpLimit' => new Conv\NativeConverter(),
         ]);
         $this->app = $app;
     }

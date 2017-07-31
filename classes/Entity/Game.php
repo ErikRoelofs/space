@@ -6,12 +6,15 @@ namespace Plu\Entity;
 class Game
 {
     public $id;
+    public $vpLimit;
+
     public $turns;
     public $players;
     public $pieceTypes;
     public $orderTypes;
     public $objectives;
     public $claimedObjectives;
+
 
 	public function currentTurn() {
 		$highest = 0;
@@ -106,6 +109,5 @@ class Game
         }
         return $out;
     }
-
 
 }

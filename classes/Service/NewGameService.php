@@ -18,6 +18,7 @@ class NewGameService
 
     public function newGame($numPlayers) {
         $game = new Game();
+        $game->vpLimit = 10;
         $this->app['game-repo']->add($game);
 
 		$turn = new Turn();

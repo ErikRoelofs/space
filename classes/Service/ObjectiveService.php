@@ -50,14 +50,14 @@ class ObjectiveService
     public function hasWinner(Game $game) {
         foreach($game->players as $player) {
             $score = $this->calculateScore($player, $game);
-            if($score >= 3) {
+            if($score >= $game->vpLimit) {
                 return true;
             }
         }
         return false;
     }
 
-    private function calculateScore(Player $player, Game $game) {
+    public function calculateScore(Player $player, Game $game) {
         $score = 0;
         foreach($game->findClaimsByPlayer($player) as $claim) {
             $score += $game->findObjective($claim->objectiveId)->value;

@@ -238,3 +238,5 @@ ALTER TABLE `turn`
 
 CREATE TABLE `games`.`claimedObjective` ( `id` INT NOT NULL AUTO_INCREMENT , `playerId` INT NOT NULL , `turnId` INT NOT NULL , `objectiveId` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 CREATE TABLE `games`.`activeObjective` ( `id` INT NOT NULL AUTO_INCREMENT , `gameId` INT NOT NULL , `turnId` INT NOT NULL , `value` INT NOT NULL , `params` TEXT NOT NULL , `type` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `game` ADD `vpLimit` INT NOT NULL AFTER `id`;
