@@ -16,6 +16,23 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     )
 ));
 
+$app->register(new Silex\Provider\SecurityServiceProvider());
+
+$app['users'] = function ($app) {
+    return new \Plu\User\UserProvider($app['db']);
+};
+
+$app['security.jwt'] = [
+    'secret_key' => 'LookIMadeAKey!',
+    'life_time'  => 86400,
+    'options'    => [
+        'username_claim' => 'sub',
+        'header_name' => 'X-Access-Token',
+        'token_prefix' => 'Bearer',
+    ]
+];
+$app->register(new Silex\Provider\SecurityJWTServiceProvider());
+
 $app['converter-service'] = function($app) {
     $s = new \Plu\Service\ConverterService();
 
@@ -216,3 +233,22 @@ $app['objective-service'] = function($app) {
 $app['objective-creator'] = function($app) {
     return new \Plu\Service\ObjectiveCreator();
 };
+
+
+$app['security.firewalls'] = array(
+    'login' => [
+        'pattern' => 'login|register|oauth',
+        'anonymous' => true,
+    ],
+    'secured' => array(
+        'pattern' => '^.*$',
+        'logout' => array('logout_path' => '/logout'),
+        'users' => $app['users'],
+        'stateless' => true,
+        'jwt' => array(
+            'use_forward' => true,
+            'require_previous_session' => false,
+            'stateless' => true,
+        )
+    ),
+);

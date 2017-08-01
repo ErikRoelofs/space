@@ -1,7 +1,9 @@
 {
     "require": {
         "silex/silex": "~2.0",
-        "doctrine/dbal": "~2.2"
+        "doctrine/dbal": "~2.2",
+        "symfony/security" : "^3.3",
+        "cnam/security-jwt-service-provider":"2.*"
     },
     "autoload": {
       "psr-4": {

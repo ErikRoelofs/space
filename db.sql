@@ -241,3 +241,8 @@ CREATE TABLE `games`.`activeObjective` ( `id` INT NOT NULL AUTO_INCREMENT , `gam
 
 ALTER TABLE `game` ADD `vpLimit` INT NOT NULL AFTER `id`;
 ALTER TABLE `game` ADD `active` INT NOT NULL AFTER `id`;
+
+CREATE TABLE `games`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(255) NOT NULL , `roles` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`), UNIQUE (`username`)) ENGINE = InnoDB;
+
+INSERT INTO `users` (`id`, `username`, `roles`, `password`) VALUES
+(1, 'admin', 'ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==');

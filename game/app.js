@@ -1,4 +1,8 @@
-angular.module('game', []).service('piecesService', function () {
+angular.module('game', []).run(['$http', function($http) {
+	console.log('doing the run thing!');
+	var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTUwMTY4MzM3NX0.kCHRIRbUDWOVqGhCDRAUWWB2EGY9eGZZVj1Sub0AC6U';
+    $http.defaults.headers.common['X-Access-Token'] = 'Bearer ' + token;
+}]).service('piecesService', function () {
     var pieces = [];
     return {
         setAllPieces: function (thePieces) {
