@@ -246,3 +246,5 @@ CREATE TABLE `games`.`users` ( `id` INT NOT NULL AUTO_INCREMENT , `username` VAR
 
 INSERT INTO `users` (`id`, `username`, `roles`, `password`) VALUES
 (1, 'admin', 'ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==');
+
+ALTER TABLE `player` ADD `userId` INT NOT NULL AFTER `color`;

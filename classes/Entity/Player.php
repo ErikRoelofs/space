@@ -8,5 +8,6 @@ class Player
     public $gameId;
     public $color;
     public $name;
+    public $userId;
 
 }

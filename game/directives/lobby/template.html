@@ -1,0 +1,14 @@
+<div>
+    <h1>Lobby screen</h1>
+
+    <h2>Active games</h2>
+    <div ng-repeat="game in activeGames">
+        A game with id {{ game.id }}! <button ng-click="play(game)">Play!</button><br />
+    </div>
+
+    <h2>Archived games</h2>
+    <div ng-repeat="game in archivedGames">
+        A game with id {{ game.id }}! <button ng-click="play(game)">View!</button><br /><br />
+    </div>
+
+</div>

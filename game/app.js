@@ -278,4 +278,10 @@ angular.module('game', []).run(['$window', '$http', 'loginService', function($wi
             return $window.localStorage.getItem('token');
 		}
 	}
+}]).service('lobbyService', ['$http', function($http) {
+	return {
+		getMyGames: function() {
+			return $http.get('/lobby/myGames');
+		}
+	}
 }]);
