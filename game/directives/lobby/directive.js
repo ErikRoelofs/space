@@ -10,7 +10,7 @@ angular.module('game').directive('lobby', ['lobbyService', function(lobbyService
             });
 
             scope.play = function(game) {
-                window.location = '/game/#id=' + game.id;
+                window.location = '/game/?id=' + game.id;
             }
         }
     };

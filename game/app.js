@@ -1,13 +1,21 @@
-angular.module('game', []).run(['$window', '$http', 'loginService', function($window, $http, loginService) {
+angular.module('game', []).config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
+}]).run(['$location', '$http', 'loginService', '$rootScope', function($location, $http, loginService, $rootScope) {
 	if(window.location.pathname != '/game/login.html') {
         var token = loginService.getToken();
         if (token) {
             $http.defaults.headers.common['X-Access-Token'] = 'Bearer ' + token;
+            $rootScope.id = $location.search().id;
         }
         else {
             window.location = '/game/login.html';
         }
     }
+
+
 }]).service('piecesService', function () {
     var pieces = [];
     return {
@@ -261,7 +269,7 @@ angular.module('game', []).run(['$window', '$http', 'loginService', function($wi
 		},
 		getGame: function() {
 			return game;
-		}
+		},
 	}
 }]).service('loginService', ['$http','$window', function($http, $window) {
 	return {
