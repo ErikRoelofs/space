@@ -110,7 +110,7 @@ $app['piece-type-repo'] = function($app) {
     return new Repo\PieceTypeRepository($app['db'], $app['converter-service']);
 };
 $app['player-repo'] = function($app) {
-    return new Repo\PlayerRepository($app['db'], $app['converter-service']);
+    return new Repo\PlayerRepository($app['db'], $app['converter-service'], $app['user']);
 };
 $app['tile-repo'] = function($app) {
     return new Repo\TileRepository($app['db'], $app['converter-service']);

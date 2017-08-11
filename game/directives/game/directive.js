@@ -8,7 +8,9 @@ angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'bo
         templateUrl: "directives/game/template.html",
         link: function(scope) {
 
-            $http.get('/game/' + $rootScope.id).then(function(response) {
+            $http.get('/game/' + $rootScope.gameId).then(function(response) {
+
+                $rootScope.playerId = response.data.myPlayerId;
 
                 boardService.setBoard(response.data.turns);
 
@@ -29,11 +31,12 @@ angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'bo
 				turnService.setLatestTurn(response.data.turns.length);
                 objectiveService.setObjectives(response.data.objectives, response.data.claimedObjectives);
                 gameService.setGame(response.data);
-            });
 
-			$http.get('/game/' + $rootScope.id + '/player/1').then(function(response) {
-				activePlayerService.setData(response.data);
-			});
+                $http.get('/game/' + $rootScope.gameId + '/player/' + $rootScope.playerId).then(function(response) {
+                    activePlayerService.setData(response.data);
+                });
+
+            });
 
             scope.ready = false;
             $timeout(function() {

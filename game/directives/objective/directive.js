@@ -1,5 +1,5 @@
-angular.module('game').directive('objective', [ '$http',
-    function($http) {
+angular.module('game').directive('objective', [ '$http', '$rootScope',
+    function($http, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -9,7 +9,7 @@ angular.module('game').directive('objective', [ '$http',
         link: function(scope) {
 
             scope.claim = function() {
-                var player = 1;
+                var player = $rootScope.playerId;
                 var order = {
                     objectiveId: scope.objective.id
                 };

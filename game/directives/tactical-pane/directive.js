@@ -6,7 +6,7 @@ angular.module('game').directive('tacticalPane', ['$http', 'piecesService', 'boa
         },
         templateUrl: "directives/tactical-pane/template.html",
         link: function(scope) {
-        	var player = 1;
+        	var player = + $rootScope.playerId;
 
             scope.open = false;
 			scope.tile = null;

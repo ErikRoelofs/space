@@ -8,7 +8,7 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
         var token = loginService.getToken();
         if (token) {
             $http.defaults.headers.common['X-Access-Token'] = 'Bearer ' + token;
-            $rootScope.id = $location.search().id;
+            $rootScope.gameId = $location.search().id;
         }
         else {
             window.location = '/game/login.html';

@@ -101,6 +101,12 @@ class GameService
     public function buildGame($gameId) {
 		if(!isset($this->builtGames[$gameId])) {
 			$game = $this->gameRepo->findByIdentifier($gameId);
+            $game->myPlayerId = null;
+			$player = $this->playerRepo->findForCurrentUserByGame($game);
+			if($player) {
+			    $game->myPlayerId = $player->id;
+            }
+
 			$game->players = $this->playerRepo->findByGame($game);
 			$game->turns = $this->turnRepository->findByGame($game);
 			$game->pieceTypes = $this->pieceTypeRepo->findAll();

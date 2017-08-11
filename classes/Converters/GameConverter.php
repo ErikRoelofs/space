@@ -31,6 +31,9 @@ class GameConverter implements ConverterInterface
     public function toJSON($data)
     {
         $base = $this->c->toJSON($data);
+        if($data->myPlayerId) {
+            $base['myPlayerId'] = $data->myPlayerId;
+        }
         if($data->turns) {
             $base['turns'] = $this->app['converter-service']->batchToJSONObject($data->turns);
         }

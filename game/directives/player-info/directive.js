@@ -1,4 +1,4 @@
-angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', function($http, activePlayerService, orderService, turnService) {
+angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', '$rootScope', function($http, activePlayerService, orderService, turnService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -9,13 +9,13 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
             scope.$watch(function() {
                 return turnService.getCurrentTurn();
             }, function() {
-                scope.orders = orderService.getCurrentOrdersForPlayer(1);
+                scope.orders = orderService.getCurrentOrdersForPlayer($rootScope.playerId);
             });
 
 			scope.resources = activePlayerService.getResources();
 
             scope.cancel = function(order) {
-                $http.delete('/order/1/' + order.id).then(function(response) {
+                $http.delete('/order/' + $rootScope.playerId + '/' + order.id).then(function(response) {
                     angular.forEach(scope.orders, function(item, key) {
                         if(item.id == order.id) {
                             scope.orders.splice(key, 1);
@@ -26,7 +26,7 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
             }
 
             scope.endTurn = function() {
-                $http.get('/admin/game/1/next').then(function(response) {
+                $http.get('/admin/game/' + $rootScope.gameId + '/next').then(function(response) {
                     console.log('next turn. refresh!');
                 })
             }
