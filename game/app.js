@@ -1,7 +1,13 @@
-angular.module('game', []).run(['$http', function($http) {
-	console.log('doing the run thing!');
-	var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTUwMTY4MzM3NX0.kCHRIRbUDWOVqGhCDRAUWWB2EGY9eGZZVj1Sub0AC6U';
-    $http.defaults.headers.common['X-Access-Token'] = 'Bearer ' + token;
+angular.module('game', []).run(['$window', '$http', 'loginService', function($window, $http, loginService) {
+	if(window.location.pathname != '/game/login.html') {
+        var token = loginService.getToken();
+        if (token) {
+            $http.defaults.headers.common['X-Access-Token'] = 'Bearer ' + token;
+        }
+        else {
+            window.location = '/game/login.html';
+        }
+    }
 }]).service('piecesService', function () {
     var pieces = [];
     return {
@@ -255,6 +261,21 @@ angular.module('game', []).run(['$http', function($http) {
 		},
 		getGame: function() {
 			return game;
+		}
+	}
+}]).service('loginService', ['$http','$window', function($http, $window) {
+	return {
+		authenticate: function(username, password) {
+			var vars = {
+				_username: username,
+				_password: password
+			}
+			return $http.post('/api/login', vars).then(function(response) {
+				$window.localStorage.setItem('token', response.data.token);
+			});
+		},
+		getToken: function() {
+            return $window.localStorage.getItem('token');
 		}
 	}
 }]);
