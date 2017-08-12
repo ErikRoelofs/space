@@ -5,6 +5,7 @@ namespace Plu\Service;
 use Plu\Entity\OpenGame;
 use Plu\Entity\SubscribedPlayer;
 use Plu\Entity\User;
+use Plu\Repository\OpenGameRepository;
 use Plu\Repository\SubscribedPlayerRepository;
 
 class LobbyService
@@ -21,15 +22,23 @@ class LobbyService
     protected $subscibedRepo;
 
     /**
+     * @var OpenGameRepository
+     */
+    protected $openGameRepo;
+
+    /**
      * LobbyService constructor.
      * @param User $user
      * @param SubscribedPlayerRepository $subscibedRepo
+     * @param OpenGameRepository $openGameRepo
      */
-    public function __construct(User $user, SubscribedPlayerRepository $subscibedRepo)
+    public function __construct(User $user, SubscribedPlayerRepository $subscibedRepo, OpenGameRepository $openGameRepo)
     {
         $this->user = $user;
         $this->subscibedRepo = $subscibedRepo;
+        $this->openGameRepo = $openGameRepo;
     }
+
 
     public function joinGame(OpenGame $game, $password) {
         if(!$this->validatePassword($password, $game)) {
@@ -63,4 +72,22 @@ class LobbyService
         return true;
     }
 
+    public function openGame($vpLimit, $password) {
+        $game = new OpenGame();
+        $game->password = $password;
+        $game->vpLimit = $vpLimit;
+        $game->userId = $this->user->id;
+
+        $game = $this->openGameRepo->add($game);
+
+        $subscriber = new SubscribedPlayer();
+        $subscriber->userId = $this->user->id;
+        $subscriber->name = $this->user->name;
+        $subscriber->openGameId = $game->id;
+
+        $subscriber = $this->subscibedRepo->add($subscriber);
+
+        return $game;
+
+    }
 }

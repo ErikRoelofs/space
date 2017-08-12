@@ -8,9 +8,11 @@
     <br />
     VP limit: {{ game.vpLimit }}<br />
     <br />
-    <div ng-show="game.hasPassword">
-        <strong>Password protected.</strong><br />
-        Password: <input type="text" ng-model="value" /><br />
+    <div ng-show="canJoin">
+        <div ng-show="game.hasPassword">
+            <strong>Password protected.</strong><br />
+            Password: <input type="text" ng-model="value" /><br />
+        </div>
+        <button ng-click="joinGame()">Join game!</button>
     </div>
-    <button ng-click="joinGame()">Join game!</button>
 </div>

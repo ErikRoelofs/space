@@ -297,12 +297,15 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 		joinGame: function(game, password) {
 			password = password || false;
 			return $http.post('/lobby/joinGame/' + game.id, {password: password});
+		},
+		openGame: function(password, vpLimit) {
+			return $http.post('/lobby/createGame', {password: password, vpLimit: vpLimit});
 		}
 	}
 }]).service('userService', ['$http', function($http) {
 	return {
 		getMyUserInfo: function() {
-			return $http.get('/user/myInfo');
+			return $http.get('/user/myInfo', {cache: true});
 		}
 	}
 }]);

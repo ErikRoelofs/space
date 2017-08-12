@@ -4,7 +4,8 @@ angular.module('game').directive('openGame', ['lobbyService', function(lobbyServ
         restrict: 'E',
         templateUrl: 'directives/open-game/template.html',
         scope: {
-            game: '='
+            game: '=',
+            canJoin: '@'
         },
         link: function(scope) {
             scope.value = 'derp';

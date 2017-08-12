@@ -101,6 +101,7 @@ $app['converter-service'] = function($app) {
     $s->addConverter('\Plu\Entity\User', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
         'name' => new Conv\NativeConverter(),
+        'password' => new Conv\PasswordConverter(),
     ]));
 
     return $s;
@@ -256,7 +257,7 @@ $app['objective-creator'] = function($app) {
 };
 
 $app['lobby-service'] = function($app) {
-    return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo']);
+    return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo'], $app['open-game-repo']);
 };
 
 $app['security.firewalls'] = array(
