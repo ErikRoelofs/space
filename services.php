@@ -19,7 +19,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app->register(new Silex\Provider\SecurityServiceProvider());
 
 $app['users'] = function ($app) {
-    return new \Plu\User\UserProvider($app['db']);
+    return new \Plu\User\UserProvider($app['user-repo']);
 };
 
 $app['security.jwt'] = [
@@ -98,6 +98,11 @@ $app['converter-service'] = function($app) {
         'name' => new Conv\NativeConverter(),
     ]));
 
+    $s->addConverter('\Plu\Entity\User', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'name' => new Conv\NativeConverter(),
+    ]));
+
     return $s;
 };
 
@@ -130,6 +135,9 @@ $app['turn-repo'] = function($app) {
 };
 $app['log-repo'] = function($app) {
     return new Repo\LogRepository($app['db'], $app['converter-service']);
+};
+$app['user-repo'] = function($app) {
+    return new Repo\UserRepository($app['db'], $app['converter-service']);
 };
 $app['resource-claim-repo'] = function($app) {
 	return new Repo\ResourceClaimRepository($app['db'], $app['converter-service']);

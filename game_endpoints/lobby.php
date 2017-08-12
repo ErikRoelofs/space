@@ -38,6 +38,6 @@ $app->post('/lobby/joinGame/{gameId}', function($gameId) use ($app) {
         return new \Symfony\Component\HttpFoundation\Response("You are already in this game", 400);
     }
 
-    return 'ok';
+    return $app['converter-service']->toJson($lobbyService->joinGame($openGame, $password));
 
 });

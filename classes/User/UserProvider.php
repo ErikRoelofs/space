@@ -2,31 +2,26 @@
 
 namespace Plu\User;
 
+use Plu\Entity\User;
+use Plu\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Doctrine\DBAL\Connection;
 
 class UserProvider implements UserProviderInterface
 {
-    private $conn;
+    private $repo;
 
-    public function __construct(Connection $conn)
+    public function __construct(UserRepository $repo)
     {
-        $this->conn = $conn;
+        $this->repo = $repo;
     }
 
     public function loadUserByUsername($username)
     {
-        $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', array(strtolower($username)));
-
-        if (!$user = $stmt->fetch()) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
+        return $this->repo->findByUsername($username);
     }
 
     public function refreshUser(UserInterface $user)

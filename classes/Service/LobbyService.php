@@ -3,8 +3,9 @@
 namespace Plu\Service;
 
 use Plu\Entity\OpenGame;
+use Plu\Entity\SubscribedPlayer;
+use Plu\Entity\User;
 use Plu\Repository\SubscribedPlayerRepository;
-use Symfony\Component\Security\Core\User\User;
 
 class LobbyService
 {
@@ -37,6 +38,15 @@ class LobbyService
         if(!$this->userCanJoin($game)) {
             throw new \Exception("Already joined");
         }
+
+        $subscriber = new SubscribedPlayer();
+        $subscriber->name = $this->user->name;
+        $subscriber->openGameId = $game->id;
+        $subscriber->userId = $this->user->id;
+
+        $this->subscibedRepo->add($subscriber);
+
+        return $subscriber;
     }
 
     public function validatePassword($password, OpenGame $game) {
@@ -46,7 +56,7 @@ class LobbyService
     public function userCanJoin(OpenGame $game) {
         $subscribed = $this->subscibedRepo->findByOpenGame($game);
         foreach($subscribed as $subscriber) {
-            if($subscriber->userId == $this->user->getUsername()) {
+            if($subscriber->userId == $this->user->getId()) {
                 return false;
             }
         }

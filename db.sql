@@ -254,3 +254,4 @@ CREATE TABLE `games`.`openGame` ( `id` INT NOT NULL AUTO_INCREMENT , `userId` IN
 CREATE TABLE `games`.`subscribedPlayer` ( `id` INT NOT NULL AUTO_INCREMENT , `userId` INT NOT NULL , `openGameId` INT NOT NULL , `name` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `subscribedPlayer` CHANGE `name` `name` VARCHAR(255) NOT NULL;
+ALTER TABLE `user` CHANGE `username` `name` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

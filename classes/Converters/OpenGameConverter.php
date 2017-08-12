@@ -29,6 +29,9 @@ class OpenGameConverter implements ConverterInterface
         unset($base['password']);
         $base['hasPassword'] = (bool) $data->password;
 
+        $host = $this->app['user-repo']->findByIdentifier($base['userId']);
+        $base['host'] = $this->app['converter-service']->toJsonObject($host);
+
         $players = $this->app['subscribed-player-repo']->findByOpenGame($data);
         $base['players'] = $this->app['converter-service']->batchToJsonObject($players);
         return $base;

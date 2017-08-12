@@ -2,7 +2,7 @@
 
 namespace Plu\Repository;
 
-use Symfony\Component\Security\Core\User\User;
+use Plu\Entity\User;
 
 class GameRepository extends BaseRepository
 {
@@ -12,7 +12,7 @@ class GameRepository extends BaseRepository
     }
 
     public function findForUser(User $user) {
-        $sql = "SELECT * FROM $this->tableName g INNER JOIN player p ON p.gameId = g.id INNER JOIN users u ON u.id = p.userId WHERE u.username = ?";
+        $sql = "SELECT * FROM $this->tableName g INNER JOIN player p ON p.gameId = g.id INNER JOIN user u ON u.id = p.userId WHERE u.username = ?";
         $rows = $this->db->fetchAll($sql, array($user->getUsername()));
         return $this->converter->batchFromDB($this->tableName, $rows);
     }

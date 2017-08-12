@@ -299,4 +299,10 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 			return $http.post('/lobby/joinGame/' + game.id, {password: password});
 		}
 	}
+}]).service('userService', ['$http', function($http) {
+	return {
+		getMyUserInfo: function() {
+			return $http.get('/user/myInfo');
+		}
+	}
 }]);

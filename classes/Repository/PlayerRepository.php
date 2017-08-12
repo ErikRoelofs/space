@@ -26,7 +26,7 @@ class PlayerRepository extends BaseRepository
     }
 
     public function findForCurrentUserByGame(Game $game) {
-        $sql = "SELECT * FROM $this->tableName p INNER JOIN users u ON u.id = p.userId WHERE p.gameId = ? AND u.username = ?";
+        $sql = "SELECT * FROM $this->tableName p INNER JOIN user u ON u.id = p.userId WHERE p.gameId = ? AND u.username = ?";
         $row = $this->db->fetchAssoc($sql, array((int) $game->id, $this->user->getUsername()));
         return $this->converter->fromDB($this->tableName, $row);
 

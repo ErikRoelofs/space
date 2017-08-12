@@ -1,4 +1,4 @@
-angular.module('game').directive('lobby', ['lobbyService', function(lobbyService) {
+angular.module('game').directive('lobby', ['lobbyService', 'userService', function(lobbyService, userService) {
 
     return {
         restrict: 'E',
@@ -18,6 +18,9 @@ angular.module('game').directive('lobby', ['lobbyService', function(lobbyService
             scope.play = function(game) {
                 window.location = '/game/play.html?id=' + game.id;
             }
+            userService.getMyUserInfo().then(function(response) {
+                scope.user = response.data;
+            })
         }
     };
 

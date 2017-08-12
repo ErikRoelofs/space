@@ -1,7 +1,7 @@
 <div>
     An open game with id {{ game.id }}<br />
     <br />
-    Hosted by: {{ game.userId }}<br />
+    Hosted by: {{ game.host.name }} ({{game.host.id}})<br />
     <br />
     Players: <br />
     <div ng-repeat="player in game.players">{{ player.name }} ({{ player.userId}})</div>
