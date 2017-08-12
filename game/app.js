@@ -290,6 +290,13 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 	return {
 		getMyGames: function() {
 			return $http.get('/lobby/myGames');
+		},
+		getOpenGames: function() {
+			return $http.get('/lobby/openGames');
+		},
+		joinGame: function(game, password) {
+			password = password || false;
+			return $http.post('/lobby/joinGame/' + game.id, {password: password});
 		}
 	}
 }]);

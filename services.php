@@ -90,6 +90,13 @@ $app['converter-service'] = function($app) {
 	    'turnId' => new Conv\NativeConverter(),
 	    'objectiveId' => new Conv\NativeConverter(),
     ]));
+    $s->addConverter('\Plu\Entity\OpenGame', new Conv\OpenGameConverter($app));
+    $s->addConverter('\Plu\Entity\SubscribedPlayer', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'openGameId' => new Conv\NativeConverter(),
+        'userId' => new Conv\NativeConverter(),
+        'name' => new Conv\NativeConverter(),
+    ]));
 
     return $s;
 };
@@ -99,6 +106,9 @@ $app['temp-repo'] = function($app) {
 };
 $app['game-repo'] = function($app) {
     return new Repo\GameRepository($app['db'], $app['converter-service']);
+};
+$app['open-game-repo'] = function($app) {
+    return new Repo\OpenGameRepository($app['db'], $app['converter-service']);
 };
 $app['order-repo'] = function($app) {
     return new Repo\OrderRepository($app['db'], $app['resource-claim-repo'], $app['converter-service']);
@@ -129,6 +139,9 @@ $app['claimed-objective-repo'] = function($app) {
 };
 $app['active-objective-repo'] = function($app) {
     return new Repo\ActiveObjectiveRepository($app['db'], $app['converter-service']);
+};
+$app['subscribed-player-repo'] = function($app) {
+    return new Repo\SubscribedPlayerRepository($app['db'], $app['converter-service']);
 };
 
 $app['starting-units-service'] = function($app) {
@@ -234,6 +247,9 @@ $app['objective-creator'] = function($app) {
     return new \Plu\Service\ObjectiveCreator();
 };
 
+$app['lobby-service'] = function($app) {
+    return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo']);
+};
 
 $app['security.firewalls'] = array(
     'login' => [

@@ -248,3 +248,9 @@ INSERT INTO `users` (`id`, `username`, `roles`, `password`) VALUES
 (1, 'admin', 'ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==');
 
 ALTER TABLE `player` ADD `userId` INT NOT NULL AFTER `color`;
+
+CREATE TABLE `games`.`openGame` ( `id` INT NOT NULL AUTO_INCREMENT , `userId` INT NOT NULL , `password` VARCHAR(255) NOT NULL , `vpLimit` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `games`.`subscribedPlayer` ( `id` INT NOT NULL AUTO_INCREMENT , `userId` INT NOT NULL , `openGameId` INT NOT NULL , `name` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `subscribedPlayer` CHANGE `name` `name` VARCHAR(255) NOT NULL;

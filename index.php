@@ -17,6 +17,10 @@ require_once('game_endpoints/admin.php');
 require_once('game_endpoints/lobby.php');
 require_once('test_endpoints/test.php');
 
+$app->get('/', function() use ($app) {
+    return $app->redirect('/game');
+});
+
 $app->get('/load/pieces', function() use ($app) {
     $s = new \Plu\Service\PieceTypesService();
     $pieces = $s->loadPieceTypes();

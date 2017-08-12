@@ -7,7 +7,7 @@ angular.module('game').directive('login', ['loginService', function(loginService
 
             scope.login = function() {
                 loginService.authenticate(scope.username, scope.password).then(function(response) {
-                    window.location = "/game/lobby.html";
+                    window.location = "/game/";
                 });
             };
 

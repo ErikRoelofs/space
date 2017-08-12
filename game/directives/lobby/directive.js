@@ -9,8 +9,14 @@ angular.module('game').directive('lobby', ['lobbyService', function(lobbyService
                 scope.archivedGames = response.data.archived;
             });
 
+            lobbyService.getOpenGames().then(function(response) {
+                scope.openGames = response.data;
+            });
+
+            scope.waitingGames = [];
+
             scope.play = function(game) {
-                window.location = '/game/?id=' + game.id;
+                window.location = '/game/play.html?id=' + game.id;
             }
         }
     };

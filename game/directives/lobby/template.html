@@ -8,7 +8,20 @@
 
     <h2>Archived games</h2>
     <div ng-repeat="game in archivedGames">
-        A game with id {{ game.id }}! <button ng-click="play(game)">View!</button><br /><br />
+        A game with id {{ game.id }}! <button ng-click="play(game)">View!</button><br />
     </div>
+
+    <h2>Games waiting to start</h2>
+    <div ng-repeat="game in waitingGames">
+        <open-game game="game"></open-game>
+    </div>
+
+    <h2>New games being created:</h2>
+    <div ng-repeat="game in openGames">
+        <open-game game="game"></open-game>
+    </div>
+
+    <h2>Host a new game!</h2>
+    <button ng-click="create()">Create!</button>
 
 </div>
