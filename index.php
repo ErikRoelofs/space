@@ -31,11 +31,6 @@ $app->get('/load/pieces', function() use ($app) {
     return 'done';
 });
 
-$app->get('/newgame', function() use ($app) {
-    $app['new-game-service']->newGame(6);
-    return 'done.';
-});
-
 $app->post('/api/login', function(\Symfony\Component\HttpFoundation\Request $request) use ($app){
     $vars = json_decode($request->getContent(), true);
 

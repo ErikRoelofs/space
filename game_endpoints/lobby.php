@@ -51,3 +51,10 @@ $app->post('/lobby/createGame', function() use ($app) {
     return $app['converter-service']->toJson( $lobbyService->openGame($vpLimit, $password));
 
 });
+
+$app->post('/lobby/launchGame/{gameId}', function($gameId) use ($app) {
+    $lobbyService = $app['lobby-service'];
+    $game = $app['open-game-repo']->findByidentifier($gameId);
+    return $app['converter-service']->toJson( $lobbyService->launchGame($game));
+
+});

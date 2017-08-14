@@ -27,18 +27,24 @@ class LobbyService
     protected $openGameRepo;
 
     /**
+     * @var NewGameService
+     */
+    protected $newGameService;
+
+    /**
      * LobbyService constructor.
      * @param User $user
      * @param SubscribedPlayerRepository $subscibedRepo
      * @param OpenGameRepository $openGameRepo
+     * @param NewGameService $newGameService
      */
-    public function __construct(User $user, SubscribedPlayerRepository $subscibedRepo, OpenGameRepository $openGameRepo)
+    public function __construct(User $user, SubscribedPlayerRepository $subscibedRepo, OpenGameRepository $openGameRepo, NewGameService $newGameService)
     {
         $this->user = $user;
         $this->subscibedRepo = $subscibedRepo;
         $this->openGameRepo = $openGameRepo;
+        $this->newGameService = $newGameService;
     }
-
 
     public function joinGame(OpenGame $game, $password) {
         if(!$this->validatePassword($password, $game)) {
@@ -89,5 +95,20 @@ class LobbyService
 
         return $game;
 
+    }
+
+    public function launchGame(OpenGame $game) {
+        if(!$this->user->id == $game->userId) {
+            throw new \Exception("Only the host can start the game.");
+        }
+
+        $newGame = $this->newGameService->newGameFromOpenGame($game);
+
+        foreach($this->subscibedRepo->findByOpenGame($game) as $subscriber) {
+            $this->subscibedRepo->remove($subscriber);
+        }
+        $this->openGameRepo->remove($game);
+
+        return $newGame;
     }
 }

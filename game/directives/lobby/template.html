@@ -14,7 +14,7 @@
 
     <h2>Unstarted games you have joined:</h2>
     <div ng-repeat="game in waitingGames">
-        <open-game game="game" canJoin="0"></open-game>
+        <open-game game="game" canJoin="0" isHost="{{ isHost(game) }}"></open-game>
     </div>
 
     <h2>Unstarted games you can join:</h2>

@@ -259,7 +259,7 @@ $app['objective-creator'] = function($app) {
 };
 
 $app['lobby-service'] = function($app) {
-    return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo'], $app['open-game-repo']);
+    return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo'], $app['open-game-repo'], $app['new-game-service']);
 };
 
 $app['player-service'] = function($app) {

@@ -3,6 +3,7 @@
 namespace Plu\Service;
 
 use Plu\Entity\Game;
+use Plu\Entity\OpenGame;
 use Plu\Entity\Player;
 use Plu\Entity\Turn;
 
@@ -16,9 +17,14 @@ class NewGameService
         $this->app = $app;
     }
 
-    public function newGame($numPlayers) {
+    public function newGameFromOpenGame(OpenGame $openGame) {
+        $subscribers = $this->app['subscribed-player-repo']->findByOpenGame($openGame);
+        return $this->newGame($subscribers, $openGame->vpLimit);
+    }
+
+    protected function newGame(array $subscribers, $vpLimit = 10) {
         $game = new Game();
-        $game->vpLimit = 10;
+        $game->vpLimit = $vpLimit;
         $game->active = 1;
         $this->app['game-repo']->add($game);
 
@@ -27,7 +33,7 @@ class NewGameService
 		$turn->number = 1;
 		$this->app['turn-repo']->add($turn);
 
-		$players = $this->newPlayers($game, $numPlayers);
+        $players = $this->makePlayersFromSubscribedPlayers($subscribers, $game);
         foreach($players as $key => $player) {
             $this->app['player-repo']->add($player);
         }
@@ -52,33 +58,20 @@ class NewGameService
             $this->app['piece-repo']->add($unit);
         }
 
-
+        return $game;
     }
 
-    private function newPlayers($game, $amount) {
-        for($i = 0; $i < $amount ;$i++) {
+    private function makePlayersFromSubscribedPlayers(array $subscribers, Game $game) {
+        foreach($subscribers as $i => $subscriber) {
             $player = new Player();
             $player->gameId = $game->id;
-            $player->name = $this->makeName($i);
+            $player->name = $subscriber->name;
             $player->color = $this->getColor($i);
-            $player->userId = $i + 1;
+            $player->userId = $subscriber->userId;
             $player->ready = 0;
             $players[] = $player;
-
         }
         return $players;
-    }
-
-    private function makeName($i) {
-        $colors = [
-            'John',
-            'Paul',
-            'Anna',
-            'Sarah',
-            'Mike',
-            'Amber',
-        ];
-        return $colors[$i];
     }
 
     private function getColor($i) {

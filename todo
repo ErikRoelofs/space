@@ -25,7 +25,7 @@ V attach a user management system
 V allow login, overview of active games
 V allow users to setup new games
 V allow users to sign up to games
-- allow new games to start
+V allow new games to start
 V check authorization when calling a url (mostly when getting player data and posting orders; game data can be public)
 - integrate chat into the game
     - find a good library or remote client + library (irc+angular?)
@@ -47,7 +47,7 @@ V check authorization when calling a url (mostly when getting player data and po
 	- turn time limit
 	- immediately advance when everyone is ready?
 	- # players
-- update starting units to make more sense
+V update starting units to make more sense
 - apply some sense to the victory conditions
 - remove social resource until used?
     - or use it for adjacent planet annexing or something?

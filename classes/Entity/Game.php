@@ -9,12 +9,12 @@ class Game
     public $vpLimit;
     public $active;
 
-    public $turns;
-    public $players;
-    public $pieceTypes;
-    public $orderTypes;
-    public $objectives;
-    public $claimedObjectives;
+    public $turns = [];
+    public $players = [];
+    public $pieceTypes = [];
+    public $orderTypes = [];
+    public $objectives = [];
+    public $claimedObjectives = [];
 
 
 	public function currentTurn() {

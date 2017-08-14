@@ -310,6 +310,9 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 		},
 		openGame: function(password, vpLimit) {
 			return $http.post('/lobby/createGame', {password: password, vpLimit: vpLimit});
+		},
+		launchGame: function(game) {
+			return $http.post('/lobby/launchGame/' + game.id);
 		}
 	}
 }]).service('userService', ['$http', function($http) {

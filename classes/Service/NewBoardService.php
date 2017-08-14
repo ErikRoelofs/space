@@ -44,7 +44,7 @@ class NewBoardService
 
     private function newTile($x, $y, $special, Turn $turn) {
         $planet = false;
-        if($special == 'home') {
+        if($special == 'home' && count($this->remainingPlayers)) {
             $planet = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
         }
         if($special == 'center') {

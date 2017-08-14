@@ -49,6 +49,11 @@ angular.module('game').directive('lobby', ['lobbyService', 'userService', functi
                     console.log(response);
                 });
             }
+
+            scope.isHost = function(game) {
+                return game.userId == scope.user.id;
+            }
+
         }
     };
 
