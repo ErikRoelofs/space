@@ -35,12 +35,12 @@ V check authorization when calling a url (mostly when getting player data and po
     - allow users to chat in the global lobby
 - have fair maps
     - pre-gen a few fair maps and pick one for each game
-- update board generator for different player amounts (?)
-    - not really mvp I guess?
-    - maybe make some maps with fewer players, to make playing easier
+- update board generator for different player amounts
+    - make some maps with fewer players, to make playing easier (3,4,5,6?)
 - automated game advancement
     V allow players to ready
     - set turn deadlines
+    - block orders sent in after the deadline (lock game for new orders)
     - advance the game
 - allow game settings:
 	V VP limit
@@ -55,6 +55,16 @@ V update starting units to make more sense
 V cleanup USER to include the id by default
 
 - make things look decently pretty
+  - build a decent layout
+  - create icons for each unit type
+  - show tabbed information
+  - create more readable orders/logs/victory conditions
+  - create a decent lobby
+  - create a decent login screen
+  - make widgets update when you send a new order
+  - remove "end the turn" option
+  - add more readable unit settings
+  - try to show more clearly what is on the board and how it's moving
 
 later:
 
@@ -83,6 +93,7 @@ actions
 politics
 trade
 secret objectives
+more interesting objectives
 
 strategies
 - add the pickStrategy action (including making choices)
