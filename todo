@@ -16,7 +16,6 @@ issues:
 - fix duplication issues in battle logs
 - setup transactions!
 - better handling for booleans
-- new game has no visible units?
 
 mvp:
 

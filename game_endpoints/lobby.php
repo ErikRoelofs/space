@@ -2,7 +2,6 @@
 
 $app->get('/lobby/myGames', function() use ($app) {
     $games = $app['game-repo']->findForUser($app['user']);
-
     $archived = [];
     $active = [];
     foreach($games as $game) {

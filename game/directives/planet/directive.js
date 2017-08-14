@@ -19,10 +19,10 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
                     return scope.pieces.filter(function(item) { return item.typeId == 4}).length;
                 };
                 scope.troops = function() {
-                    return 0;
+                    return scope.pieces.filter(function(item) { return item.typeId == 8}).length;
                 };
                 scope.defenders = function() {
-                    return 0;
+                    return scope.pieces.filter(function(item) { return item.typeId == 9}).length;
                 };
             });
 

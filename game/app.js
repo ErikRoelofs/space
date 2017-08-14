@@ -16,23 +16,26 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
     }
 
 
-}]).service('piecesService', function () {
+}]).service('piecesService', ['turnService', function (turnService) {
     var pieces = [];
     return {
         setAllPieces: function (thePieces) {
             pieces = thePieces;
         },
         getPiecesForTileAndTurn: function (tile, turn) {
+            var turn = turnService.turnNumberToId(turn);
             return pieces.filter(function (item) {
                 return item.tileId == tile.id && item.typeId != 1 && item.turnId == turn;
             });
         },
         getPiecesForPlanetAndTurn: function (planet, turn) {
+        	var turn = turnService.turnNumberToId(turn);
             return pieces.filter(function (item) {
                 return item.tileId == planet.tileId && item.turnId == turn;
             });
         },
         getPlanetForTileAndTurn: function (tile, turn) {
+            var turn = turnService.turnNumberToId(turn);
             var planets = pieces.filter(function (item) {
                 return item.tileId == tile.id && item.typeId == 1 && item.turnId == turn;
             });
@@ -47,7 +50,7 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 			})[0];
 		}
     };
-}).service('pieceTypesService', function () {
+}]).service('pieceTypesService', function () {
     var pieceTypes = [];
     return {
         setAllPieceTypes: function (thePieceTypes) {
@@ -207,10 +210,12 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 }]).service('turnService', [function() {
     var turn = 1;
     var lastTurn = 1;
+    var turns = [];
     return {
-		setLatestTurn: function(turnNum) {
-			turn = turnNum;
-			lastTurn = turnNum;
+		setTurns: function(theTurns) {
+			turns = theTurns;
+			turn = turns.length;
+			lastTurn = turns.length;
 		},
 		getCurrentTurn: function() {
 			return turn;
@@ -232,6 +237,11 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 		},
 		showingLastTurn: function() {
 			return turn === lastTurn;
+		},
+		turnNumberToId: function(number) {
+			return turns.filter(function(turn) {
+				return turn.number == number;
+			})[0].id;
 		}
 	}
 	return self;
