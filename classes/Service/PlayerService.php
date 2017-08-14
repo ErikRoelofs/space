@@ -3,15 +3,27 @@
 namespace Plu\Service;
 
 
-use Plu\Entity\Player;
+use Plu\Entity\User;
 
 class PlayerService
 {
 
-    protected $gameRepo;
+    /**
+     * @var User
+     */
+    protected $user;
 
-    public function getCurrentTurnForPlayer(Player $player) {
+    /**
+     * PlayerService constructor.
+     * @param User $user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
+    public function canControlPlayer(Player $player) {
+        return $this->user->id == $player->userId;
     }
 
 }

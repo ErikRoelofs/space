@@ -56,6 +56,7 @@ $app['converter-service'] = function($app) {
         'gameId' => new Conv\NativeConverter(),
         'name' => new Conv\NativeConverter(),
         'color' => new Conv\NativeConverter(),
+        'userId' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
     $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));
@@ -258,6 +259,10 @@ $app['objective-creator'] = function($app) {
 
 $app['lobby-service'] = function($app) {
     return new \Plu\Service\LobbyService($app['user'], $app['subscribed-player-repo'], $app['open-game-repo']);
+};
+
+$app['player-service'] = function($app) {
+    return new \Plu\Service\PlayerService($app['user']);
 };
 
 $app['security.firewalls'] = array(

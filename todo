@@ -10,9 +10,9 @@ different board sizes, users, lobby, communication, autoresolving
 
 V attach a user management system
 V allow login, overview of active games
-- allow users to setup new games
+V allow users to setup new games
 V allow users to sign up to games
-- check authorization when calling a url (mostly when getting player data and posting orders; game data can be public)
+V check authorization when calling a url (mostly when getting player data and posting orders; game data can be public)
 - allow players to chat with each other in games
 - allow users to chat with each other in game lobbies
 - generate fair maps

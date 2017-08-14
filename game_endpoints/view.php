@@ -7,10 +7,11 @@ $app->get('/game/{id}', function($id) use ($app) {
 
 $app->get('/game/{id}/player/{player}', function($id, $player) use ($app) {
 	$player = $app['player-repo']->findByIdentifier($player);
-	// current resources
-	// total resources
-	// active orders
-	$initial = $app['resource-service']->getInitialResources($player);
+    if(!$app['player-service']->canControlPlayer($player)) {
+        return new \Symfony\Component\HttpFoundation\Response("Cannot view player info for this player", 403);
+    }
+
+    $initial = $app['resource-service']->getInitialResources($player);
 	$current = $app['resource-service']->getCurrentResources($player);
 
 	$orders = $app['orders-service']->getActiveOrdersForPlayer($player);
