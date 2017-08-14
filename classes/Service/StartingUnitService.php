@@ -39,12 +39,16 @@ class StartingUnitService
         $pieces[] = $this->addPieceToSpace($player, 'Spacedock', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Destroyer', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'Cruiser', $homeTile);
         $carrier = $this->addPieceToSpace($player, 'Carrier', $homeTile);
         $pieces[] = $carrier;
         $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
         $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
-        $pieces[] = $this->addPieceToSpace($player, 'Fighter', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'GroundForce', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'GroundForce', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'GroundForce', $homeTile);
+        $pieces[] = $this->addPieceToSpace($player, 'DefenseSystem', $homeTile);
 
         return $pieces;
     }

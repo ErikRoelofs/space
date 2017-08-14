@@ -61,7 +61,10 @@ class NewGameService
             $player->gameId = $game->id;
             $player->name = $this->makeName($i);
             $player->color = $this->getColor($i);
+            $player->userId = $i + 1;
+            $player->ready = 0;
             $players[] = $player;
+
         }
         return $players;
     }

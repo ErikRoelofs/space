@@ -16,6 +16,7 @@ issues:
 - fix duplication issues in battle logs
 - setup transactions!
 - better handling for booleans
+- new game has no visible units?
 
 mvp:
 
@@ -25,13 +26,19 @@ V attach a user management system
 V allow login, overview of active games
 V allow users to setup new games
 V allow users to sign up to games
+- allow new games to start
 V check authorization when calling a url (mostly when getting player data and posting orders; game data can be public)
-- allow players to chat with each other in games
-- allow users to chat with each other in game lobbies
-- generate fair maps (?)
-    - pre-gen a few fair maps and pick one
+- integrate chat into the game
+    - find a good library or remote client + library (irc+angular?)
+    - allow players to chat with each other in games
+    - allow users to chat with each other in game lobbies
+    - allow users to chat with each other (in private)
+    - allow users to chat in the global lobby
+- have fair maps
+    - pre-gen a few fair maps and pick one for each game
 - update board generator for different player amounts (?)
-    - not really mvp I guess
+    - not really mvp I guess?
+    - maybe make some maps with fewer players, to make playing easier
 - automated game advancement
     V allow players to ready
     - set turn deadlines
@@ -41,8 +48,11 @@ V check authorization when calling a url (mostly when getting player data and po
 	- turn time limit
 	- immediately advance when everyone is ready?
 	- # players
+- update starting units to make more sense
+- apply some sense to the victory conditions
 - remove social resource until used?
-- or use it for adjacent planet annexing or something?
+    - or use it for adjacent planet annexing or something?
+    - or just keep it for VP only?
 V cleanup USER to include the id by default
 
 - make things look decently pretty
