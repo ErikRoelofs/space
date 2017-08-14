@@ -1,8 +1,21 @@
+CHAT:
+
+- attach to various game entities
+  - opengame chat
+  - ingame chat
+  - player chat
+  - user chat
+  - lobby chat
+  - multi-player chat
+- or use an existing chat service? (irc?) (or some existing php library?)
+- secure channels (player/user chat)
+
 
 issues:
 - fix naming scheme to work on unix
 - fix duplication issues in battle logs
 - setup transactions!
+- better handling for booleans
 
 mvp:
 
@@ -15,10 +28,16 @@ V allow users to sign up to games
 V check authorization when calling a url (mostly when getting player data and posting orders; game data can be public)
 - allow players to chat with each other in games
 - allow users to chat with each other in game lobbies
-- generate fair maps
-- update board generator for different player amounts
+- generate fair maps (?)
+    - pre-gen a few fair maps and pick one
+- update board generator for different player amounts (?)
+    - not really mvp I guess
+- automated game advancement
+    V allow players to ready
+    - set turn deadlines
+    - advance the game
 - allow game settings:
-	- VP limit
+	V VP limit
 	- turn time limit
 	- immediately advance when everyone is ready?
 	- # players

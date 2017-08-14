@@ -3,6 +3,7 @@
 namespace Plu\Service;
 
 
+use Plu\Entity\Player;
 use Plu\Entity\User;
 
 class PlayerService

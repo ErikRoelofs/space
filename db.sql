@@ -255,3 +255,5 @@ CREATE TABLE `games`.`subscribedPlayer` ( `id` INT NOT NULL AUTO_INCREMENT , `us
 
 ALTER TABLE `subscribedPlayer` CHANGE `name` `name` VARCHAR(255) NOT NULL;
 ALTER TABLE `user` CHANGE `username` `name` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `player` ADD `ready` TINYINT NOT NULL AFTER `userId`;

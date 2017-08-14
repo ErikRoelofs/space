@@ -57,6 +57,7 @@ $app['converter-service'] = function($app) {
         'name' => new Conv\NativeConverter(),
         'color' => new Conv\NativeConverter(),
         'userId' => new Conv\NativeConverter(),
+        'ready' => new Conv\NativeConverter(),
     ]));
     $s->addConverter('\Plu\Entity\Tile', new Conv\TileConverter($app));
     $s->addConverter('\Plu\Entity\Turn', new Conv\TurnConverter($app));

@@ -16,7 +16,7 @@ $app->get('/game/{id}/player/{player}', function($id, $player) use ($app) {
 
 	$orders = $app['orders-service']->getActiveOrdersForPlayer($player);
 
-	return json_encode(['resources'=>['initial' => $initial, 'current' => $current],'orders' => $orders]);
+	return json_encode(['resources'=>['initial' => $initial, 'current' => $current],'orders' => $orders, 'player' => $app['converter-service']->toJsonObject($player)]);
 });
 
 $app->get('/log/{id}', function($id) use ($app) {

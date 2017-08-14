@@ -1,4 +1,4 @@
-angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', '$rootScope', function($http, activePlayerService, orderService, turnService, $rootScope) {
+angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', 'playersService', '$rootScope', function($http, activePlayerService, orderService, turnService, playersService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -31,11 +31,23 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
                 })
             }
 
+            scope.playerInfo = playersService.getPlayer($rootScope.playerId);
+
+            scope.ready = function() {
+              $http.post('/order/' + $rootScope.playerId + '/ready').then(function(response) {
+                  scope.playerInfo.ready = 1;
+              });
+            };
+            scope.notReady = function() {
+                $http.post('/order/' + $rootScope.playerId + '/notReady').then(function(response) {
+                    scope.playerInfo.ready = 0;
+                });
+            };
+
             scope.allowHistory = true;
             scope.$on('game.mode', function(event, mode) {
                 scope.allowHistory = ( mode != 'tactical' );
             })
-
 
             scope.currentTurn = turnService.getLatestTurn;
             scope.viewingTurn = turnService.getCurrentTurn;

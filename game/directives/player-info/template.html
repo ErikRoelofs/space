@@ -1,4 +1,4 @@
-<h3>Player info</h3>
+<h3>Player info for {{ playerInfo.name }} <span style="width: 25px; height: 25px" ng-style="{'background-color': playerInfo.color, color: playerInfo.color }">color</span></h3>
 <h4>Turn information</h4>
 Current turn is: {{ currentTurn() }}<br />
 Viewing turn: {{ viewingTurn() }}<br />
@@ -14,5 +14,8 @@ Viewing turn: {{ viewingTurn() }}<br />
 	<objective-order ng-if="order.orderType == 'claimObjective'" order="order"></objective-order>
 	<button ng-click="cancel(order)">Cancel this order</button>
 </div>
+
+<button ng-show="!playerInfo.ready" ng-click="ready()">Ready</button>
+<button ng-show="playerInfo.ready" ng-click="notReady()">Not ready</button>
 
 <button ng-click="endTurn()">End the turn</button>

@@ -56,3 +56,27 @@ $app->get('/order/tactical/{player}/{tile}/buildable', function($player, $tile) 
 
     return $app['converter-service']->batchToJson($pieceTypes);
 });
+
+$app->post('/order/{player}/ready', function($player) use ($app) {
+    $player = $app['player-repo']->findByIdentifier($player);
+    if(!$app['player-service']->canControlPlayer($player)) {
+        return new \Symfony\Component\HttpFoundation\Response("Cannot place an order for this player.", 403);
+    }
+
+    $player->ready = 1;
+    $app['player-repo']->update($player);
+
+    return '';
+});
+
+$app->post('/order/{player}/notReady', function($player) use ($app) {
+    $player = $app['player-repo']->findByIdentifier($player);
+    if(!$app['player-service']->canControlPlayer($player)) {
+        return new \Symfony\Component\HttpFoundation\Response("Cannot place an order for this player.", 403);
+    }
+
+    $player->ready = 0;
+    $app['player-repo']->update($player);
+
+    return '';
+});
