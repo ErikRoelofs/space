@@ -2,6 +2,7 @@
 
 namespace Plu\Service;
 
+use Plu\Board\BoardCreator;
 use Plu\Entity\Game;
 use Plu\Entity\Tile;
 use Plu\Entity\Turn;
@@ -10,9 +11,9 @@ class NewBoardService
 {
 
     /**
-     * @var NewPlanetService
+     * @var BoardCreator
      */
-    private $planetService;
+    protected $creator;
 
     private $remainingPlayers = [];
 
@@ -26,9 +27,9 @@ class NewBoardService
         [6,3, 'home'], [6,4], [6,5], [6,6, 'home']
     ];
 
-    public function __construct($planetService)
+    public function __construct(BoardCreator $creator)
     {
-        $this->planetService = $planetService;
+        $this->creator = $creator;
     }
 
     public function newBoard(Game $game, Turn $turn, $players) {
@@ -43,23 +44,15 @@ class NewBoardService
     }
 
     private function newTile($x, $y, $special, Turn $turn) {
-        $planet = false;
-        if($special == 'home' && count($this->remainingPlayers)) {
-            $planet = $this->planetService->newHomePlanet(array_pop($this->remainingPlayers));
-        }
-        if($special == 'center') {
-            $planet = $this->planetService->newCenterPlanet();
-        }
-        if(!$special) {
-			if(mt_rand(0,1) == 1) {
-				$planet = $this->planetService->newRegularPlanet();
-			}
-        }
         $tile = new Tile();
+        $tile->coordinates = [$x,$y];
+        $planet = $this->creator->getPlanet($tile);
         if($planet) {
+            if($special == 'home' && count($this->remainingPlayers)) {
+                $planet->ownerId = array_pop($this->remainingPlayers);
+            }
             $tile->pieces[$turn->number] = [$planet];
         }
-        $tile->coordinates = [$x,$y];
         return $tile;
     }
 

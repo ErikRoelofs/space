@@ -18,6 +18,7 @@ class TurnConverter implements ConverterInterface
             'id' => new Conv\NativeConverter(),
             'gameId' => new Conv\NativeConverter(),
             'number' => new Conv\NativeConverter(),
+            'endTime' => new Conv\DateTimeConverter(),
         ]);
         $this->app = $app;
     }

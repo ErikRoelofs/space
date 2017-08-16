@@ -257,3 +257,4 @@ ALTER TABLE `subscribedPlayer` CHANGE `name` `name` VARCHAR(255) NOT NULL;
 ALTER TABLE `user` CHANGE `username` `name` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
 ALTER TABLE `player` ADD `ready` TINYINT NOT NULL AFTER `userId`;
+ALTER TABLE `turn` ADD `endTime` DATETIME NOT NULL AFTER `gameId`;

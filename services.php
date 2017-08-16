@@ -160,7 +160,11 @@ $app['starting-units-service'] = function($app) {
 };
 
 $app['new-board-service'] = function($app) {
-    return new \Plu\Service\NewBoardService($app['new-planet-service']);
+    return new \Plu\Service\NewBoardService($app['static-board-from-file']);
+};
+
+$app['static-board-from-file'] = function($app) {
+    return new \Plu\Board\StaticBoardFromFile('/assets/boards/board.yaml');
 };
 
 $app['new-planet-service'] = function($app) {

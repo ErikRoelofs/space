@@ -49,6 +49,8 @@ V check authorization when calling a url (mostly when getting player data and po
 	- # players
 V update starting units to make more sense
 - apply some sense to the victory conditions
+    - include "I hold the center"
+    - include "I have planetary specializations"?
 - remove social resource until used?
     - or use it for adjacent planet annexing or something?
     - or just keep it for VP only?

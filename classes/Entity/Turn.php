@@ -10,6 +10,10 @@ class Turn
     public $orders = [];
     public $tiles = [];
     public $logs = [];
+    /**
+     * @var \DateTime
+     */
+    public $endTime;
 
     public function getTileById($id) {
         foreach($this->tiles as $tile) {

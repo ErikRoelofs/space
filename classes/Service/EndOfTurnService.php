@@ -161,6 +161,9 @@ class EndOfTurnService {
 		$turn = new Turn();
 		$turn->gameId = $game->id;
 		$turn->number = $currentTurn->number + 1;
+		// @ todo: interval :/
+        $clone = clone $currentTurn->endTime;
+        $turn->endTime = $clone;
 		$this->turnRepo->add($turn);
 
         $turn->tiles = $currentTurn->tiles;
