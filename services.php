@@ -263,7 +263,7 @@ $app['lobby-service'] = function($app) {
 };
 
 $app['player-service'] = function($app) {
-    return new \Plu\Service\PlayerService($app['user']);
+    return new \Plu\Service\PlayerService($app['user'], $app['player-repo'], $app['end-of-turn-service'], $app['game-service']);
 };
 
 $app['security.firewalls'] = array(

@@ -63,9 +63,7 @@ $app->post('/order/{player}/ready', function($player) use ($app) {
         return new \Symfony\Component\HttpFoundation\Response("Cannot place an order for this player.", 403);
     }
 
-    $player->ready = 1;
-    $app['player-repo']->update($player);
-
+    $app['player-service']->setPlayerReady($player);
     return '';
 });
 
@@ -75,8 +73,6 @@ $app->post('/order/{player}/notReady', function($player) use ($app) {
         return new \Symfony\Component\HttpFoundation\Response("Cannot place an order for this player.", 403);
     }
 
-    $player->ready = 0;
-    $app['player-repo']->update($player);
-
+    $app['player-service']->setPlayerNotReady($player);
     return '';
 });

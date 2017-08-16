@@ -124,6 +124,9 @@ class EndOfTurnService {
         if($this->objectiveService->hasWinner($game)) {
             $this->endGame($game);
         }
+        else {
+            $this->unreadyPlayers($game);
+        }
 	}
 
 	private function completePhase(Game $game, Turn $currentTurn, array $logs) {
@@ -170,4 +173,10 @@ class EndOfTurnService {
         $this->gameRepo->update($game);
     }
 
+    private function unreadyPlayers(Game $game) {
+        foreach($game->players as $player) {
+            $player->ready = 0;
+            $this->playerRepo->update($player);
+        }
+    }
 }

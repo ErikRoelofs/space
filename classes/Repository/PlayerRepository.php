@@ -4,7 +4,7 @@ namespace Plu\Repository;
 
 
 use Plu\Entity\Game;
-use Symfony\Component\Security\Core\User\User;
+use Plu\Entity\User;
 
 class PlayerRepository extends BaseRepository
 {
@@ -26,8 +26,8 @@ class PlayerRepository extends BaseRepository
     }
 
     public function findForCurrentUserByGame(Game $game) {
-        $sql = "SELECT * FROM $this->tableName p INNER JOIN user u ON u.id = p.userId WHERE p.gameId = ? AND u.username = ?";
-        $row = $this->db->fetchAssoc($sql, array((int) $game->id, $this->user->getUsername()));
+        $sql = "SELECT p.* FROM $this->tableName p INNER JOIN user u ON u.id = p.userId WHERE p.gameId = ? AND u.id = ?";
+        $row = $this->db->fetchAssoc($sql, array((int) $game->id, $this->user->id));
         return $this->converter->fromDB($this->tableName, $row);
 
     }
