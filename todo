@@ -34,7 +34,7 @@ V check authorization when calling a url (mostly when getting player data and po
     - allow users to chat with each other (in private)
     - allow users to chat in the global lobby
 - have fair maps
-    - pre-gen a few fair maps and pick one for each game
+    - pre-gen a fair map and pick it for each game
 - update board generator for different player amounts
     - make some maps with fewer players, to make playing easier (3,4,5,6?)
 - automated game advancement
