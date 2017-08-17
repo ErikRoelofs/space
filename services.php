@@ -164,7 +164,7 @@ $app['new-board-service'] = function($app) {
 };
 
 $app['static-board-from-file'] = function($app) {
-    return new \Plu\Board\StaticBoardFromFile('/assets/boards/board.yaml');
+    return new \Plu\Board\StaticBoardFromFile('assets/boards/board.yaml');
 };
 
 $app['new-planet-service'] = function($app) {

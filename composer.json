@@ -3,7 +3,9 @@
         "silex/silex": "~2.0",
         "doctrine/dbal": "~2.2",
         "symfony/security" : "^3.3",
-        "cnam/security-jwt-service-provider":"2.*"
+        "cnam/security-jwt-service-provider":"2.*",
+        "symfony/yaml": "2.1.*@dev",
+        "knplabs/console-service-provider": "dev-master"
     },
     "autoload": {
       "psr-4": {

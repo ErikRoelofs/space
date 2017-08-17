@@ -49,7 +49,7 @@ class NewBoardService
         $planet = $this->creator->getPlanet($tile);
         if($planet) {
             if($special == 'home' && count($this->remainingPlayers)) {
-                $planet->ownerId = array_pop($this->remainingPlayers);
+                $planet->ownerId = array_pop($this->remainingPlayers)->id;
             }
             $tile->pieces[$turn->number] = [$planet];
         }
