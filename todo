@@ -85,7 +85,7 @@ V cleanup USER to include the id by default
     - full player information
     - game settings
     - (racial information? or on player tab?)
-  - add a 'return to lobby' option
+  V add a 'return to lobby' option
   - add a 'logout' option
   - show games that have advanced since the last time you checked in the lobby, main game
 

@@ -52,6 +52,14 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
             scope.nextTurn = turnService.showNextTurn;
             scope.prevTurn = turnService.showPreviousTurn;
 
+            scope.lobby = function() {
+                window.location = '/game/';
+            }
+
+            scope.logout = function() {
+                console.log('not implemented');
+                window.location = '/game/login.html';
+            }
         }
     }
 }]);
