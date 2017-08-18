@@ -54,7 +54,7 @@ class PlayerService
     public function setPlayerReady(Player $player) {
         $this->validateCanReadyOrUnready($player);
 
-        $player->ready = 1;
+        $player->ready = true;
         $this->playerRepo->update($player);
 
         $game = $this->gameService->buildGame($player->gameId);
@@ -75,7 +75,7 @@ class PlayerService
     public function setPlayerNotReady(Player $player) {
         $this->validateCanReadyOrUnready($player);
 
-        $player->ready = 0;
+        $player->ready = false;
         $this->playerRepo->update($player);
     }
 

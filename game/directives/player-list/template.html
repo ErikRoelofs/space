@@ -2,5 +2,5 @@
 <div ng-repeat="player in players">
 	{{ player.name }} playing with
 	<span style="width: 25px; height: 25px" ng-style="{'background-color': player.color, color: player.color }">color</span>
-	<span ng-show="player.ready == 1"> (ready)</span>
+	<span ng-show="player.ready"> (ready)</span>
 </div>

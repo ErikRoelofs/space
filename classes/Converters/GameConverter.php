@@ -23,7 +23,7 @@ class GameConverter implements ConverterInterface
         $this->c = new Conv\ConfigurableConverter([
             'id' => new Conv\NativeConverter(),
             'vpLimit' => new Conv\NativeConverter(),
-            'active' => new Conv\NativeConverter(),
+            'active' => new Conv\BooleanConverter(),
         ]);
         $this->app = $app;
     }

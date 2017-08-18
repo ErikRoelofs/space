@@ -15,7 +15,6 @@ issues:
 - fix naming scheme to work on unix
 - fix duplication issues in battle logs
 - setup transactions!
-- better handling for booleans
 
 mvp:
 

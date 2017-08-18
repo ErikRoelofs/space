@@ -29,12 +29,12 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
 
             scope.ready = function() {
               $http.post('/order/' + $rootScope.playerId + '/ready').then(function(response) {
-                  scope.playerInfo.ready = 1;
+                  scope.playerInfo.ready = true;
               });
             };
             scope.notReady = function() {
                 $http.post('/order/' + $rootScope.playerId + '/notReady').then(function(response) {
-                    scope.playerInfo.ready = 0;
+                    scope.playerInfo.ready = false;
                 });
             };
 
