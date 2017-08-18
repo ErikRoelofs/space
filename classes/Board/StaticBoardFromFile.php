@@ -5,6 +5,7 @@ namespace Plu\Board;
 use Plu\Entity\Piece;
 use Plu\Entity\Tile;
 use Plu\PieceTrait\GivesResources;
+use Plu\PieceTrait\UnitDescription;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -34,6 +35,7 @@ class StaticBoardFromFile implements BoardCreator
                     $planet = new Piece();
                     $planet->typeId = 1; // @todo: get from repo
                     $planet->traits[] = new GivesResources($values[0],$values[1]);
+                    $planet->traits[] = $this->getDescription();
                     return $planet;
                 }
                 else {
@@ -41,6 +43,14 @@ class StaticBoardFromFile implements BoardCreator
                 }
             }
         }
+    }
+
+    protected function getDescription() {
+        return new UnitDescription(
+            "Pookum",
+            "Planet Pookum is the shizzle.",
+            "/assets/planets/planet1.png"
+        );
     }
 
 }
