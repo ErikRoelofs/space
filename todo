@@ -60,6 +60,15 @@ V cleanup USER to include the id by default
   - build a decent layout
   - create icons for each unit type
   - show tabbed information
+    - last turn's logs
+    - this turn's orders
+    - main map (?)
+    - objectives
+    - (strategy)
+    - (research)
+    - (trade)
+    - (politics)
+    - (actions)
   - create more readable orders/logs/victory conditions
   - create a decent lobby
   - create a decent login screen
@@ -70,6 +79,14 @@ V cleanup USER to include the id by default
   - give planets names; include more images
   - create a minimap
   - create a decent scoring table
+  - put less important, generic information behind a popup
+    - unit settings
+    - full player information
+    - game settings
+    - (racial information? or on player tab?)
+  - add a 'return to lobby' option
+  - add a 'logout' option
+  - show games that have advanced since the last time you checked in the lobby, main game
 
 later:
 
