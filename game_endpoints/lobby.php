@@ -44,7 +44,7 @@ $app->post('/lobby/joinGame/{gameId}', function($gameId) use ($app) {
 $app->post('/lobby/createGame', function() use ($app) {
     $data = json_decode(file_get_contents('php://input'), true);
 
-    $password = $data['password'];
+    $password = isset( $data['password'] ) ? $data['password'] : null;
     $vpLimit = $data['vpLimit'];
 
     $lobbyService = $app['lobby-service'];
