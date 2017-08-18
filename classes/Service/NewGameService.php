@@ -31,6 +31,10 @@ class NewGameService
 		$turn = new Turn();
 		$turn->gameId = $game->id;
 		$turn->number = 1;
+		$time = new \DateTime();
+		$time->setTime(0,0,0);
+		$time->add(new \DateInterval("P1D"));
+		$turn->endTime = $time;
 		$this->app['turn-repo']->add($turn);
 
         $players = $this->makePlayersFromSubscribedPlayers($subscribers, $game);
