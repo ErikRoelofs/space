@@ -52,11 +52,12 @@ class PlayerService
     }
 
     public function setPlayerReady(Player $player) {
+        $this->validateCanReadyOrUnready($player);
+
         $player->ready = 1;
         $this->playerRepo->update($player);
 
         $game = $this->gameService->buildGame($player->gameId);
-
         $allPlayers = $this->playerRepo->findByGame($game);
 
         $done = true;
@@ -72,7 +73,20 @@ class PlayerService
     }
 
     public function setPlayerNotReady(Player $player) {
+        $this->validateCanReadyOrUnready($player);
+
         $player->ready = 0;
         $this->playerRepo->update($player);
+    }
+
+    private function validateCanReadyOrUnready(Player $player) {
+        $game = $this->gameService->buildGame($player->gameId);
+        if(!$game->active) {
+            throw new \Exception("Cannot add a new order; game is not active");
+        }
+        $turn = $game->currentTurn();
+        if($turn->endTime && new \DateTime() > $turn->endTime) {
+            throw new \Exception("This turn is no longer active; cannot ready/unready");
+        }
     }
 }

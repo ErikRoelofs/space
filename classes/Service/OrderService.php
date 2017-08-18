@@ -39,9 +39,12 @@ class OrderService
         if(!$game->active) {
             throw new \Exception("Cannot add a new order; game is not active");
         }
+        $turn = $game->currentTurn();
+        if($turn->endTime && new \DateTime() > $turn->endTime) {
+            throw new \Exception("This turn is no longer active; cannot create orders");
+        }
         $order = $this->types[$type]->createOrder($player, $game, $instructions);
         $this->orderRepo->add($order);
-
     }
 
     public function revertOrder(GivenOrder $order) {
