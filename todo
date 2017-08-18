@@ -64,7 +64,7 @@ V cleanup USER to include the id by default
   - create a decent lobby
   - create a decent login screen
   - make widgets update when you send a new order
-  - remove "end the turn" option
+  V remove "end the turn" option
   - add more readable unit settings
   - try to show more clearly what is on the board and how it's moving
   - give planets names; include more images

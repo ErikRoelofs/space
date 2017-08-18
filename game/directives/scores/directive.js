@@ -19,3 +19,4 @@ angular.module('game').directive('scores', ['playersService', 'gameService', fun
 
     }
 }]);
+

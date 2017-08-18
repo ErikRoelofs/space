@@ -25,12 +25,6 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
                 });
             }
 
-            scope.endTurn = function() {
-                $http.get('/admin/game/' + $rootScope.gameId + '/next').then(function(response) {
-                    console.log('next turn. refresh!');
-                })
-            }
-
             scope.playerInfo = playersService.getPlayer($rootScope.playerId);
 
             scope.ready = function() {
