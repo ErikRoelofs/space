@@ -266,8 +266,8 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
             return false;
         }
 
-        // spaceborne
-        if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG)) {
+        // spaceborne (or cargo)
+        if(!$this->pieceService->hasTrait($piece, Spaceborne::TAG || $this->pieceService->hasTrait($piece, Cargo::TAG))) {
             $this->reason = 'not spaceborne';
             return false;
         }

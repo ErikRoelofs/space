@@ -15,6 +15,7 @@ issues:
 - fix naming scheme to work on unix
 - fix duplication issues in battle logs
 - setup transactions!
+- leaving cargo behind to die should not be possible
 
 mvp:
 
@@ -95,6 +96,8 @@ command counters
 - maintain a reserve of counters for fleet supply
 - scrap ships at turn start if not enough reserved
 
+- store starting number of command at the start of turn
+
 research
 - create a bunch of researches
 - add the ResearchOrder to purchase one
@@ -107,7 +110,6 @@ races
 - create a bunch of races
 - allow players to pick one in the lobby (or random)
 - assing racial traits to each player
-[- enable Traits to modify other Traits]
 - show each player's Racial Traits
 
 actions
