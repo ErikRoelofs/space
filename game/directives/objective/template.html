@@ -1,10 +1,12 @@
 <div style="float: left; margin: 5px;">
     <div style="width: 125px; height: 150px; border: 1px solid black; padding: 5px;">
-        <div>{{ describeObjective(objective) }}</div>
-        <div><em style="font-size: 11px;">{{ objective.value }} Victory Point<span ng-show="objective.value > 1">s</span></em></div>
-        <br />
+        <div style="height: 80px;">
+            <div>{{ describeObjective(objective) }}</div>
+            <div><em style="font-size: 11px;">{{ objective.value }} Victory Point<span ng-show="objective.value > 1">s</span></em></div>
+            <br />
+        </div>
         <div>Claims:</div>
-        <div><div ng-style="{'background-color': getPlayerColor(claim.playerId)}" style="width: 20px; height: 20px; margin-right: 3px; display: inline-block;" ng-repeat="claim in objective.claimed"></div></div>
+        <div style="height: 20px;"><div ng-style="{'background-color': getPlayerColor(claim.playerId)}" style="width: 20px; height: 20px; margin-right: 3px; display: inline-block;" ng-repeat="claim in objective.claimed"></div></div>
         <button ng-show="canClaim" style="margin-top: 5px; margin-bottom: 5px; width: 100%;" ng-click="claim()">Claim</button>
         <div ng-show="beingClaimed" style="margin-top: 5px; margin-bottom: 5px; width: 100%; text-align: center">Claiming!</div>
     </div>

@@ -1,7 +1,6 @@
 <div>
-    <h3>Game history:</h3>
+    <h3>Events since last turn:</h3>
     <div ng-repeat="log in history">
-		<div>Log entry:</div>
         <space-combat-log log="log" ng-if="log.service == 'space-battle-service'"></space-combat-log>
         <tactical-order-log log="log" ng-if="log.service == 'tactical-order-service'"></tactical-order-log>
     </div>

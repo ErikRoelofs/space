@@ -1,0 +1,13 @@
+<div>
+    <h3>Current scores:</h3>
+    <div ng-repeat="score in scores">
+        <div style="float: left; width: 75px; border: 1px solid black; padding: 3px; height: 50px;">
+            <div>{{ score.score }}</div>
+            <div ng-repeat="player in score.players">
+                <div ng-style="{'background-color': player.color}" style="width: 20px; height: 20px; margin-right: 3px; display: inline-block;"></div>
+            </div>
+            <div ng-if="score.score == vpLimit && !score.players.length"><em>Victory!</em></div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
