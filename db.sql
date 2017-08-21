@@ -259,3 +259,5 @@ ALTER TABLE `user` CHANGE `username` `name` VARCHAR(255) CHARACTER SET latin1 CO
 ALTER TABLE `player` ADD `ready` TINYINT NOT NULL AFTER `userId`;
 ALTER TABLE `turn` ADD `endTime` DATETIME NOT NULL AFTER `gameId`;
 ALTER TABLE `openGame` CHANGE `password` `password` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
+ALTER TABLE `user` ADD `email` VARCHAR(255) NOT NULL AFTER `password`;
+ALTER TABLE `user` ADD `confirmed` TINYINT NOT NULL AFTER `email`, ADD `registrationDate` DATETIME NOT NULL AFTER `confirmed`;

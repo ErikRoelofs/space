@@ -56,6 +56,9 @@ V update starting units to make more sense
     - or use it for adjacent planet annexing or something?
     - or just keep it for VP only?
 V cleanup USER to include the id by default
+- account registration
+   - allow users to create an account
+   - send confirmation email (?)
 
 - make things look decently pretty
   - build a decent layout
@@ -88,6 +91,7 @@ V cleanup USER to include the id by default
   V add a 'return to lobby' option
   - add a 'logout' option
   - show games that have advanced since the last time you checked in the lobby, main game
+
 
 later:
 

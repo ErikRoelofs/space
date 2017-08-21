@@ -3,16 +3,18 @@
 namespace Plu\Converters;
 
 
+use Plu\Converters\Exception\RestrictedException;
+
 class PasswordConverter implements ConverterInterface
 {
     public function toJSON($data)
     {
-        return null;
+        throw new RestrictedException("Passwords are not exported");
     }
 
     public function fromJSON($obj, $data)
     {
-        return null;
+        throw new RestrictedException("Passwords are not imported");
     }
 
     public function toDB($data)

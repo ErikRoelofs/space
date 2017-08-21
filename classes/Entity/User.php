@@ -9,7 +9,10 @@ class User implements AdvancedUserInterface
 {
     public $id;
     public $name;
+    public $email;
     public $password;
+    public $registrationDate;
+    public $confirmed = false;
 
     public $roles = [];
 

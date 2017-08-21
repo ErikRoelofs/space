@@ -2,6 +2,8 @@
 
 namespace Plu\Converters;
 
+use Plu\Converters\Exception\RestrictedException;
+
 class ConfigurableConverter implements ConverterInterface
 {
 
@@ -15,7 +17,12 @@ class ConfigurableConverter implements ConverterInterface
     {
         $json = [];
         foreach($this->rules as $prop => $rule) {
-            $json[$prop] = $rule->toJSON($data->{$prop});
+            try {
+                $json[$prop] = $rule->toJSON($data->{$prop});
+            }
+            catch(RestrictedException $e) {
+                // do not put this property in $json
+            }
         }
         return $json;
     }
@@ -24,7 +31,12 @@ class ConfigurableConverter implements ConverterInterface
     {
 
         foreach($this->rules as $prop => $rule) {
-            $obj->{$prop} = $rule->fromJSON($obj, isset($data[$prop]) ? $data[$prop] : null);
+            try {
+                $obj->{$prop} = $rule->fromJSON($obj, isset($data[$prop]) ? $data[$prop] : null);
+            }
+            catch(RestrictedException $e) {
+                // do not put this property in $obj
+            }
         }
         return $obj;
     }
@@ -33,7 +45,12 @@ class ConfigurableConverter implements ConverterInterface
     {
         $db = [];
         foreach($this->rules as $prop => $rule) {
-            $db[$prop] = $rule->toDB($data->{$prop});
+            try {
+                $json[$prop] = $rule->toDB($data->{$prop});
+            }
+            catch(RestrictedException $e) {
+                // do not put this property in $json
+            }
         }
         return $db;
     }
@@ -41,7 +58,12 @@ class ConfigurableConverter implements ConverterInterface
     public function fromDB($obj, $data)
     {
         foreach($this->rules as $prop => $rule) {
-            $obj->{$prop} = $rule->fromDB($obj, isset($data[$prop]) ? $data[$prop] : null);
+            try {
+                $obj->{$prop} = $rule->fromDB($obj, isset($data[$prop]) ? $data[$prop] : null);
+            }
+            catch(RestrictedException $e) {
+                // do not put this property in $obj
+            }
         }
         return $obj;
     }
