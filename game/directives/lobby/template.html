@@ -1,6 +1,6 @@
 <div>
     <h1>Lobby screen</h1>
-    <strong>Welcome, {{ user.name }}</strong>
+    <strong>Welcome, {{ user.name }}</strong> <button ng-click="logout()">Logout</button>
 
     <h2>Active games</h2>
     <div ng-repeat="game in activeGames">

@@ -54,6 +54,10 @@ angular.module('game').directive('lobby', ['lobbyService', 'userService', functi
                 return game.userId == scope.user.id;
             }
 
+            scope.logout = function() {
+                window.location = '/game/login.html';
+            }
+
         }
     };
 
