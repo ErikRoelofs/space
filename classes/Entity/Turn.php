@@ -22,4 +22,13 @@ class Turn
             }
         }
     }
+
+    public function getTileByCoords($x, $y) {
+        $coords = [$x, $y];
+        foreach($this->tiles as $tile) {
+            if($tile->coordinates == $coords) {
+                return $tile;
+            }
+        }
+    }
 }

@@ -65,6 +65,9 @@ angular.module('game').directive('objective', ['$http', '$rootScope', 'playersSe
                     return 'I control ' + objective.params.amount + ' ' + piece + ' on the board.';
                 };
 
+                var describeCenterObjective = function(objective) {
+                    return 'I control the planet in the center.';
+                }
 
                 scope.describeObjective = function (objective) {
                     switch (objective.type) {
@@ -72,6 +75,8 @@ angular.module('game').directive('objective', ['$http', '$rootScope', 'playersSe
                             return describeResourceObjective(objective);
                         case 'has.pieces':
                             return describePieceObjective(objective);
+                        case 'has.center':
+                            return describeCenterObjective(objective);
                         default:
                             return 'Unknown type of objective?!';
                     }

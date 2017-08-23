@@ -39,7 +39,7 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
 
             // how to return background-image in ng-style?
             scope.url = function() {
-                return "url( '" + planet.traits.description.image + "');";
+                return "url( '" + scope.planet.traits.description.image + "');";
             }
 
         }

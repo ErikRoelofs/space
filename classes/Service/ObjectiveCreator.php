@@ -5,6 +5,7 @@ namespace Plu\Service;
 
 use Plu\Entity\ActiveObjective;
 use Plu\Entity\Game;
+use Plu\Objective\ControlsCenterObjective;
 use Plu\Objective\HasPiecesObjective;
 use Plu\Objective\HasResourceObjective;
 
@@ -13,6 +14,7 @@ class ObjectiveCreator
 {
 
     private $objectives = [
+        [ 'type' => ControlsCenterObjective::TYPE, 'params' => [], 'value' => 1, 'turn' => 1 ],
         [ 'type' => HasResourceObjective::TYPE, 'params' => [ 'resource' => 'industry', 'amount' => 5 ], 'value' => 1, 'turn' => 1 ],
         [ 'type' => HasResourceObjective::TYPE, 'params' => [ 'resource' => 'social', 'amount' => 8 ], 'value' => 1, 'turn' => 1 ],
         // has planets

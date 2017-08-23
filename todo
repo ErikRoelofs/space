@@ -49,15 +49,15 @@ V have fair maps
 	- # players
 V update starting units to make more sense
 - apply some sense to the victory conditions
-    - include "I hold the center"
-    - include "I have planetary specializations"?
+    V include "I hold the center"
+    - check game balancing a bit
+    - make sure objectives aren't duplicated
 - remove social resource until used?
     - or use it for adjacent planet annexing or something?
     - or just keep it for VP only?
 V cleanup USER to include the id by default
-- account registration
+V account registration
    V allow users to create an account
-   - send confirmation email (?)
 
 - make things look decently pretty
   - build a decent layout

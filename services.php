@@ -250,6 +250,7 @@ $app['objective-service'] = function($app) {
     $s = new \Plu\Service\ObjectiveService($app['active-objective-repo'], $app['objective-creator']);
     $s->addObjectiveType(new \Plu\Objective\HasResourceObjective($app['resource-service'], $app['claimed-objective-repo']));
     $s->addObjectiveType(new \Plu\Objective\HasPiecesObjective($app['claimed-objective-repo']));
+    $s->addObjectiveType(new \Plu\Objective\ControlsCenterObjective($app['claimed-objective-repo']));
 
     return $s;
 };
