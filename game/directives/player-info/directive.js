@@ -1,4 +1,4 @@
-angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', 'playersService', '$rootScope', function($http, activePlayerService, orderService, turnService, playersService, $rootScope) {
+angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 'orderService', 'turnService', 'playersService', '$rootScope', 'loginService', function($http, activePlayerService, orderService, turnService, playersService, $rootScope, loginService) {
     return {
         restrict: 'E',
         scope: {
@@ -57,8 +57,7 @@ angular.module('game').directive('playerInfo', ['$http', 'activePlayerService', 
             }
 
             scope.logout = function() {
-                console.log('not implemented');
-                window.location = '/game/login.html';
+                loginService.logout();
             }
         }
     }

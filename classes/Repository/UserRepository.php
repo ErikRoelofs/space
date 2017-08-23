@@ -16,8 +16,6 @@ class UserRepository extends BaseRepository
         if(!$row) {
             throw new ResourceNotFoundException("Could not find $id in $this->tableName");
         }
-        $row['roles'] = explode(',', $row['roles']);
-        $row['name'] = $row['username'];
         return $this->converter->fromDB($this->tableName, $row);
     }
 
@@ -27,10 +25,7 @@ class UserRepository extends BaseRepository
         if(!$row) {
             throw new ResourceNotFoundException("Could not find $username in $this->tableName");
         }
-        $row['roles'] = explode(',', $row['roles']);
-        $row['name'] = $row['username'];
         return $this->converter->fromDB($this->tableName, $row);
     }
-
 
 }

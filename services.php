@@ -100,14 +100,7 @@ $app['converter-service'] = function($app) {
         'name' => new Conv\NativeConverter(),
     ]));
 
-    $s->addConverter('\Plu\Entity\User', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'name' => new Conv\NativeConverter(),
-        'password' => new Conv\PasswordConverter(),
-        'email' => new Conv\RestrictedConverter(new Conv\NativeConverter(), new Conv\Restrictions\BackendOnlyRestriction()),
-        'registrationDate' => new Conv\RestrictedConverter(new Conv\NativeConverter(), new Conv\Restrictions\BackendOnlyRestriction()),
-        'confirmed' => new Conv\RestrictedConverter(new Conv\BooleanConverter(), new Conv\Restrictions\BackendOnlyRestriction()),
-    ]));
+    $s->addConverter('\Plu\Entity\User', new Conv\UserConverter($app));
 
     return $s;
 };

@@ -1,4 +1,4 @@
-angular.module('game').directive('login', ['loginService', function(loginService) {
+angular.module('game').directive('login', ['loginService', 'userService', function(loginService, userService) {
 
     return {
         restrict: 'E',
@@ -14,7 +14,7 @@ angular.module('game').directive('login', ['loginService', function(loginService
             };
 
             scope.register = function() {
-                // @todo
+                userService.registerAccount(scope.new.username, scope.new.password, scope.new.email);
             }
         }
     };

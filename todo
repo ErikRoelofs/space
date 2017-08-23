@@ -10,7 +10,6 @@ CHAT:
 - or use an existing chat service? (irc?) (or some existing php library?)
 - secure channels (player/user chat)
 
-
 issues:
 - fix naming scheme to work on unix
 - fix duplication issues in battle logs
@@ -57,7 +56,7 @@ V update starting units to make more sense
     - or just keep it for VP only?
 V cleanup USER to include the id by default
 - account registration
-   - allow users to create an account
+   V allow users to create an account
    - send confirmation email (?)
 
 - make things look decently pretty
@@ -89,9 +88,9 @@ V cleanup USER to include the id by default
     - game settings
     - (racial information? or on player tab?)
   V add a 'return to lobby' option
-  - add a 'logout' option
+  V add a 'logout' option
   - show games that have advanced since the last time you checked in the lobby, main game
-
+  - log out automatically
 
 later:
 

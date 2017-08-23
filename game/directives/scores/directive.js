@@ -15,6 +15,14 @@ angular.module('game').directive('scores', ['playersService', 'gameService', fun
                     players: scope.players.filter(function(player) { return player.score == i || ( i == scope.vpLimit && player.score > i ) ; })
                 });
             }
+
+            scope.getWidth = function(score) {
+                var width = 75;
+                if(scope.scores[score].players.length > 2) {
+                    width += (scope.scores[score].players.length-2) * 30;
+                }
+                return width + 'px';
+            };
         }
 
     }

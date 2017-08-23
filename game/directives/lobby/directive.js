@@ -1,4 +1,4 @@
-angular.module('game').directive('lobby', ['lobbyService', 'userService', function(lobbyService, userService) {
+angular.module('game').directive('lobby', ['lobbyService', 'userService', 'loginService', function(lobbyService, userService, loginService) {
 
     return {
         restrict: 'E',
@@ -55,7 +55,7 @@ angular.module('game').directive('lobby', ['lobbyService', 'userService', functi
             }
 
             scope.logout = function() {
-                window.location = '/game/login.html';
+                loginService.logout();
             }
 
         }

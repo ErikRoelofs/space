@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 class User implements AdvancedUserInterface
 {
     public $id;
-    public $name;
+    public $username;
     public $email;
     public $password;
     public $registrationDate;

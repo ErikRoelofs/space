@@ -294,7 +294,12 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 		},
 		getToken: function() {
             return $window.localStorage.getItem('token');
-		}
+		},
+		logout: function() {
+            $window.localStorage.removeItem('token');
+            window.location = '/game/login.html';
+
+        }
 	}
 }]).service('lobbyService', ['$http', function($http) {
 	return {
@@ -319,6 +324,14 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 	return {
 		getMyUserInfo: function() {
 			return $http.get('/user/myInfo', {cache: true});
+		},
+		registerAccount: function(username, password, email) {
+			var data = {
+				username: username,
+				password: password,
+				email: email
+			};
+			return $http.post('/register', data);
 		}
 	}
 }]);

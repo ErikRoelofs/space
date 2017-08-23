@@ -46,7 +46,7 @@ class ConfigurableConverter implements ConverterInterface
         $db = [];
         foreach($this->rules as $prop => $rule) {
             try {
-                $json[$prop] = $rule->toDB($data->{$prop});
+                $db[$prop] = $rule->toDB($data->{$prop});
             }
             catch(RestrictedException $e) {
                 // do not put this property in $json
