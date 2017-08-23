@@ -134,9 +134,15 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 		}
 		foreach($piecesByTile as $tileId => $pieces) {
 			if(!$this->groupHasEnoughCargoSpace($pieces)) {
-				throw new \Exception("Not enough cargo space for pieces from tile " . $pieces[0]->tileId);
+				throw new \Exception("Not enough cargo space for pieces from tile " . $tileId);
 			}
 		}
+		foreach($piecesByTile as $tileId => $pieces) {
+		    $tile = $turn->getTileById($tileId);
+            if(!$this->remainingUnitsHaveEnoughCargoSpace($tile, $pieces)) {
+                throw new \Exception("Not enough cargo space left on tile to store remaining units on tile" . $tileId);
+            }
+        }
 
 		$pieceTypes = $this->getPieceTypesByIds($data['newPieces']);
 
@@ -175,6 +181,25 @@ class TacticalOrder implements OrderTypeInterface, GamestateUpdate
 		}
 		return $cargoUsed <= $cargoAllowed;
 	}
+
+	private function remainingUnitsHaveEnoughCargoSpace($tile, $moving) {
+        $cargoAllowed = 0;
+        $cargoUsed = 0;
+        foreach($tile->pieces as $piece) {
+            // ignore pieces that are leaving
+            if(in_array($piece, $moving)){
+                continue;
+            }
+            if($this->pieceService->hasTrait($piece, Cargo::TAG)) {
+                $cargoUsed++;
+            }
+            if($this->pieceService->hasTrait($piece, Transports::TAG)) {
+                $cargoAllowed += $this->pieceService->getTraitContents($piece, Transports::TAG);
+            }
+        }
+        return $cargoUsed <= $cargoAllowed;
+
+    }
 
     public function createOrder(Player $player, Game $game, $data)
     {

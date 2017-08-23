@@ -17,7 +17,7 @@ class Turn
 
     public function getTileById($id) {
         foreach($this->tiles as $tile) {
-            if($tile->id === $id) {
+            if($tile->id == $id) {
                 return $tile;
             }
         }
