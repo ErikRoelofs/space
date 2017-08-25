@@ -36,12 +36,7 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
             scope.clicked = function() {
                 $rootScope.$broadcast('entity.clicked', 'planet', scope.planet);
             }
-
-            // how to return background-image in ng-style?
-            scope.url = function() {
-                return "url( '" + scope.planet.traits.description.image + "');";
-            }
-
+            
         }
     }
 }]);

@@ -1,4 +1,4 @@
-<div ng-style="{'background-image': url()}" style="height: 100px; width: 100px;" ng-class="{'planet-right': showRight}" ng-click="clicked();  $event.stopPropagation();">
+<div ng-style="{'background-image': 'url({{planet.traits.description.image}})'}" style="height: 100px; width: 100px;" ng-class="{'planet-right': showRight}" ng-click="clicked();  $event.stopPropagation();">
     <div style="position: relative; left: 10px; width: 80px; height: 40px; top: 50px; background: rgba(255,255,255,0.4); border: 2px solid white" ng-style="{'border-color': getBorderColor()}">
         <table style="width: 100%" cellpadding="0" cellspacing="0">
             <tr>
