@@ -1,8 +1,8 @@
 <h4>A space combat log</h4>
 <h5>Starting pieces:</h5>
-<piece-type-icon piece-type="getPieceType(piece.typeId)" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.initialPieces"></piece-type-icon>
+<piece-type-icon piece-type="piece" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.initialPieces"></piece-type-icon>
 <h5>Remaining pieces:</h5>
-<piece-type-icon piece-type="getPieceType(piece.typeId)" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.remainingPieces"></piece-type-icon>
+<piece-type-icon piece-type="piece" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.remainingPieces"></piece-type-icon>
 <h5>Hits:</h5>
 
 <table>
@@ -23,7 +23,7 @@
 				{{ getNameByPlayer(hit.scoredBy) }}
 			</td>
 			<td>
-				<piece-type-icon piece-type="getPieceType(hit.target.typeId)" color="getColorByPlayer(hit.target.ownerId)"></piece-type-icon>
+				<piece-type-icon piece-type="hit.target.typeId" color="getColorByPlayer(hit.target.ownerId)"></piece-type-icon>
 			</td>
 		</tr>
 	</tbody>

@@ -1,4 +1,4 @@
-angular.module('game').directive('gameOrders', ['$http', 'pieceTypesService', 'orderService', 'turnService', function($http, pieceTypesService, orderService, turnService) {
+angular.module('game').directive('gameOrders', ['$http', 'orderService', 'turnService', function($http, orderService, turnService) {
     return {
         restrict: 'E',
         scope: {

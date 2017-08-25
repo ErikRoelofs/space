@@ -1,4 +1,4 @@
-angular.module('game').directive('buildablepiece', ['$http', 'pieceTypesService', 'playersService', '$rootScope', function($http, pieceTypesService, playersService, $rootScope) {
+angular.module('game').directive('buildablepiece', ['$http', 'playersService', '$rootScope', function($http, playersService, $rootScope) {
     return {
         restrict: 'E',
         scope: {

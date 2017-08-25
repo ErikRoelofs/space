@@ -38,14 +38,7 @@ $app['converter-service'] = function($app) {
 
     $s->addConverter('\Plu\Entity\Game', new Conv\GameConverter($app));
     $s->addConverter('\Plu\Entity\GivenOrder', new Conv\OrderConverter($app));
-    $s->addConverter('\Plu\Entity\Piece', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'typeId' => new Conv\NativeConverter(),
-        'ownerId' => new Conv\NativeConverter(),
-        'turnId' => new Conv\NativeConverter(),
-        'tileId' => new Conv\NativeConverter(),
-		'traits' => new Conv\TraitConverter(),
-    ]));
+    $s->addConverter('\Plu\Entity\Piece', new Conv\PieceConverter($app));
     $s->addConverter('\Plu\Entity\PieceType', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
         'name' => new Conv\NativeConverter(),

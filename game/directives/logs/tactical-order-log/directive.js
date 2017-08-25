@@ -1,4 +1,4 @@
-angular.module('game').directive('tacticalOrderLog', ['$http', 'piecesService', 'pieceTypesService', 'orderService', 'playersService', function($http, piecesService, pieceTypesService, orderService, playersService) {
+angular.module('game').directive('tacticalOrderLog', ['$http', 'piecesService', 'orderService', 'playersService', function($http, piecesService, orderService, playersService) {
     return {
         restrict: 'E',
         scope: {
@@ -9,10 +9,6 @@ angular.module('game').directive('tacticalOrderLog', ['$http', 'piecesService', 
             $http.get('/log/' + scope.log.id ).then(function(response) {
                 scope.fullLog = response.data;
             });
-
-            scope.getPieceType = function (typeId) {
-                return pieceTypesService.getPieceTypeById(typeId);
-            }
 
             scope.getColorByPlayer = function (player) {
                 return playersService.getPlayer(player).color;

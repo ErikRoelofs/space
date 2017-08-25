@@ -31,9 +31,7 @@ class PieceService
 
     public function getTraitContents(Piece $piece, $traitTag)
     {
-		$allTraits = $piece->traits;
-		$pieceType = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
-        $allTraits = array_merge($allTraits, $pieceType->traits);
+		$allTraits = $this->getAllTraits($piece);
 
         foreach($allTraits as $trait) {
             if($trait->getTraitName() == $traitTag) {
@@ -41,6 +39,14 @@ class PieceService
             }
         }
         return null;
+    }
+
+    public function getAllTraits(Piece $piece) {
+        $allTraits = $piece->traits;
+        $pieceType = $this->pieceTypeRepo->findByIdentifier($piece->typeId);
+        $allTraits = array_merge($allTraits, $pieceType->traits);
+
+        return $allTraits;
     }
 
 }

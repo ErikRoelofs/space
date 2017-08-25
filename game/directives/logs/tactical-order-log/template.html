@@ -1,5 +1,5 @@
 <h4>A tactical order log</h4>
 <h5>Pieces moved:</h5>
-<piece-type-icon piece-type="getPieceType(piece.typeId)" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.moved"></piece-type-icon>
+<piece-type-icon piece-type="piece" color="getColorByPlayer(piece.ownerId)" ng-repeat="piece in fullLog.moved"></piece-type-icon>
 <h5>Pieces built:</h5>
-<piece-type-icon piece-type="getPieceType(pieceType)" color="getColorByPlayer(fullLog.player)" ng-repeat="pieceType in fullLog.built track by $index"></piece-type-icon>
+<piece-type-icon piece-type="piece" color="getColorByPlayer(fullLog.player)" ng-repeat="pieceType in fullLog.built track by $index"></piece-type-icon>

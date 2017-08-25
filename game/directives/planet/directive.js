@@ -1,5 +1,5 @@
-angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceTypesService', 'playersService', 'turnService', '$rootScope',
-    function($http, piecesService, pieceTypesService, playersService, turnService, $rootScope) {
+angular.module('game').directive('planet', ['$http', 'piecesService', 'playersService', 'turnService', '$rootScope',
+    function($http, piecesService, playersService, turnService, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -8,8 +8,6 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
         },
         templateUrl: "directives/planet/template.html",
         link: function(scope) {
-
-            scope.type = pieceTypesService.getPieceTypeForPiece(scope.planet);
 
             scope.$watch(function() {
                 return turnService.getCurrentTurn();
@@ -36,7 +34,7 @@ angular.module('game').directive('planet', ['$http', 'piecesService', 'pieceType
             scope.clicked = function() {
                 $rootScope.$broadcast('entity.clicked', 'planet', scope.planet);
             }
-            
+
         }
     }
 }]);
