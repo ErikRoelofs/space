@@ -42,7 +42,11 @@ angular.module('game').directive('lobby', ['lobbyService', 'userService', 'login
             }
             userService.getMyUserInfo().then(function(response) {
                 scope.user = response.data;
-            })
+            }, function(errorResponse) {
+                if(errorResponse.status === 401) {
+                    window.location = '/game/login.html';
+                }
+            });
 
             scope.create = function() {
                 lobbyService.openGame(scope.newGame.password, scope.newGame.vpLimit).then(function(response) {

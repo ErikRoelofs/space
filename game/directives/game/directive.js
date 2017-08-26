@@ -36,6 +36,10 @@ angular.module('game').directive('game', ['$rootScope', '$timeout', '$http', 'bo
                     activePlayerService.setData(response.data);
                 });
 
+            }, function(errorResponse) {
+                if(errorResponse.status === 401) {
+                    window.location = '/game/login.html';
+                }
             });
 
             scope.ready = false;
