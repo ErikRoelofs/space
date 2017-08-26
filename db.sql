@@ -261,3 +261,9 @@ ALTER TABLE `turn` ADD `endTime` DATETIME NOT NULL AFTER `gameId`;
 ALTER TABLE `openGame` CHANGE `password` `password` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;
 ALTER TABLE `user` ADD `email` VARCHAR(255) NOT NULL AFTER `password`;
 ALTER TABLE `user` ADD `confirmed` TINYINT NOT NULL AFTER `email`, ADD `registrationDate` DATETIME NOT NULL AFTER `confirmed`;
+
+CREATE TABLE `games`.`channel` ( `id` INT NOT NULL AUTO_INCREMENT , `name` INT NOT NULL , `created` DATETIME NULL , `public` TINYINT(1) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `games`.`channelUser` ( `id` INT NOT NULL AUTO_INCREMENT , `channelId` INT NOT NULL , `userId` INT NOT NULL , `lastRead` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `games`.`channelMessage` ( `id` INT NOT NULL AUTO_INCREMENT , `posterId` INT NOT NULL , `channelId` INT NOT NULL , `content` INT NOT NULL , `posted` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `channel` CHANGE `name` `name` VARCHAR(255) NOT NULL;
+ALTER TABLE `channelMessage` CHANGE `content` `content` TEXT NOT NULL;

@@ -16,6 +16,7 @@ require_once('game_endpoints/order.php');
 require_once('game_endpoints/admin.php');
 require_once('game_endpoints/lobby.php');
 require_once('game_endpoints/user.php');
+require_once('game_endpoints/chat.php');
 require_once('test_endpoints/test.php');
 
 $app->get('/', function() use ($app) {

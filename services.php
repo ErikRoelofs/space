@@ -95,6 +95,23 @@ $app['converter-service'] = function($app) {
 
     $s->addConverter('\Plu\Entity\User', new Conv\UserConverter($app));
 
+    $s->addConverter('\Plu\Entity\Channel', new Conv\ChannelConverter($app));
+
+    $s->addConverter('\Plu\Entity\ChannelUser', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'userId' => new Conv\NativeConverter(),
+        'channelId' => new Conv\NativeConverter(),
+        'lastRead' => new Conv\DateTimeConverter(),
+    ]));
+
+    $s->addConverter('\Plu\Entity\ChannelMessage', new Conv\ConfigurableConverter([
+        'id' => new Conv\NativeConverter(),
+        'posterId' => new Conv\NativeConverter(),
+        'channelId' => new Conv\NativeConverter(),
+        'posted' => new Conv\DateTimeConverter(),
+        'content' => new Conv\NativeConverter(),
+    ]));
+
     return $s;
 };
 
@@ -142,6 +159,19 @@ $app['active-objective-repo'] = function($app) {
 };
 $app['subscribed-player-repo'] = function($app) {
     return new Repo\SubscribedPlayerRepository($app['db'], $app['converter-service']);
+};
+$app['channel-repo'] = function($app) {
+    return new Repo\ChannelRepository($app['db'], $app['converter-service']);
+};
+$app['channel-user-repo'] = function($app) {
+    return new Repo\ChannelUserRepository($app['db'], $app['converter-service']);
+};
+$app['channel-message-repo'] = function($app) {
+    return new Repo\ChannelMessageRepository($app['db'], $app['converter-service']);
+};
+
+$app['chat-service'] = function($app) {
+    return new \Plu\Service\ChatService($app['channel-repo'], $app['channel-user-repo'], $app['channel-message-repo'], $app['user']);
 };
 
 $app['starting-units-service'] = function($app) {

@@ -1,0 +1,6 @@
+<h1>Chat test</h1>
+<div>
+    <div ng-repeat="message in messages">{{ message.content }}</div>
+</div>
+Message: <input type="text" ng-model="new.message" /><br />
+<button ng-click="send()">Send</button><br />
