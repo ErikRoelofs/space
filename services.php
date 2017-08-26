@@ -97,12 +97,7 @@ $app['converter-service'] = function($app) {
 
     $s->addConverter('\Plu\Entity\Channel', new Conv\ChannelConverter($app));
 
-    $s->addConverter('\Plu\Entity\ChannelUser', new Conv\ConfigurableConverter([
-        'id' => new Conv\NativeConverter(),
-        'userId' => new Conv\NativeConverter(),
-        'channelId' => new Conv\NativeConverter(),
-        'lastRead' => new Conv\DateTimeConverter(),
-    ]));
+    $s->addConverter('\Plu\Entity\ChannelUser', new Conv\ChannelUserConverter($app));
 
     $s->addConverter('\Plu\Entity\ChannelMessage', new Conv\ConfigurableConverter([
         'id' => new Conv\NativeConverter(),
@@ -171,7 +166,7 @@ $app['channel-message-repo'] = function($app) {
 };
 
 $app['chat-service'] = function($app) {
-    return new \Plu\Service\ChatService($app['channel-repo'], $app['channel-user-repo'], $app['channel-message-repo'], $app['user']);
+    return new \Plu\Service\ChatService($app['channel-repo'], $app['channel-user-repo'], $app['channel-message-repo'], $app['user-repo'], $app['user']);
 };
 
 $app['starting-units-service'] = function($app) {

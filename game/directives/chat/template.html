@@ -1,6 +1,11 @@
-<h1>Chat test</h1>
 <div>
-    <div ng-repeat="message in messages">{{ message.content }}</div>
+    <h3>{{ channel.name }}</h3>
+    <div>
+        <div ng-repeat="message in channel.messages">{{ getPoster(message).username}}: {{ message.content }}</div>
+    </div>
+
+    <div>
+        Message: <textarea ng-model="new.message" rows="3" cols="40"></textarea>
+        <button ng-click="send()">Send</button>
+    </div>
 </div>
-Message: <input type="text" ng-model="new.message" /><br />
-<button ng-click="send()">Send</button><br />

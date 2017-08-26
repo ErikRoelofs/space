@@ -3,7 +3,7 @@
 namespace Plu\Converters;
 use \Plu\Converters as Conv;
 
-class ChannelConverter implements ConverterInterface
+class ChannelUserConverter implements ConverterInterface
 {
 
     /**
@@ -16,9 +16,9 @@ class ChannelConverter implements ConverterInterface
     public function __construct($app) {
         $this->c = new Conv\ConfigurableConverter([
             'id' => new Conv\NativeConverter(),
-            'name' => new Conv\NativeConverter(),
-            'public' => new Conv\BooleanConverter(),
-            'created' => new Conv\DateTimeConverter(),
+            'userId' => new Conv\NativeConverter(),
+            'channelId' => new Conv\NativeConverter(),
+            'lastRead' => new Conv\DateTimeConverter(),
         ]);
         $this->app = $app;
     }
@@ -26,11 +26,8 @@ class ChannelConverter implements ConverterInterface
     public function toJSON($data)
     {
         $base = $this->c->toJSON($data);
-        if(isset($data->users)) {
-            $base['users'] = $this->app['converter-service']->batchToJsonObject($data->users);
-        }
-        if(isset($data->messages)) {
-            $base['messages'] = $this->app['converter-service']->batchToJsonObject($data->messages);
+        if(isset($data->user)) {
+            $base['user'] = $this->app['converter-service']->toJsonObject($data->user);
         }
         return $base;
     }

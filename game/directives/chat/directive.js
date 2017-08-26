@@ -8,19 +8,25 @@ angular.module('game').directive('chatChannel', ['$http', function($http) {
         link: function(scope) {
 
             scope.new = { message: ''};
+            scope.postersById = {};
 
             $http.get('/chat/channel/' + scope.channelId ).then(function(response) {
-                scope.users = response.data.users;
-                scope.messages = response.data.messages;
-                scope.channel = response.data.channel;
+                scope.channel = response.data;
+                angular.forEach(scope.channel.users, function(user) {
+                    scope.postersById[user.id] = user;
+                });
             });
 
             scope.send = function() {
                 $http.post('/chat/send/' + scope.channelId, scope.new).then(function(response) {
                    scope.new.message = '';
-                   scope.messages.push(response.data);
+                   scope.channel.messages.push(response.data);
                 });
-            }
+            };
+
+            scope.getPoster = function(message) {
+                return scope.postersById[message.posterId].user;
+            };
 
         }
     }
