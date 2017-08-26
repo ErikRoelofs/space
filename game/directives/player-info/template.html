@@ -4,6 +4,8 @@
 
 	<button ng-click="lobby()">Return to lobby</button>
 	<button ng-click="logout()">Logout</button>
+
+	<button ng-init="visible = false" ng-click="visible = !visible">Show current orders</button>
 </div>
 
 <div><strong>Current turn:</strong> {{ currentTurn() }}
@@ -19,8 +21,8 @@
 	{{ resources.current.industry }}/{{ resources.initial.industry }} <img src="/assets/icons/industry.png" alt="I" title="Industry"/>
 	{{ resources.current.social }}/{{ resources.initial.social }} <img src="/assets/icons/people.png" alt="S" title="Social power"/>
 </div>
-<h4>Current orders ({{ orders.length }})</h4>
-<div ng-repeat="order in orders">
+
+<div ng-repeat="order in orders" ng-show="visible" style="position: absolute; background-color: white; border: 4px solid green; z-index: 100;">
 	<tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
 	<objective-order ng-if="order.orderType == 'claimObjective'" order="order"></objective-order>
 	<button ng-click="cancel(order)">Cancel this order</button>

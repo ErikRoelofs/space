@@ -42,10 +42,24 @@ class ObjectiveCreator
         $potentials = [];
         foreach($this->objectives as $objective) {
             if($objective['turn'] <= $game->currentTurn()->number) {
-                $potentials[] = $objective;
+                if (!$this->alreadyHas($game, $objective)) {
+                    $potentials[] = $objective;
+                }
             }
         }
+        if(!count($potentials)) {
+            return null;
+        }
         return $this->makeObjectiveFromRow($game, $potentials[array_rand($potentials)]);
+    }
+
+    private function alreadyHas(Game $game, $objective) {
+        foreach($game->objectives as $existingObjective) {
+            if($existingObjective->type == $objective['type'] && $existingObjective->params == $objective['params']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function makeObjectiveFromRow($game, $row) {

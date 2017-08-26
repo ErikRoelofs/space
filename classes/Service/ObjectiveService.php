@@ -44,7 +44,9 @@ class ObjectiveService
      */
     public function newObjective(Game $game) {
         $activeObjective = $this->objectiveCreator->newObjective($game, $this->objectives);
-        $this->activeObjectiveRepo->add($activeObjective);
+        if($activeObjective) {
+            $this->activeObjectiveRepo->add($activeObjective);
+        }
     }
 
     public function hasWinner(Game $game) {
