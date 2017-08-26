@@ -1,13 +1,24 @@
-<h3>Player info for {{ playerInfo.name }} <span style="width: 25px; height: 25px" ng-style="{'background-color': playerInfo.color, color: playerInfo.color }">color</span></h3>
-<h4>Turn information</h4>
-Current turn is: {{ currentTurn() }}<br />
-Viewing turn: {{ viewingTurn() }}<br />
-<div ng-if="allowHistory">
-	<button ng-disabled="!hasPrevTurn()" ng-click="prevTurn()">View previous</button>
-	<button ng-disabled="!hasNextTurn()" ng-click="nextTurn()">View next</button>
+<h3>Hello, {{ playerInfo.name }} <span style="width: 25px; height: 25px" ng-style="{'background-color': playerInfo.color, color: playerInfo.color }">color</span></h3>
+	<button ng-show="!playerInfo.ready" ng-click="ready()">End turn</button>
+	<button ng-show="playerInfo.ready" ng-click="notReady()">Cancel end turn</button>
+
+	<button ng-click="lobby()">Return to lobby</button>
+	<button ng-click="logout()">Logout</button>
 </div>
-<h4>Resources</h4>
-{{ resources.current.industry }} of {{ resources.initial.industry }} I \ {{ resources.current.social }} of {{ resources.initial.social }} S
+
+<div><strong>Current turn:</strong> {{ currentTurn() }}
+	<span ng-if="allowHistory">
+		<button ng-disabled="!hasPrevTurn()" ng-click="prevTurn()">View previous</button>
+		<button ng-disabled="!hasNextTurn()" ng-click="nextTurn()">View next</button>
+	</span>
+	<span ng-show="viewingTurn() != currentTurn()">(Viewing turn: {{ viewingTurn() }})</span>
+</div>
+
+<div>
+	<strong>Resources:</strong>
+	{{ resources.current.industry }}/{{ resources.initial.industry }} <img src="/assets/icons/industry.png" alt="I" title="Industry"/>
+	{{ resources.current.social }}/{{ resources.initial.social }} <img src="/assets/icons/people.png" alt="S" title="Social power"/>
+</div>
 <h4>Current orders ({{ orders.length }})</h4>
 <div ng-repeat="order in orders">
 	<tactical-order ng-if="order.orderType == 'tactical'" order="order"></tactical-order>
@@ -15,8 +26,3 @@ Viewing turn: {{ viewingTurn() }}<br />
 	<button ng-click="cancel(order)">Cancel this order</button>
 </div>
 
-<button ng-show="!playerInfo.ready" ng-click="ready()">Ready</button>
-<button ng-show="playerInfo.ready" ng-click="notReady()">Not ready</button>
-
-<button ng-click="lobby()">Return to lobby</button>
-<button ng-click="logout()">Logout</button>

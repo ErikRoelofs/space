@@ -77,7 +77,8 @@ V account registration
   V remove "end the turn" option
   - add more readable unit settings
   - try to show more clearly what is on the board and how it's moving
-  - give planets names; include more images
+  V give planets names; include more images
+    - crop & remove backgrounds
   - create a minimap
   - create a decent scoring table
   - put less important, generic information behind a popup
