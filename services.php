@@ -290,6 +290,10 @@ $app['security.firewalls'] = array(
         'pattern' => 'login|register|oauth',
         'anonymous' => true,
     ],
+    'home' => [
+        'pattern' => '^/home.*$',
+        'anonymous' => true,
+    ],
     'secured' => array(
         'pattern' => '^.*$',
         'logout' => array('logout_path' => '/logout'),

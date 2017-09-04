@@ -1,4 +1,4 @@
-angular.module('game').directive('login', ['loginService', 'userService', function(loginService, userService) {
+angular.module('game').directive('login', ['loginService', 'userService', '$http', function(loginService, userService, $http) {
 
     return {
         restrict: 'E',
@@ -22,6 +22,10 @@ angular.module('game').directive('login', ['loginService', 'userService', functi
             scope.clearError = function() {
                 scope.error = '';
             }
+
+            $http.get('/home/stats').then(function(response) {
+                scope.stats = response.data;
+            })
         }
     };
 

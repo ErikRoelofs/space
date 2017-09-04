@@ -17,6 +17,7 @@ require_once('game_endpoints/admin.php');
 require_once('game_endpoints/lobby.php');
 require_once('game_endpoints/user.php');
 require_once('game_endpoints/chat.php');
+require_once('game_endpoints/login.php');
 require_once('test_endpoints/test.php');
 
 $app->get('/', function() use ($app) {
@@ -30,35 +31,6 @@ $app->get('/load/pieces', function() use ($app) {
         $app['piece-type-repo']->add($piece);
     }
     return 'done';
-});
-
-$app->post('/api/login', function(\Symfony\Component\HttpFoundation\Request $request) use ($app){
-    $vars = json_decode($request->getContent(), true);
-
-    try {
-        if (empty($vars['_username']) || empty($vars['_password'])) {
-            throw new \Exception('Please supply a username and password');
-        }
-
-        /**
-         * @var $user User
-         */
-        $user = $app['users']->loadUserByUsername($vars['_username']);
-        if (! $app['security.encoder.digest']->isPasswordValid($user->getPassword(), $vars['_password'], '')) {
-            throw new \Exception(sprintf('Username "%s" does not exist.', $vars['_username']));
-        } else {
-            $response = [
-                'success' => true,
-                'token' => $app['security.jwt.encoder']->encode([$app['security.jwt']['options']['username_claim'] => $user->getUsername()]),
-            ];
-        }
-    } catch (\Exception $e) {
-        $response = [
-            'success' => false,
-            'error' => 'Invalid credentials',
-        ];
-    }
-    return $app->json($response, ($response['success'] == true ? \Symfony\Component\HttpFoundation\Response::HTTP_OK : \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST));
 });
 
 $app->run();
