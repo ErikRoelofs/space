@@ -17,5 +17,17 @@ class GameRepository extends BaseRepository
         return $this->converter->batchFromDB($this->tableName, $rows);
     }
 
+    public function findNumberOfActiveGames() {
+        $sql = "SELECT COUNT(1) as count FROM $this->tableName g WHERE g.active = 1";
+        $row = $this->db->fetchAssoc($sql);
+        return $row['count'];
+    }
+
+    public function findNumberOfArchivedGames() {
+        $sql = "SELECT COUNT(1) as count FROM $this->tableName g WHERE g.active = 0";
+        $row = $this->db->fetchAssoc($sql);
+        return $row['count'];
+    }
+
 
 }

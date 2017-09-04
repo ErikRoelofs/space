@@ -31,9 +31,9 @@ $app->post('/api/login', function(\Symfony\Component\HttpFoundation\Request $req
 
 $app->get('/home/stats', function() use ($app) {
     $stats = [
-        'gamesActive' => 10,
-        'players' => 15,
-        'gamesArchived' => 100
+        'gamesActive' => $app['game-repo']->findNumberOfActiveGames(),
+        'players' => $app['user-repo']->findNumberOfUsers(),
+        'gamesArchived' => $app['game-repo']->findNumberOfArchivedGames(),
     ];
 
    return json_encode($stats);

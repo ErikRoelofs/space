@@ -30,4 +30,10 @@ class UserRepository extends BaseRepository
         return $this->converter->fromDB($this->tableName, $row);
     }
 
+    public function findNumberOfUsers() {
+        $sql = "SELECT COUNT(1) as count FROM $this->tableName";
+        $row = $this->db->fetchAssoc($sql);
+        return $row['count'];
+    }
+
 }
