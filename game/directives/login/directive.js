@@ -18,7 +18,11 @@ angular.module('game').directive('login', ['loginService', 'userService', '$http
             scope.register = function() {
                 userService.registerAccount(scope.new.username, scope.new.password, scope.new.email).then(
                     function(response) {
-
+                        loginService.authenticate(scope.new.username, scope.new.password).then(function(response) {
+                            window.location = "/game/";
+                        }, function(error) {
+                            scope.registerError = 'registering-failed';
+                        });
                     },
                     function(error) {
                         scope.registerError = error.data;
