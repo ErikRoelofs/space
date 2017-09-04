@@ -1,0 +1,38 @@
+.main {
+    text-align: center;
+}
+
+.register {
+    text-align: center;
+    float: left;
+    width: 50%;
+}
+
+.login {
+    text-align: center;
+    float: left;
+    width: 50%;
+}
+
+.container {
+    clear: both;
+}
+
+.input-container {
+    margin: 5px;
+}
+
+.label-container {
+    width: 150px;
+    display: inline-block;
+    text-align: left;
+}
+
+.field-container {
+    width: 250px;
+    display: inline-block;
+}
+
+.input-field {
+    width: 100%;
+}

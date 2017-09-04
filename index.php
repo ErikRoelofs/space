@@ -37,7 +37,7 @@ $app->post('/api/login', function(\Symfony\Component\HttpFoundation\Request $req
 
     try {
         if (empty($vars['_username']) || empty($vars['_password'])) {
-            throw new \Exception(sprintf('Username "%s" does not exist.', $vars['_username']));
+            throw new \Exception('Please supply a username and password');
         }
 
         /**
@@ -58,7 +58,6 @@ $app->post('/api/login', function(\Symfony\Component\HttpFoundation\Request $req
             'error' => 'Invalid credentials',
         ];
     }
-
     return $app->json($response, ($response['success'] == true ? \Symfony\Component\HttpFoundation\Response::HTTP_OK : \Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST));
 });
 

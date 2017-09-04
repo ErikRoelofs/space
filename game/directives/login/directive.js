@@ -10,6 +10,8 @@ angular.module('game').directive('login', ['loginService', 'userService', functi
             scope.login = function() {
                 loginService.authenticate(scope.username, scope.password).then(function(response) {
                     window.location = "/game/";
+                }, function(error) {
+                    scope.error = error;
                 });
             };
 

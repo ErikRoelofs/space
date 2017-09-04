@@ -2,6 +2,8 @@
 
 namespace Plu\Repository;
 
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+
 class UserRepository extends BaseRepository
 {
     public function __construct($db, $converter)

@@ -290,6 +290,7 @@ angular.module('game', []).config(['$locationProvider', function($locationProvid
 			}
 			return $http.post('/api/login', vars).then(function(response) {
 				$window.localStorage.setItem('token', response.data.token);
+				return response;
 			});
 		},
 		getToken: function() {

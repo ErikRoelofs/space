@@ -1,18 +1,34 @@
-<div>
+<div class="main">
     <h1>Login screen</h1>
+    <div class="container">
 
-    <h3>Login:</h3>
-    Username: <input type="text" ng-model="username" /><br />
-    Password: <input type="password" ng-model="password" /><br />
+        <div class="login">
+            <h3>Login:</h3>
+            <div class="input-container">
+                <div class="label-container"><label for="l-u">Username</label></div> <div class="field-container"><input id="l-u" class="input-field" type="text" ng-model="username" /></div>
+            </div>
+            <div class="input-container">
+                <div class="label-container"><label for="l-p">Password</label></div> <div class="field-container"><input id="l-p" class="input-field" type="password" ng-model="password" /></div>
+            </div>
 
-    <button ng-click="login()">click</button>
+            <button ng-click="login()">Login</button>
 
-    <h3>Register:</h3>
-    Username: <input type="text" ng-model="new.username" /><br />
-    Email: <input type="text" ng-model="new.email" /><br />
-    Password: <input type="password" ng-model="new.password" /><br />
+            <div>{{ error }}</div>
+        </div>
 
-    <button ng-click="register()">click</button>
+        <div class="register">
+            <h3>Register:</h3>
+            <div class="input-container">
+                <div class="label-container"><label for="r-u">Username</label></div> <div class="field-container"><input id="r-u" class="input-field" type="text" ng-model="new.username" /></div>
+            </div>
+            <div class="input-container">
+                <div class="label-container"><label for="r-e">Email</label></div> <div class="field-container"><input id="r-e" class="input-field" type="text" ng-model="new.email" /></div>
+            </div>
+            <div class="input-container">
+                <div class="label-container"><label for="r-p">Password</label></div> <div class="field-container"><input id="r-p" class="input-field" type="password" ng-model="new.password" /></div>
+            </div>
 
-
+            <button ng-click="register()">Register</button>
+        </div>
+    </div>
 </div>

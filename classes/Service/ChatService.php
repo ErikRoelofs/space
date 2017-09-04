@@ -97,4 +97,5 @@ class ChatService
         }
         return false;
     }
+
 }
