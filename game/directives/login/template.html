@@ -1,23 +1,24 @@
 <div class="main">
-    <h1>Login screen</h1>
+    <h1>Working Title, The Game.</h1>
+    <h2>It has spaceships and aliens and everything.</h2>
     <div class="container">
 
         <div class="login">
-            <h3>Login:</h3>
+            <h3>Returning players:</h3>
             <div class="input-container">
-                <div class="label-container"><label for="l-u">Username</label></div> <div class="field-container"><input id="l-u" class="input-field" type="text" ng-model="username" /></div>
+                <div class="label-container"><label for="l-u">Username</label></div> <div class="field-container"><input id="l-u" class="input-field" type="text" ng-model="username" ng-change="clearError()" /></div>
             </div>
             <div class="input-container">
-                <div class="label-container"><label for="l-p">Password</label></div> <div class="field-container"><input id="l-p" class="input-field" type="password" ng-model="password" /></div>
+                <div class="label-container"><label for="l-p">Password</label></div> <div class="field-container"><input id="l-p" class="input-field" type="password" ng-model="password" ng-change="clearError()" /></div>
             </div>
 
             <button ng-click="login()">Login</button>
 
-            <div>{{ error }}</div>
+            <div ng-if="error" class="error">Invalid credentials.</div>
         </div>
 
         <div class="register">
-            <h3>Register:</h3>
+            <h3>New players:</h3>
             <div class="input-container">
                 <div class="label-container"><label for="r-u">Username</label></div> <div class="field-container"><input id="r-u" class="input-field" type="text" ng-model="new.username" /></div>
             </div>

@@ -36,3 +36,9 @@
 .input-field {
     width: 100%;
 }
+
+.error {
+    color: red;
+    margin: 10px;
+    font-weight: bold;
+}

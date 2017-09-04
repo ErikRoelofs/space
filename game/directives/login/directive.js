@@ -18,6 +18,10 @@ angular.module('game').directive('login', ['loginService', 'userService', functi
             scope.register = function() {
                 userService.registerAccount(scope.new.username, scope.new.password, scope.new.email);
             }
+
+            scope.clearError = function() {
+                scope.error = '';
+            }
         }
     };
 
