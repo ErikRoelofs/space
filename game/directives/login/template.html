@@ -6,32 +6,39 @@
         <div class="login">
             <h3>Returning players:</h3>
             <div class="input-container">
-                <div class="label-container"><label for="l-u">Username</label></div> <div class="field-container"><input id="l-u" class="input-field" type="text" ng-model="username" ng-change="clearError()" /></div>
+                <div class="label-container"><label for="l-u">Username</label></div> <div class="field-container"><input id="l-u" class="input-field" type="text" ng-model="username" ng-change="clearLoginError()" /></div>
             </div>
             <div class="input-container">
-                <div class="label-container"><label for="l-p">Password</label></div> <div class="field-container"><input id="l-p" class="input-field" type="password" ng-model="password" ng-change="clearError()" /></div>
+                <div class="label-container"><label for="l-p">Password</label></div> <div class="field-container"><input id="l-p" class="input-field" type="password" ng-model="password" ng-change="clearLoginError()" /></div>
             </div>
 
             <button ng-click="login()">Login</button>
 
-            <div ng-if="error" class="error">Invalid credentials.</div>
+            <div ng-if="loginError" class="error">Invalid credentials.</div>
         </div>
 
         <div class="register">
             <h3>New players:</h3>
             <div class="input-container">
-                <div class="label-container"><label for="r-u">Username</label></div> <div class="field-container"><input id="r-u" class="input-field" type="text" ng-model="new.username" /></div>
+                <div class="label-container"><label for="r-u">Username</label></div> <div class="field-container"><input id="r-u" class="input-field" type="text" ng-model="new.username" ng-change="clearRegisterError()" /></div>
             </div>
             <div class="input-container">
-                <div class="label-container"><label for="r-e">Email</label></div> <div class="field-container"><input id="r-e" class="input-field" type="text" ng-model="new.email" /></div>
+                <div class="label-container"><label for="r-e">Email</label></div> <div class="field-container"><input id="r-e" class="input-field" type="text" ng-model="new.email" ng-change="clearRegisterError()" /></div>
             </div>
             <div class="input-container">
-                <div class="label-container"><label for="r-p">Password</label></div> <div class="field-container"><input id="r-p" class="input-field" type="password" ng-model="new.password" /></div>
+                <div class="label-container"><label for="r-p">Password</label></div> <div class="field-container"><input id="r-p" class="input-field" type="password" ng-model="new.password" ng-change="clearRegisterError()" /></div>
+            </div>
+
+            <div ng-if="registerError" class="error">
+                <span ng-if="registerError == 'missing-fields'">Please fill out all the fields.</span>
+                <span ng-if="registerError == 'username-taken'">This username is taken. Try another.</span>
             </div>
 
             <button ng-click="register()">Register</button>
         </div>
     </div>
+
+    <div style="clear: both">&nbsp;</div>
 
     <div class="stats">
         <div>Currently with {{ stats.players }} players, playing in {{ stats.gamesActive }} games, with {{ stats.gamesArchived }} games completed.</div>

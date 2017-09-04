@@ -11,16 +11,26 @@ angular.module('game').directive('login', ['loginService', 'userService', '$http
                 loginService.authenticate(scope.username, scope.password).then(function(response) {
                     window.location = "/game/";
                 }, function(error) {
-                    scope.error = error;
+                    scope.loginError = error.data;
                 });
             };
 
             scope.register = function() {
-                userService.registerAccount(scope.new.username, scope.new.password, scope.new.email);
+                userService.registerAccount(scope.new.username, scope.new.password, scope.new.email).then(
+                    function(response) {
+
+                    },
+                    function(error) {
+                        scope.registerError = error.data;
+                    });
             }
 
-            scope.clearError = function() {
-                scope.error = '';
+            scope.clearLoginError = function() {
+                scope.loginError = '';
+            }
+
+            scope.clearRegisterError = function() {
+                scope.registerError = '';
             }
 
             $http.get('/home/stats').then(function(response) {

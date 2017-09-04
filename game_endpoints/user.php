@@ -1,11 +1,19 @@
 <?php
 
+use \Symfony\Component\HttpFoundation\Response;
+use \Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+
 $app->get('user/myInfo', function() use ($app) {
    return $app['converter-service']->toJson($app['user']);
 });
 
 $app->post('register', function() use ($app) {
     $data = json_decode(file_get_contents('php://input'), true);
+
+    if(empty($data['username']) || empty($data['email']) || empty($data['password'])) {
+        return new Response("missing-fields", 400);
+    }
+
     $user = new \Plu\Entity\User();
 
     $user->username = $data['username'];
@@ -15,7 +23,12 @@ $app->post('register', function() use ($app) {
     $user->confirmed = false;
     $user->roles = [ 'ROLE_USER' ];
 
-    $app['user-repo']->add($user);
+    try {
+        $app['user-repo']->add($user);
+    }
+    catch( UniqueConstraintViolationException $e ) {
+        return new Response("username-taken", 400);
+    }
 
     return $app['converter-service']->toJson($user);
 });
